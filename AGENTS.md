@@ -16,3 +16,4 @@ Static React frontend + stateless FastAPI backend in one repository.
 
 Architecture details: [specs/architecture.md](specs/architecture.md).
 Project overview: [README.md](README.md).
+Development checks: [specs/development.md](specs/development.md).

@@ -44,11 +44,11 @@ There is no database, cache, queue, or authentication. The backend holds no stat
 
 ## Hosting
 
-| Component | Platform         | Config                          | Deploy trigger      |
-| --------- | ---------------- | ------------------------------- | ------------------- |
-| Frontend  | Cloudflare Pages | Dashboard settings (see README) | Push to `main`      |
-| Backend   | Render Free      | `render.yaml` (Blueprint)       | Push to `main`      |
-| CI        | GitHub Actions   | `.github/workflows/ci.yml`      | Every push and PR   |
+| Component | Platform         | Config                     | Deploy trigger    |
+| --------- | ---------------- | -------------------------- | ----------------- |
+| Frontend  | Cloudflare Pages | Dashboard settings         | Push to `main`    |
+| Backend   | Render Free      | `render.yaml` (Blueprint)  | Push to `main`    |
+| CI        | GitHub Actions   | `.github/workflows/ci.yml` | Every push and PR |
 
 Free-tier constraints to keep in mind:
 
