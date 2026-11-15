@@ -1,6 +1,6 @@
 # Skinner Ridge: contact observation specification
 
-This specification supports [issue #22](https://github.com/Moriae1337/martian-map/issues/22) ([CH26-004]), [issue #24](https://github.com/Moriae1337/martian-map/issues/24) ([CH26-006]), the [Skinner Ridge science stop](skinner-ridge.md) (#21), and the [Hawksbill Gap crew field objective](field-objective.md) (#120). It defines the field observation card, contact inspection protocols, and field observation records for Stop 2 at Skinner Ridge.
+This specification supports [issue #22](https://github.com/Moriae1337/martian-map/issues/22) ([CH26-004]), [issue #24](https://github.com/Moriae1337/martian-map/issues/24) ([CH26-006]), [issue #27](https://github.com/Moriae1337/martian-map/issues/27) ([CH26-009]), the [Skinner Ridge science stop](skinner-ridge.md) (#21), and the [Hawksbill Gap crew field objective](field-objective.md) (#120). It defines the field observation card, contact inspection protocols, and field observation records for Stop 2 at Skinner Ridge. The comparative bedding architecture with Upper Rockytop and Betty's Rock is documented in the [Upper Rockytop comparison figure specification](upper-rockytop.md).
 
 ## Geological context
 
