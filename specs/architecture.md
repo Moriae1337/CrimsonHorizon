@@ -45,6 +45,10 @@ There is no database, cache, queue, or authentication. The backend holds no stat
   see [environment-api.md](environment-api.md).
 - `GET /api/scenario/{scenario_id}/slope` serves the precomputed surface slope overlay
   (Horn 3x3 kernel, 1.0 m grid resolution) built by `prep/slope.py`; see [scenario-api.md](scenario-api.md).
+- `GET /sites`, `/sites/{site_id}/terrain`, `/sites/{site_id}/texture.jpg` and
+  `/sites/{site_id}/routes` serve committed HiRISE terrain packages (Columbia Hills in
+  Gusev, Hawksbill Gap in Jezero) and plan shortest vs lower-risk routes on them;
+  `GET /terrain/nomenclature` serves IAU names for the globe. See [sites-api.md](sites-api.md).
 - Enforces CORS using the comma-separated `CORS_ORIGINS` variable
   (default `http://localhost:5173` for local development).
 - Parses environment configuration in `app/config.py`; wildcard CORS origins

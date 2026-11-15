@@ -299,8 +299,48 @@ export function routeStyle(
         stroke: new Stroke({ color: option.color, width: option.width, lineJoin: 'round' }),
       }),
     ]
-    return selected ? [...lines, halo(option.width)] : lines
+    return selected
+      ? [...lines, halo(option.width), ...directionArrows(feature, resolution, 100)]
+      : lines
   }
+}
+
+const ARROW_SPACING_PX = 70
+
+/** Chevrons along a line in drawing order (outbound legs point away from the start). */
+export function directionArrows(feature: FeatureLike, resolution: number, zIndex: number): Style[] {
+  const geometry = feature.getGeometry()
+  if (!(geometry instanceof LineString)) return []
+  const coords = geometry.getCoordinates()
+  const spacing = ARROW_SPACING_PX * resolution
+  const styles: Style[] = []
+  let carry = spacing / 2
+  for (let i = 0; i < coords.length - 1; i++) {
+    const [ax, ay] = coords[i]
+    const [bx, by] = coords[i + 1]
+    const len = Math.hypot(bx - ax, by - ay)
+    const rotation = -Math.atan2(by - ay, bx - ax) + Math.PI / 2
+    let d = carry
+    while (d < len) {
+      const t = d / len
+      styles.push(
+        new Style({
+          zIndex,
+          geometry: new Point([ax + (bx - ax) * t, ay + (by - ay) * t]),
+          image: new RegularShape({
+            points: 3,
+            radius: 5,
+            rotation,
+            fill: new Fill({ color: SELECTION_OUTLINE }),
+            stroke: new Stroke({ color: CASING, width: 1.5 }),
+          }),
+        }),
+      )
+      d += spacing
+    }
+    carry = d - len
+  }
+  return styles.slice(0, 200)
 }
 
 export function trackStyle(feature: FeatureLike, resolution: number): Style[] {

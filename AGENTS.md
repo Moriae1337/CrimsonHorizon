@@ -20,3 +20,4 @@ Architecture details: [specs/architecture.md](specs/architecture.md).
 Design system & palette: [specs/design-system.md](specs/design-system.md).
 Project overview: [README.md](README.md).
 Development checks: [specs/development.md](specs/development.md).
+3D sites, route planner and globe: [specs/sites-api.md](specs/sites-api.md).
