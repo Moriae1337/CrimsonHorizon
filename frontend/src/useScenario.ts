@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
-import { fetchScenario } from './api'
-import { describeScenarioFailure, type Scenario, type ScenarioStatus } from './scenario'
+import { fetchScenario } from './api.ts'
+import { describeScenarioFailure, type Scenario, type ScenarioStatus } from './scenario.ts'
 
-const API_URL = import.meta.env.VITE_API_URL?.trim().replace(/\/+$/, '')
+const API_URL = import.meta.env?.VITE_API_URL?.trim().replace(/\/+$/, '')
 // Allow time for the backend to wake up on Render Free.
 const SCENARIO_TIMEOUT_MS = 60_000
 
@@ -18,16 +18,14 @@ const LOADING: ScenarioState = { status: 'loading', scenario: null, error: null 
  * Loads one scenario independently of the base map catalog. A failure never touches the
  * Mars layers; `retry` starts a fresh request and a success restores the scenario view.
  */
-export function useScenario(scenarioId: string) {
+export function useScenario(scenarioId: string, customApiUrl?: string) {
+  const apiUrl = customApiUrl ?? API_URL
   const [state, setState] = useState<ScenarioState>(
-    API_URL
-      ? LOADING
-      : { status: 'unavailable', scenario: null, error: 'VITE_API_URL is not set.' },
+    apiUrl ? LOADING : { status: 'unavailable', scenario: null, error: 'VITE_API_URL is not set.' },
   )
   const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
-    const apiUrl = API_URL
     if (!apiUrl) return
 
     const controller = new AbortController()
@@ -60,13 +58,13 @@ export function useScenario(scenarioId: string) {
       clearTimeout(timeoutId)
       controller.abort()
     }
-  }, [scenarioId, attempt])
+  }, [scenarioId, attempt, apiUrl])
 
   const retry = useCallback(() => {
-    if (!API_URL) return
+    if (!apiUrl) return
     setState(LOADING)
     setAttempt((n) => n + 1)
-  }, [])
+  }, [apiUrl])
 
-  return { ...state, retry, canRetry: Boolean(API_URL) }
+  return { ...state, retry, canRetry: Boolean(apiUrl) }
 }
