@@ -148,8 +148,8 @@ Bedding measurements from whichever sides were visible go into the record as
 well. The map shows the Skinner Ridge block with an "origin unresolved" marker,
 and the block is not used to extend the section.
 
-#26 turns these items into the field record schema. Its example must show an
-unresolved result.
+#26 turns these items into the [field observation record schema](field-observation-record.md).
+Its example must show an unresolved result.
 
 ## Acceptance check (CH26-001)
 
