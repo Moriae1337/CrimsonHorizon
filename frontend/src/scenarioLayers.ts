@@ -12,13 +12,14 @@ import { formatSols, type RouteOption, type Scenario, type ScenarioStop } from '
 
 // Route options: color plus a width/layer cue. The first option is drawn narrow on top,
 // later options wider underneath, so a shared approach shows both lines side by side.
-const OPTION_COLORS = ['#fbbf24', '#22d3ee', '#a3e635', '#f472b6']
-const CASING = 'rgba(2, 6, 23, 0.85)'
-const TRACK_COLOR = '#f8fafc'
+const CASING = '#212121'
 const LABEL_FONT = '600 12px ui-sans-serif, system-ui, sans-serif'
 // Selection highlight: Accent halo with a Secondary outline.
 export const SELECTION_ACCENT = '#8F5A53'
 export const SELECTION_OUTLINE = '#EBEBEB'
+const OPTION_COLORS = [SELECTION_ACCENT, SELECTION_OUTLINE]
+const SELECTION_HALO_EXTRA_WIDTH = 10
+const TERRAIN_GAP_CASING_WIDTH = 7
 
 // Map labels (badges, connector note, sol tags) appear from about zoom 15 (~1.2 m/px)
 // down, where they no longer cover the lines they describe.
@@ -26,6 +27,8 @@ const LABEL_MAX_RESOLUTION = 2.2e-5
 
 export const CONNECTOR_DASH = [7, 6]
 export const TRACK_DASH = [0.1, 6]
+export const TERRAIN_GAP_DASH = [8, 4, 2, 4]
+export const TERRAIN_GAP_LABEL = 'Elevation, grade and ascent unavailable'
 
 export interface OptionStyle {
   color: string
@@ -45,7 +48,7 @@ export function optionStyle(options: readonly RouteOption[], optionId: string): 
   }
 }
 
-export const TRACK_STYLE = { color: TRACK_COLOR, width: 2.5 }
+export const TRACK_STYLE = { color: SELECTION_OUTLINE, width: 2.5 }
 
 function midpoint(line: LineString): Point {
   return new Point(line.getCoordinateAt(0.5))
@@ -90,6 +93,18 @@ export function buildRouteFeatures(scenario: Scenario): Feature[] {
         : `Option ${p.option} outbound: Perseverance-driven ground, ${formatSols(p.sols)}, ${Math.round(p.length_m)} m`,
       label: labels.get(p.option),
     })
+    features.push(feature)
+  }
+
+  for (const { id, geometry, properties: gap } of scenario.caution_zones) {
+    if (gap.kind !== 'terrain-gap') continue
+    const feature = new Feature({
+      geometry: new LineString(geometry.coordinates.map(([lon, lat]) => [lon, lat])),
+      role: 'terrain-gap',
+      option: gap.option,
+      tooltip: `Option ${gap.option} · ${TERRAIN_GAP_LABEL} · ${gap.from_m}–${gap.to_m} m from start (outbound)`,
+    })
+    feature.setId(`terrain-gap:${id}`)
     features.push(feature)
   }
 
@@ -160,6 +175,10 @@ export function routeStyle(
   options: readonly RouteOption[],
   selectedOptionId: () => string | null = () => null,
 ) {
+  const widestRoute = Math.max(4, ...options.map((option) => optionStyle(options, option.id).width))
+  // Keep the gap alongside the widest route, including its selection halo.
+  const gapOffset = (widestRoute + SELECTION_HALO_EXTRA_WIDTH + TERRAIN_GAP_CASING_WIDTH) / 2 + 2
+
   return (feature: FeatureLike, resolution: number): Style[] => {
     const role = feature.get('role')
     const labelled = resolution <= LABEL_MAX_RESOLUTION
@@ -169,21 +188,45 @@ export function routeStyle(
           zIndex: 100,
           image: new CircleStyle({
             radius: 7,
-            fill: new Fill({ color: '#f8fafc' }),
+            fill: new Fill({ color: SELECTION_OUTLINE }),
             stroke: new Stroke({ color: CASING, width: 3 }),
           }),
           text: new Text({
             text: labelled ? String(feature.get('label') ?? 'Start') : '',
             offsetY: 16,
             font: LABEL_FONT,
-            fill: new Fill({ color: '#f8fafc' }),
-            stroke: new Stroke({ color: '#020617', width: 3 }),
+            fill: new Fill({ color: SELECTION_OUTLINE }),
+            stroke: new Stroke({ color: CASING, width: 3 }),
           }),
         }),
       ]
     }
 
     const option = optionStyle(options, String(feature.get('option')))
+    if (role === 'terrain-gap') {
+      const zIndex = 70 + options.length * 10
+      return [
+        new Style({
+          zIndex,
+          stroke: new Stroke({
+            color: CASING,
+            width: TERRAIN_GAP_CASING_WIDTH,
+            offset: gapOffset,
+            lineCap: 'butt',
+          }),
+        }),
+        new Style({
+          zIndex: zIndex + 1,
+          stroke: new Stroke({
+            color: SELECTION_OUTLINE,
+            width: 4,
+            offset: gapOffset,
+            lineDash: TERRAIN_GAP_DASH,
+            lineCap: 'butt',
+          }),
+        }),
+      ]
+    }
     const selected = featureOptionId(feature) === selectedOptionId()
     // Drawn beneath the casing; above every unselected option so the pick reads first.
     const halo = (width: number) =>
@@ -191,7 +234,7 @@ export function routeStyle(
         zIndex: 40 + options.length * 10,
         stroke: new Stroke({
           color: SELECTION_ACCENT,
-          width: width + 10,
+          width: width + SELECTION_HALO_EXTRA_WIDTH,
           lineJoin: 'round',
           lineCap: 'round',
         }),
@@ -204,10 +247,10 @@ export function routeStyle(
           text: new Text({
             text: String(feature.get('option')),
             font: '700 13px ui-sans-serif, system-ui, sans-serif',
-            fill: new Fill({ color: '#020617' }),
-            backgroundFill: new Fill({ color: option.color }),
+            fill: new Fill({ color: SELECTION_OUTLINE }),
+            backgroundFill: new Fill({ color: CASING }),
             backgroundStroke: new Stroke({
-              color: selected ? SELECTION_OUTLINE : CASING,
+              color: selected ? SELECTION_OUTLINE : option.color,
               width: selected ? 3 : 2,
             }),
             padding: [2, 6, 1, 6],
@@ -236,8 +279,8 @@ export function routeStyle(
             font: '600 11px ui-sans-serif, system-ui, sans-serif',
             textAlign: 'left',
             offsetX: 14,
-            fill: new Fill({ color: '#f8fafc' }),
-            backgroundFill: new Fill({ color: 'rgba(2, 6, 23, 0.82)' }),
+            fill: new Fill({ color: SELECTION_OUTLINE }),
+            backgroundFill: new Fill({ color: CASING }),
             padding: [2, 4, 2, 4],
           }),
         }),
@@ -264,7 +307,7 @@ export function trackStyle(feature: FeatureLike, resolution: number): Style[] {
   const styles = [
     new Style({
       stroke: new Stroke({
-        color: TRACK_COLOR,
+        color: TRACK_STYLE.color,
         width: TRACK_STYLE.width,
         lineDash: TRACK_DASH,
         lineCap: 'round',
@@ -278,17 +321,16 @@ export function trackStyle(feature: FeatureLike, resolution: number): Style[] {
         // Left of the line, so sol tags never cover the connector note on the right.
         offsetX: -10,
         textAlign: 'right',
-        fill: new Fill({ color: '#e2e8f0' }),
-        stroke: new Stroke({ color: '#020617', width: 3 }),
+        fill: new Fill({ color: SELECTION_OUTLINE }),
+        stroke: new Stroke({ color: CASING, width: 3 }),
       }),
     }),
   ]
   return resolution <= LABEL_MAX_RESOLUTION ? styles : styles.slice(0, 1)
 }
 
-// Science stops: a diamond (not a circle like Start and the Jezero landmarks), a color no
-// route option uses, and an always-boxed text label, so shape and words carry the meaning.
-export const STOP_COLOR = '#e879f9'
+// Science stops use a diamond and a boxed label.
+export const STOP_COLOR = SELECTION_OUTLINE
 const STOP_LABEL_MAX_RESOLUTION = 4.5e-5
 
 export interface LabelPlacement {
@@ -384,7 +426,7 @@ export function stopStyle(selectedStopId: () => string | null) {
     // Inner dot: the drill-hole cue, readable without color.
     const hole = new Style({
       zIndex: selected ? 211 : 201,
-      image: new CircleStyle({ radius: 2.5, fill: new Fill({ color: '#020617' }) }),
+      image: new CircleStyle({ radius: 2.5, fill: new Fill({ color: CASING }) }),
     })
     const extra = selected ? [halo] : []
     if (resolution > STOP_LABEL_MAX_RESOLUTION) return [marker, hole, ...extra]
@@ -396,7 +438,7 @@ export function stopStyle(selectedStopId: () => string | null) {
         textAlign: left ? 'right' : 'left',
         offsetX: left ? -(radius + 4) : radius + 4,
         offsetY: { up: -(radius + 4), down: radius + 4, level: 0 }[placement.vertical],
-        fill: new Fill({ color: '#020617' }),
+        fill: new Fill({ color: CASING }),
         backgroundFill: new Fill({ color: STOP_COLOR }),
         backgroundStroke: new Stroke({
           color: selected ? SELECTION_ACCENT : CASING,
