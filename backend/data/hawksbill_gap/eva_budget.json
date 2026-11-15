@@ -1,0 +1,400 @@
+{
+  "schema_version": "1.0",
+  "title": "Hawksbill Gap EVA Time Budget Analysis",
+  "generated_at": "2026-11-14T13:25:28Z",
+  "input_route_metrics": "backend/data/hawksbill_gap/route_metrics.json",
+  "planning_assumptions": {
+    "status": "All parameters are operational planning assumptions for mission feasibility analysis.",
+    "locomotion_model": {
+      "model_name": "Spacesuit-Adjusted Tobler Hiking Function",
+      "citation": "Tobler, W. (1993) NCGIA Technical Report 93-1; Apollo/Artemis analog field data",
+      "formula": "W(S) = (V_flat / (6.0 * exp(-0.175))) * 6.0 * exp(-3.5 * abs(S + 0.05)) km/h",
+      "slope_definition": "S = dz / dd (vertical elevation change / horizontal great-circle distance)",
+      "flat_terrain_velocity_kmh": 2.5,
+      "unencumbered_tobler_base_kmh": 6.0,
+      "unencumbered_tobler_flat_kmh": 5.0367,
+      "scale_factor": 0.49635,
+      "optimal_slope": -0.05,
+      "optimal_slope_description": "-5% grade (slight downhill ~ -2.86 deg) yields maximum velocity"
+    },
+    "science_stops": {
+      "duration_per_stop_minutes": 15.0,
+      "rationale": "Standard analog field task allocation for high-resolution scale photography, orientation notes, and contact inspection.",
+      "option_a_stops": [
+        "Wildcat Ridge (15 min); Skinner Ridge observed via standoff"
+      ],
+      "option_b_stops": [
+        "Skinner Ridge (15 min)",
+        "Wildcat Ridge (15 min)"
+      ]
+    },
+    "nominal_budgets": {
+      "conservative_sortie_limit_minutes": 30.0,
+      "nominal_sortie_budget_minutes": 60.0,
+      "extended_sortie_budget_minutes": 90.0,
+      "rationale": "60–90 min nominal excursions leave sufficient portable life support system (PLSS) reserves (O2, battery, water sublimation) for contingency."
+    },
+    "terrain_data": {
+      "source": "USGS TRN HiRISE Digital Terrain Model (1 m grid resolution, DeltaGeoid vertical reference)",
+      "profile_sampling_step_m": 5.0,
+      "route_metrics_record": "backend/data/hawksbill_gap/route_metrics.json"
+    },
+    "disclaimer": "Planning assumptions only. Does not replace certified suit life support system telemetry, consumables tracking (O2, battery, sublimator water), terrain trafficability, or real-time astronaut physiological monitoring."
+  },
+  "comparative_analysis": {
+    "trade_off_title": "Route A vs Route B Time Budget Trade-off",
+    "delta_round_trip_distance_m": 87.27,
+    "delta_walking_duration_minutes": 2.66,
+    "delta_stop_duration_minutes": 15.0,
+    "delta_total_eva_minutes": 17.66,
+    "scientific_gain": "Visiting Skinner Ridge in Option B requires +87.27 m of walking (+2.66 min walk time) and +15.00 min field observation time (+17.66 min total excursion time). This extra time enables direct macro inspection of the bedrock contact interface, resolving whether the Skinner Ridge block is in-place bedrock or upper Rockytop float. Option A avoids the extra 17.66 min but leaves the contact uninspected and unresolved.",
+    "budget_feasibility": {
+      "nominal_60_min": "Both routes are comfortably within the nominal 60.0 min budget (Option A margin: +37.00 min; Option B margin: +19.34 min).",
+      "extended_90_min": "Both routes are comfortably within the extended 90.0 min budget (Option A margin: +67.00 min; Option B margin: +49.34 min).",
+      "conservative_30_min": "Option A is within the 30.0 min conservative budget (+7.00 min margin), whereas Option B exceeds the 30.0 min conservative limit by 10.66 min (OVER_BUDGET)."
+    }
+  },
+  "routes": {
+    "A": {
+      "option_id": "A",
+      "route_label": "Option A",
+      "distance": {
+        "outbound_m": 129.0,
+        "return_m": 129.01,
+        "round_trip_m": 258.01,
+        "ascent_m": 13.34
+      },
+      "stops": {
+        "count": 1,
+        "total_duration_minutes": 15.0,
+        "stops_list": [
+          {
+            "stop_id": "wildcat-ridge",
+            "name": "Wildcat Ridge",
+            "member": "Hogwallow Flats member",
+            "sample_targets": [
+              "Hazeltop (sol 509)",
+              "Bearwallow (sol 516)"
+            ],
+            "planned_task": "Document fine-grained laminated mudstones; acquire metric scale photography of calcium-sulfate veins cross-cutting bedding to constrain post-depositional fluid history.",
+            "planned_duration_minutes": 15.0
+          }
+        ]
+      },
+      "loaded_spacesuit_model": {
+        "description": "Tobler hiking function scaled to 2.5 km/h flat terrain spacesuit baseline.",
+        "walk_out_duration_minutes": 4.55,
+        "stop_duration_minutes": 15.0,
+        "walk_back_duration_minutes": 3.45,
+        "total_walk_duration_minutes": 8.0,
+        "total_eva_excursion_minutes": 23.0,
+        "legs": {
+          "walk_out": {
+            "leg_name": "walk_out",
+            "distance_m": 129.0,
+            "duration_minutes": 4.55,
+            "duration_seconds": 273.3,
+            "ascent_m": 12.88,
+            "descent_m": 0.45,
+            "mean_velocity_kmh": 1.7,
+            "segments_count": 26
+          },
+          "walk_back": {
+            "leg_name": "walk_back",
+            "distance_m": 129.01,
+            "duration_minutes": 3.45,
+            "duration_seconds": 206.7,
+            "ascent_m": 0.45,
+            "descent_m": 12.88,
+            "mean_velocity_kmh": 2.25,
+            "segments_count": 26
+          }
+        },
+        "budget_evaluations": {
+          "conservative_30": {
+            "budget_id": "conservative_30",
+            "nominal_budget_minutes": 30.0,
+            "within_budget": true,
+            "margin_minutes": 7.0,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 23.00 min <= 30.0 min (reserve margin: +7.00 min).",
+            "description": "Conservative / emergency contingency EVA sortie limit"
+          },
+          "nominal_60": {
+            "budget_id": "nominal_60",
+            "nominal_budget_minutes": 60.0,
+            "within_budget": true,
+            "margin_minutes": 37.0,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 23.00 min <= 60.0 min (reserve margin: +37.00 min).",
+            "description": "Nominal primary EVA sortie budget"
+          },
+          "extended_90": {
+            "budget_id": "extended_90",
+            "nominal_budget_minutes": 90.0,
+            "within_budget": true,
+            "margin_minutes": 67.0,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 23.00 min <= 90.0 min (reserve margin: +67.00 min).",
+            "description": "Extended EVA sortie budget with life support reserves"
+          }
+        },
+        "nominal_60_indicator": "WITHIN_BUDGET",
+        "nominal_90_indicator": "WITHIN_BUDGET",
+        "conservative_30_indicator": "WITHIN_BUDGET"
+      },
+      "unencumbered_tobler_model": {
+        "description": "Standard unencumbered Tobler hiking function (6.0 km/h base velocity).",
+        "walk_out_duration_minutes": 2.26,
+        "stop_duration_minutes": 15.0,
+        "walk_back_duration_minutes": 1.71,
+        "total_walk_duration_minutes": 3.97,
+        "total_eva_excursion_minutes": 18.97,
+        "legs": {
+          "walk_out": {
+            "leg_name": "walk_out",
+            "distance_m": 129.0,
+            "duration_minutes": 2.26,
+            "duration_seconds": 135.6,
+            "ascent_m": 12.88,
+            "descent_m": 0.45,
+            "mean_velocity_kmh": 3.42,
+            "segments_count": 26
+          },
+          "walk_back": {
+            "leg_name": "walk_back",
+            "distance_m": 129.01,
+            "duration_minutes": 1.71,
+            "duration_seconds": 102.6,
+            "ascent_m": 0.45,
+            "descent_m": 12.88,
+            "mean_velocity_kmh": 4.53,
+            "segments_count": 26
+          }
+        },
+        "budget_evaluations": {
+          "conservative_30": {
+            "budget_id": "conservative_30",
+            "nominal_budget_minutes": 30.0,
+            "within_budget": true,
+            "margin_minutes": 11.03,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 18.97 min <= 30.0 min (reserve margin: +11.03 min).",
+            "description": "Conservative / emergency contingency EVA sortie limit"
+          },
+          "nominal_60": {
+            "budget_id": "nominal_60",
+            "nominal_budget_minutes": 60.0,
+            "within_budget": true,
+            "margin_minutes": 41.03,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 18.97 min <= 60.0 min (reserve margin: +41.03 min).",
+            "description": "Nominal primary EVA sortie budget"
+          },
+          "extended_90": {
+            "budget_id": "extended_90",
+            "nominal_budget_minutes": 90.0,
+            "within_budget": true,
+            "margin_minutes": 71.03,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 18.97 min <= 90.0 min (reserve margin: +71.03 min).",
+            "description": "Extended EVA sortie budget with life support reserves"
+          }
+        }
+      },
+      "summary": {
+        "walk_out_minutes": 4.55,
+        "stop_duration_minutes": 15.0,
+        "walk_back_duration_minutes": 3.45,
+        "total_eva_minutes": 23.0,
+        "within_nominal_60_budget": true,
+        "within_nominal_90_budget": true,
+        "within_conservative_30_budget": true,
+        "status_indicator_60": "WITHIN_BUDGET",
+        "status_indicator_90": "WITHIN_BUDGET"
+      }
+    },
+    "B": {
+      "option_id": "B",
+      "route_label": "Option B",
+      "distance": {
+        "outbound_m": 172.64,
+        "return_m": 172.64,
+        "round_trip_m": 345.28,
+        "ascent_m": 17.8
+      },
+      "stops": {
+        "count": 2,
+        "total_duration_minutes": 30.0,
+        "stops_list": [
+          {
+            "stop_id": "skinner-ridge",
+            "name": "Skinner Ridge",
+            "member": "Lower Rockytop member base",
+            "sample_targets": [
+              "Swift Run (sol 490)",
+              "Skyland (sol 495)"
+            ],
+            "planned_task": "Direct close-up contact inspection and macro photography of the 1 m sandstone block basal interface with surrounding bedrock to resolve in-place bedrock vs float block origin.",
+            "planned_duration_minutes": 15.0
+          },
+          {
+            "stop_id": "wildcat-ridge",
+            "name": "Wildcat Ridge",
+            "member": "Hogwallow Flats member",
+            "sample_targets": [
+              "Hazeltop (sol 509)",
+              "Bearwallow (sol 516)"
+            ],
+            "planned_task": "Document fine-grained laminated mudstones; acquire metric scale photography of calcium-sulfate veins cross-cutting bedding to constrain post-depositional fluid history.",
+            "planned_duration_minutes": 15.0
+          }
+        ]
+      },
+      "loaded_spacesuit_model": {
+        "description": "Tobler hiking function scaled to 2.5 km/h flat terrain spacesuit baseline.",
+        "walk_out_duration_minutes": 5.88,
+        "stop_duration_minutes": 30.0,
+        "walk_back_duration_minutes": 4.78,
+        "total_walk_duration_minutes": 10.66,
+        "total_eva_excursion_minutes": 40.66,
+        "legs": {
+          "walk_out": {
+            "leg_name": "walk_out",
+            "distance_m": 172.64,
+            "duration_minutes": 5.88,
+            "duration_seconds": 352.7,
+            "ascent_m": 15.12,
+            "descent_m": 2.69,
+            "mean_velocity_kmh": 1.76,
+            "segments_count": 35
+          },
+          "walk_back": {
+            "leg_name": "walk_back",
+            "distance_m": 172.64,
+            "duration_minutes": 4.78,
+            "duration_seconds": 286.7,
+            "ascent_m": 2.69,
+            "descent_m": 15.12,
+            "mean_velocity_kmh": 2.17,
+            "segments_count": 35
+          }
+        },
+        "budget_evaluations": {
+          "conservative_30": {
+            "budget_id": "conservative_30",
+            "nominal_budget_minutes": 30.0,
+            "within_budget": false,
+            "margin_minutes": -10.66,
+            "indicator": "OVER_BUDGET",
+            "status": "over_budget",
+            "message": "Excursion is OVER budget: 40.66 min > 30.0 min (deficit: -10.66 min).",
+            "description": "Conservative / emergency contingency EVA sortie limit"
+          },
+          "nominal_60": {
+            "budget_id": "nominal_60",
+            "nominal_budget_minutes": 60.0,
+            "within_budget": true,
+            "margin_minutes": 19.34,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 40.66 min <= 60.0 min (reserve margin: +19.34 min).",
+            "description": "Nominal primary EVA sortie budget"
+          },
+          "extended_90": {
+            "budget_id": "extended_90",
+            "nominal_budget_minutes": 90.0,
+            "within_budget": true,
+            "margin_minutes": 49.34,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 40.66 min <= 90.0 min (reserve margin: +49.34 min).",
+            "description": "Extended EVA sortie budget with life support reserves"
+          }
+        },
+        "nominal_60_indicator": "WITHIN_BUDGET",
+        "nominal_90_indicator": "WITHIN_BUDGET",
+        "conservative_30_indicator": "OVER_BUDGET"
+      },
+      "unencumbered_tobler_model": {
+        "description": "Standard unencumbered Tobler hiking function (6.0 km/h base velocity).",
+        "walk_out_duration_minutes": 2.92,
+        "stop_duration_minutes": 30.0,
+        "walk_back_duration_minutes": 2.37,
+        "total_walk_duration_minutes": 5.29,
+        "total_eva_excursion_minutes": 35.29,
+        "legs": {
+          "walk_out": {
+            "leg_name": "walk_out",
+            "distance_m": 172.64,
+            "duration_minutes": 2.92,
+            "duration_seconds": 175.1,
+            "ascent_m": 15.12,
+            "descent_m": 2.69,
+            "mean_velocity_kmh": 3.55,
+            "segments_count": 35
+          },
+          "walk_back": {
+            "leg_name": "walk_back",
+            "distance_m": 172.64,
+            "duration_minutes": 2.37,
+            "duration_seconds": 142.3,
+            "ascent_m": 2.69,
+            "descent_m": 15.12,
+            "mean_velocity_kmh": 4.37,
+            "segments_count": 35
+          }
+        },
+        "budget_evaluations": {
+          "conservative_30": {
+            "budget_id": "conservative_30",
+            "nominal_budget_minutes": 30.0,
+            "within_budget": false,
+            "margin_minutes": -5.29,
+            "indicator": "OVER_BUDGET",
+            "status": "over_budget",
+            "message": "Excursion is OVER budget: 35.29 min > 30.0 min (deficit: -5.29 min).",
+            "description": "Conservative / emergency contingency EVA sortie limit"
+          },
+          "nominal_60": {
+            "budget_id": "nominal_60",
+            "nominal_budget_minutes": 60.0,
+            "within_budget": true,
+            "margin_minutes": 24.71,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 35.29 min <= 60.0 min (reserve margin: +24.71 min).",
+            "description": "Nominal primary EVA sortie budget"
+          },
+          "extended_90": {
+            "budget_id": "extended_90",
+            "nominal_budget_minutes": 90.0,
+            "within_budget": true,
+            "margin_minutes": 54.71,
+            "indicator": "WITHIN_BUDGET",
+            "status": "within_budget",
+            "message": "Excursion is WITHIN budget: 35.29 min <= 90.0 min (reserve margin: +54.71 min).",
+            "description": "Extended EVA sortie budget with life support reserves"
+          }
+        }
+      },
+      "summary": {
+        "walk_out_minutes": 5.88,
+        "stop_duration_minutes": 30.0,
+        "walk_back_duration_minutes": 4.78,
+        "total_eva_minutes": 40.66,
+        "within_nominal_60_budget": true,
+        "within_nominal_90_budget": true,
+        "within_conservative_30_budget": false,
+        "status_indicator_60": "WITHIN_BUDGET",
+        "status_indicator_90": "WITHIN_BUDGET"
+      }
+    }
+  }
+}
