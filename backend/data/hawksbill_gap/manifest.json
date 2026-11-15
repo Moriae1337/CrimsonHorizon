@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "hawksbill-gap",
+  "verified_on": "2026-11-14",
+  "conventions": {
+    "geographic": {
+      "body": "Mars",
+      "latitude_type": "planetocentric",
+      "longitude_direction": "positive_east",
+      "longitude_domain_deg": [-180, 180],
+      "axis_order": ["lon", "lat"],
+      "units": "degree",
+      "reference_sphere_radius_m": 3396190
+    },
+    "projected": {
+      "name": "Mars equirectangular, sphere, clon = 0",
+      "projection": "equirectangular",
+      "standard_parallel_deg": 0,
+      "central_meridian_deg": 0,
+      "sphere_radius_m": 3396190,
+      "meters_per_degree": 59274.6975,
+      "units": "metre",
+      "axis_order": ["easting", "northing"]
+    }
+  },
+  "extent": {
+    "convention": "geographic",
+    "lon_min": 77.402,
+    "lon_max": 77.41,
+    "lat_min": 18.455,
+    "lat_max": 18.463,
+    "note": "Working extent from the project scope, roughly 450 m x 474 m."
+  },
+  "inputs": [
+    {
+      "id": "dtm-primary",
+      "role": "elevation",
+      "product_id": "JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40",
+      "title": "Mars 2020 Terrain Relative Navigation HiRISE DTM Mosaic",
+      "url": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif",
+      "source_page": "https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_hirise_dtm_mosaic",
+      "doi": "10.5066/P9REJ9JN",
+      "credit": "Fergason, R.L., Galuszka, D.M., Hare, T.M., Mayer, D.P., and Redding, B.L., 2020, Mars 2020 Terrain Relative Navigation HiRISE DTM Mosaic: U.S. Geological Survey data release",
+      "license": "CC0-1.0",
+      "convention": {
+        "crs": "projected",
+        "geographic_basis": "Planetocentric latitude, positive-east longitude, -180 to 180 (USGS product page)",
+        "pixel_size_m": 1.0,
+        "raster_size": [21400, 21488],
+        "bounds_m": [4577366.0, 1085130.0, 4598766.0, 1106618.0],
+        "pixel_is": "area",
+        "dtype": "float32",
+        "nodata": -3.4028226550889045e38,
+        "vertical_units": "metre",
+        "vertical_reference": "Not stated on the product page. The file name indicates heights tied to MOLA topography relative to the Mars geoid (DeltaGeoid). Values agree with rover elev_geoid in the scope's check; confirm in #35."
+      },
+      "window": {
+        "col_off": 10614,
+        "row_off": 12229,
+        "width": 474,
+        "height": 474,
+        "note": "Zero-based window from the project scope, checked against the file's transform."
+      }
+    },
+    {
+      "id": "dtm-fallback",
+      "role": "elevation-alternate",
+      "product_id": "DTEEC_002387_1985_003798_1985_A01",
+      "title": "MRO HiRISE DTM; PSP_002387_1985_PSP_003798_1985",
+      "url": "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/hirise/controlled/dtm/PSP_002387_1985_PSP_003798_1985/DTEEC_002387_1985_003798_1985_A01.tif",
+      "source_page": "https://stac.astrogeology.usgs.gov/api/collections/mro_hirise_socet_dtms/items/DTEEC_002387_1985_003798_1985_A01",
+      "credit": "HiRISE DTM produced by the University of Arizona; distributed by USGS Astrogeology (HiRISE DTM STAC collection)",
+      "license": "CC0-1.0",
+      "convention": {
+        "crs": "projected",
+        "geographic_basis": "Mars (2015) sphere, planetocentric, longitude axis east (STAC proj:projjson)",
+        "pixel_size_m": 1.0196246530775452,
+        "raster_size": [7111, 11430],
+        "pixel_is": "area",
+        "dtype": "float32",
+        "nodata": -3.4028226550889045e38,
+        "vertical_units": "metre",
+        "vertical_reference": "Heights relative to the Mars areoid (USGS HiRISE DTM collection docs). Not interchangeable with the primary without an alignment check (#38)."
+      }
+    },
+    {
+      "id": "ortho-hirise",
+      "role": "imagery",
+      "product_id": "JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first_dd",
+      "title": "Mars 2020 TRN HiRISE orthomosaic, 0.25 m/pixel (NASA Mars Trek WMTS)",
+      "url": "https://trek.nasa.gov/tiles/Mars/EQ/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first_dd/1.0.0/WMTSCapabilities.xml",
+      "source_page": "https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_hirise_orthorectified_image_mosaic",
+      "doi": "10.5066/P9REJ9JN",
+      "credit": "USGS Astrogeology Mars 2020 TRN mosaic, served by NASA Mars Trek",
+      "license": "Public domain",
+      "convention": {
+        "crs": "IAU2000:104905 equirectangular (Mars Trek EQ tiles)",
+        "geographic_basis": "Planetocentric, positive-east, -180 to 180",
+        "tile_format": "image/png",
+        "tile_matrix_levels": "0-17"
+      }
+    },
+    {
+      "id": "ortho-ctx",
+      "role": "imagery-context",
+      "product_id": "JEZ_ctx_B_soc_008_orthoMosaic_6m_Eqc_latTs0_lon0",
+      "title": "Mars 2020 TRN CTX orthomosaic, 6 m/pixel (NASA Mars Trek WMTS)",
+      "url": "https://trek.nasa.gov/tiles/Mars/EQ/JEZ_ctx_B_soc_008_orthoMosaic_6m_Eqc_latTs0_lon0/1.0.0/WMTSCapabilities.xml",
+      "source_page": "https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_context_camera_orthorectified_image_mosaic",
+      "doi": "10.5066/P9REJ9JN",
+      "credit": "USGS Astrogeology Mars 2020 TRN mosaic, served by NASA Mars Trek",
+      "license": "Public domain",
+      "convention": {
+        "crs": "IAU2000:104905 equirectangular (Mars Trek EQ tiles)",
+        "geographic_basis": "Planetocentric, positive-east, -180 to 180",
+        "tile_format": "image/png",
+        "tile_matrix_levels": "0-13"
+      }
+    },
+    {
+      "id": "m20-waypoints",
+      "role": "rover-localizations",
+      "product_id": "M20_waypoints",
+      "title": "Mars 2020 rover localizations (MMGIS)",
+      "url": "https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json",
+      "source_page": "https://science.nasa.gov/mission/mars-2020-perseverance/location-map/",
+      "credit": "NASA/JPL-Caltech",
+      "license": "NASA/JPL image and data use policy",
+      "sha256": "bd143ee69241229926abd373e6305b8bbb326d6b5a7b4a8d6935262696f93dc4",
+      "convention": {
+        "crs": "geographic",
+        "coordinate_order": ["lon", "lat", "elev_geoid"],
+        "declared_crs": "none",
+        "geographic_basis": "Planetocentric, positive-east degrees. PDS sample coordinates for Hazeltop and Swift Run fall within about 2.1 m of waypoints 26_1222 and 26_1004.",
+        "ids": "RMC = site_drive, for example 25_446",
+        "do_not_use": "easting and northing fields; they are not in the DTM's projection"
+      }
+    },
+    {
+      "id": "m20-traverse",
+      "role": "rover-drives",
+      "product_id": "M20_traverse",
+      "title": "Mars 2020 traverse segments by sol (MMGIS)",
+      "url": "https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_traverse.json",
+      "source_page": "https://science.nasa.gov/mission/mars-2020-perseverance/location-map/",
+      "credit": "NASA/JPL-Caltech",
+      "license": "NASA/JPL image and data use policy",
+      "sha256": "6ddd0ece913d75b45d105946082f95ed84e68f4718b68d32a4421dc30877e7e6",
+      "convention": {
+        "crs": "geographic",
+        "coordinate_order": ["lon", "lat", "elev_geoid"],
+        "declared_crs": "urn:ogc:def:crs:OGC:1.3:CRS84 (an Earth label; ignore it, values are Mars degrees)",
+        "geographic_basis": "Planetocentric, positive-east degrees, same frame as m20-waypoints",
+        "ids": "Each feature has sol, fromRMC and toRMC"
+      }
+    },
+    {
+      "id": "pds-initial-reports",
+      "role": "sample-locations-and-interpretation",
+      "product_id": "Mars 2020 Initial Reports, Volume 2, Release 2",
+      "title": "Mars 2020 Initial Reports, sections 11 (Swift Run), 14 (Hazeltop) and 15 (Bearwallow)",
+      "url": "https://pds-geosciences.wustl.edu/missions/mars2020/Mars%202020%20Initial%20Reports%20Volume%202%20Release%202.pdf",
+      "source_page": "https://pds-geosciences.wustl.edu/missions/mars2020/",
+      "credit": "Mars 2020 Science Team, NASA PDS Geosciences Node",
+      "license": "NASA PDS public archive",
+      "convention": {
+        "crs": "geographic",
+        "coordinate_order": ["lat", "lon", "elevation"],
+        "geographic_basis": "Listed as Latitude (N), Longitude (E). Consistent with m20-waypoints to about 2.1 m.",
+        "note": "The report lists latitude first. Convert to [lon, lat] on input.",
+        "vertical_reference": "Elevations agree with waypoint elev_geoid to about 0.1 m at Hazeltop."
+      }
+    },
+    {
+      "id": "supercam-berry-hollow",
+      "role": "spectroscopy",
+      "product_id": "urn:nasa:pds:mars2020_supercam:data_calibrated_spectra:scam_0515_0712658963_589_cp2_scam01515_berry_hollow_515_sca_01p",
+      "title": "Mars 2020 SuperCam VIS IRSpec CP2 Spectra, Berry Hollow, sol 515 (label version 1.2)",
+      "url": "https://pds-geosciences.wustl.edu/m2020/urn-nasa-pds-mars2020_supercam/data_calibrated_spectra/sol_00515/scam_0515_0712658963_589_cp2_scam01515_berry_hollow_515_sca_01p01.xml",
+      "source_page": "https://pds-geosciences.wustl.edu/missions/mars2020/supercam.htm",
+      "doi": "10.17189/1522646",
+      "credit": "NASA/JPL-Caltech/LANL/CNES/CNRS, Mars 2020 SuperCam team, NASA PDS Geosciences Node",
+      "license": "NASA PDS public archive",
+      "convention": {
+        "crs": "none",
+        "note": "Point measurement tied to the Berry Hollow abrasion patch at Wildcat Ridge by target name, not by coordinates."
+      }
+    },
+    {
+      "id": "supercam-thornton-gap",
+      "role": "spectroscopy",
+      "product_id": "urn:nasa:pds:mars2020_supercam:data_calibrated_spectra:scam_0493_0710705884_778_cp2_scam01493_thornton_gap_493_sca_01p",
+      "title": "Mars 2020 SuperCam VIS IRSpec CP2 Spectra, Thornton Gap, sol 493 (label version 1.2)",
+      "url": "https://pds-geosciences.wustl.edu/m2020/urn-nasa-pds-mars2020_supercam/data_calibrated_spectra/sol_00493/scam_0493_0710705884_778_cp2_scam01493_thornton_gap_493_sca_01p01.xml",
+      "source_page": "https://pds-geosciences.wustl.edu/missions/mars2020/supercam.htm",
+      "doi": "10.17189/1522646",
+      "credit": "NASA/JPL-Caltech/LANL/CNES/CNRS, Mars 2020 SuperCam team, NASA PDS Geosciences Node",
+      "license": "NASA PDS public archive",
+      "convention": {
+        "crs": "none",
+        "note": "Point measurement tied to the Thornton Gap abrasion patch at Skinner Ridge by target name, not by coordinates."
+      }
+    },
+    {
+      "id": "context-image-pia24924",
+      "role": "surface-context-image",
+      "product_id": "PIA24924",
+      "title": "2 Perseverance Sampling Locations in Jezero's Delta",
+      "url": "https://science.nasa.gov/photojournal/2-perseverance-sampling-locations-in-jezeros-delta/",
+      "source_page": "https://science.nasa.gov/photojournal/2-perseverance-sampling-locations-in-jezeros-delta/",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "license": "NASA/JPL image use policy",
+      "convention": {
+        "crs": "none",
+        "note": "Oblique Mastcam-Z view, not georeferenced. Use it to check placement (#34), not to measure positions."
+      }
+    },
+    {
+      "id": "meda",
+      "role": "surface-conditions",
+      "product_id": "Mars 2020 MEDA archive",
+      "title": "Mars Environmental Dynamics Analyzer (MEDA) archival measurements",
+      "url": "https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/PERSEVERANCE/meda.html",
+      "source_page": "https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/PERSEVERANCE/meda.html",
+      "credit": "Mars 2020 MEDA team, NASA PDS Atmospheres Node",
+      "license": "NASA PDS public archive",
+      "convention": {
+        "crs": "none",
+        "note": "Time series at the rover in Jezero. Select sols 490-516 (#113)."
+      }
+    },
+    {
+      "id": "rad",
+      "role": "radiation-context",
+      "product_id": "Curiosity RAD",
+      "title": "Radiation measurements on Mars (Curiosity Radiation Assessment Detector)",
+      "url": "https://science.nasa.gov/resource/radiation-measurements-on-mars/",
+      "source_page": "https://science.nasa.gov/resource/radiation-measurements-on-mars/",
+      "credit": "NASA, Curiosity Radiation Assessment Detector (RAD) team",
+      "license": "NASA image and media use policy",
+      "convention": {
+        "crs": "none",
+        "note": "Measured in Gale Crater, not Jezero. Show as historical context only (#114)."
+      }
+    }
+  ]
+}

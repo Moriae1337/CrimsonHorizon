@@ -35,3 +35,6 @@ Thumbs.db
 
 # Local Claude Code tooling
 .claude/
+
+# Generated scenario rasters (rebuild with backend/prep)
+backend/data/hawksbill_gap/derived/

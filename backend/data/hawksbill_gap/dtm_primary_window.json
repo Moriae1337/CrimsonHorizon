@@ -1,0 +1,47 @@
+{
+  "input_id": "dtm-primary",
+  "source_url": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif",
+  "source_version": {
+    "last_modified": "Thu, 10 Nov 2022 21:35:06 GMT",
+    "etag": "\"50aff29b9a8b2355e780149fbccbcc24-220\"",
+    "content_length": 1839545409
+  },
+  "extracted_at": "2026-11-14T10:59:29Z",
+  "access": "GDAL /vsicurl/ windowed read via rasterio",
+  "window": {
+    "col_off": 10614,
+    "row_off": 12229,
+    "width": 474,
+    "height": 474,
+    "note": "Zero-based window from the project scope, checked against the file's transform."
+  },
+  "bounds_m": {
+    "left": 4587980.0,
+    "right": 4588454.0,
+    "top": 1094389.0,
+    "bottom": 1093915.0
+  },
+  "bounds_deg": {
+    "lon_min": 77.40199770736915,
+    "lon_max": 77.40999437407504,
+    "lat_min": 18.455007720621435,
+    "lat_max": 18.463004387327324
+  },
+  "crs_wkt": "PROJCS[\"Equirectangular Mars 2000 Sphere IAU\",GEOGCS[\"D_Mars_2000_Sphere\",DATUM[\"Mars_2000_(Sphere)\",SPHEROID[\"Mars_2000_Sphere_IAU\",3396190,0],AUTHORITY[\"ESRI\",\"106971\"]],PRIMEM[\"Reference_Meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Equirectangular\"],PARAMETER[\"standard_parallel_1\",0],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+  "pixel_size_m": 1.0,
+  "dtype": "float32",
+  "nodata": -3.4028226550889045e+38,
+  "vertical_units": "metre",
+  "vertical_reference": "Not stated on the product page. The file name indicates heights tied to MOLA topography relative to the Mars geoid (DeltaGeoid). Values agree with rover elev_geoid in the scope's check; confirm in #35.",
+  "cells": 224676,
+  "valid_cells": 224676,
+  "expected_valid_cells": 224676,
+  "elevation_m": {
+    "min": -2545.207,
+    "max": -2468.58,
+    "mean": -2513.105
+  },
+  "data_sha256": "7ce97bbca7772929d1b95d92403eb5c246caa8166df846275f05605a02ee68b7",
+  "output_file": "data/hawksbill_gap/derived/dtm_primary_window.tif",
+  "findings": []
+}

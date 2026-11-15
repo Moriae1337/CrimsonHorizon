@@ -1,0 +1,55 @@
+{
+  "sources": {
+    "m20-waypoints": {
+      "url": "https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json",
+      "fetched_at": "2026-11-14T10:59:30Z",
+      "bytes": 603126,
+      "sha256": "bd143ee69241229926abd373e6305b8bbb326d6b5a7b4a8d6935262696f93dc4",
+      "matches_manifest": true
+    },
+    "m20-traverse": {
+      "url": "https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_traverse.json",
+      "fetched_at": "2026-11-14T10:59:30Z",
+      "bytes": 1723218,
+      "sha256": "6ddd0ece913d75b45d105946082f95ed84e68f4718b68d32a4421dc30877e7e6",
+      "matches_manifest": true
+    }
+  },
+  "coordinate_order": [
+    "lon",
+    "lat",
+    "elev_geoid"
+  ],
+  "note": "Mars planetocentric, positive-east degrees. The traverse file's CRS84 label is carried over unchanged and does not describe Mars.",
+  "required_rmcs": [
+    "25_446",
+    "26_1004",
+    "26_1222"
+  ],
+  "option_sols": {
+    "A": [
+      449,
+      455,
+      456,
+      460,
+      461,
+      501,
+      502
+    ],
+    "B": [
+      449,
+      455,
+      456,
+      460,
+      461,
+      464,
+      474,
+      477,
+      501,
+      502
+    ]
+  },
+  "waypoint_count": 44,
+  "traverse_segment_count": 10,
+  "problems": []
+}
