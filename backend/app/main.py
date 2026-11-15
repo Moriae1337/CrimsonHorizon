@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_cors_origins
+from app.environment import ENVIRONMENT_PATHS, load_environment
 from app.scenario import SCENARIO_PATHS, load_scenario
 from app.terrain import get_jezero_landmarks, get_map_catalog
 
@@ -54,4 +55,18 @@ def scenario(scenario_id: str) -> dict[str, Any]:
         logger.exception("Scenario %r is unavailable", scenario_id)
         raise HTTPException(
             status_code=503, detail="Scenario temporarily unavailable"
+        ) from None
+
+
+@app.get("/scenarios/{scenario_id}/environment")
+def scenario_environment(scenario_id: str) -> dict[str, Any]:
+    """Return archival MEDA weather and RAD context (specs/environment-api.md)."""
+    if scenario_id not in ENVIRONMENT_PATHS:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+    try:
+        return load_environment(scenario_id)
+    except (OSError, ValueError):
+        logger.exception("Environment context for %r is unavailable", scenario_id)
+        raise HTTPException(
+            status_code=503, detail="Environment context temporarily unavailable"
         ) from None

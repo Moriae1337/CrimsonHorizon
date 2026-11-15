@@ -1,0 +1,5981 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "hawksbill-gap",
+  "generated_at": "2026-11-14T12:45:53Z",
+  "weather": {
+    "id": "meda-hawksbill-gap",
+    "title": "Perseverance MEDA weather, sols 490-516 (archival)",
+    "archival": true,
+    "instrument": "Mars Environmental Dynamics Analyzer (MEDA), Perseverance",
+    "place": "Jezero crater, Hawksbill Gap and nearby on the rover's path",
+    "sol_range": [
+      490,
+      516
+    ],
+    "parameters": [
+      {
+        "id": "pressure",
+        "label": "Surface pressure",
+        "unit": "Pa",
+        "processing_level": "MEDA derived (DER_PS)",
+        "columns": [
+          "PRESSURE"
+        ]
+      },
+      {
+        "id": "air_temperature",
+        "label": "Air temperature, median of the three mast sensors (~1.45 m)",
+        "unit": "K",
+        "processing_level": "MEDA calibrated (CAL_ATS)",
+        "columns": [
+          "ATS_LOCAL_TEMP1",
+          "ATS_LOCAL_TEMP2",
+          "ATS_LOCAL_TEMP3"
+        ]
+      }
+    ],
+    "method": "Per sol, samples stamped 00:00-24:00 LMST of that sol. min/max/mean are over all samples; hours_with_data counts LMST hours with at least one sample; lmst_gaps lists gaps of 15 min or more and covered_h is 24 LMST hours minus those gaps. A null parameter means no PDS product for that sol.",
+    "source_ids": [
+      "pds-meda",
+      "meda-instrument"
+    ],
+    "sols": [
+      {
+        "sol": 490,
+        "utc_start": "2022-07-06T15:42:11.708Z",
+        "utc_stop": "2022-07-07T15:40:46.388Z",
+        "pressure": {
+          "min": 776.81,
+          "max": 817.19,
+          "mean": 798.2,
+          "samples": 34551,
+          "hours_with_data": 24,
+          "covered_h": 9.3,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "17:24",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "22:29",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0490___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0490/WE__0490___________DER_PS__________________P01.CSV",
+            "sha256": "ffed43301b15c786c3f61e55af6b8914c5feb77c6dbc91f7324bb3ab23a54309"
+          }
+        },
+        "air_temperature": {
+          "min": 190.03,
+          "max": 256.59,
+          "mean": 213.61,
+          "samples": 35145,
+          "hours_with_data": 24,
+          "covered_h": 9.5,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:06",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "17:25",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "22:30",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0490___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0490/WE__0490___________CAL_ATS_________________P01.CSV",
+            "sha256": "104643c62a7e0dc00edf66b0e37acf4aa3c6ef2719cc30f84b50e136202f93f3"
+          }
+        }
+      },
+      {
+        "sol": 491,
+        "utc_start": "2022-07-07T16:21:47.408Z",
+        "utc_stop": "2022-07-08T16:20:21.088Z",
+        "pressure": {
+          "min": 774.48,
+          "max": 813.29,
+          "mean": 798.76,
+          "samples": 31209,
+          "hours_with_data": 24,
+          "covered_h": 8.4,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:05",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:19",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0491___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0491/WE__0491___________DER_PS__________________P01.CSV",
+            "sha256": "6df251ef7c72ac39ba18099d60f04db5562f5ca56e5a1b79ab365d29fff1e778"
+          }
+        },
+        "air_temperature": {
+          "min": 189.75,
+          "max": 256.72,
+          "mean": 211.11,
+          "samples": 31830,
+          "hours_with_data": 24,
+          "covered_h": 8.6,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:06",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0491___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0491/WE__0491___________CAL_ATS_________________P01.CSV",
+            "sha256": "29e6b9b480024d3d81c301a6f4fff51f6f77a25d3a4e75540251942a49aa5f09"
+          }
+        }
+      },
+      {
+        "sol": 492,
+        "utc_start": "2022-07-08T17:01:22.107Z",
+        "utc_stop": "2022-07-09T16:59:56.788Z",
+        "pressure": {
+          "min": 772.91,
+          "max": 812.08,
+          "mean": 796.03,
+          "samples": 31145,
+          "hours_with_data": 24,
+          "covered_h": 8.4,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:35",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:01"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0492___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0492/WE__0492___________DER_PS__________________P01.CSV",
+            "sha256": "827ba856167e1f9deaa542cab8a1ef1b1d2ec3647534d5b94795bccbbd43be29"
+          }
+        },
+        "air_temperature": {
+          "min": 189.49,
+          "max": 261.4,
+          "mean": 211.85,
+          "samples": 31766,
+          "hours_with_data": 24,
+          "covered_h": 8.6,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:35",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:01"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0492___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0492/WE__0492___________CAL_ATS_________________P01.CSV",
+            "sha256": "9b66692f17777faec9aefbb8d037e8ba9c17ff28fb67ea1a9a65e9098465e350"
+          }
+        }
+      },
+      {
+        "sol": 493,
+        "utc_start": "2022-07-09T17:40:57.807Z",
+        "utc_stop": "2022-07-10T17:39:31.488Z",
+        "pressure": {
+          "min": 774.06,
+          "max": 810.83,
+          "mean": 797.28,
+          "samples": 32182,
+          "hours_with_data": 24,
+          "covered_h": 8.7,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0493___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0493/WE__0493___________DER_PS__________________P01.CSV",
+            "sha256": "f70c37760b6688eff0b676ca3b4f4993afb9ba00ff76be9169ade69ac28a1aba"
+          }
+        },
+        "air_temperature": {
+          "min": 190.65,
+          "max": 257.72,
+          "mean": 211.67,
+          "samples": 32803,
+          "hours_with_data": 24,
+          "covered_h": 8.9,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0493___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0493/WE__0493___________CAL_ATS_________________P01.CSV",
+            "sha256": "90ccb1457c6ee3f6db147e32d3bc1e60c079e7a93535d6192cfdc06a1be6aa87"
+          }
+        }
+      },
+      {
+        "sol": 494,
+        "utc_start": "2022-07-10T18:20:32.507Z",
+        "utc_stop": "2022-07-11T18:19:07.187Z",
+        "pressure": {
+          "min": 769.92,
+          "max": 807.35,
+          "mean": 793.79,
+          "samples": 43188,
+          "hours_with_data": 24,
+          "covered_h": 11.7,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "20:29",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0494___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0494/WE__0494___________DER_PS__________________P01.CSV",
+            "sha256": "d34abf57edde28be83cce66610a064d21fecf4ea3f0e3ac6573555947cdeb854"
+          }
+        },
+        "air_temperature": {
+          "min": 190.86,
+          "max": 258.88,
+          "mean": 208.65,
+          "samples": 43674,
+          "hours_with_data": 24,
+          "covered_h": 11.8,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "20:30",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0494___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0494/WE__0494___________CAL_ATS_________________P01.CSV",
+            "sha256": "36fc09958a5972ceb6fc29001ab7459478f9487da2c529bb1097d16f50768f0e"
+          }
+        }
+      },
+      {
+        "sol": 495,
+        "utc_start": "2022-07-11T19:00:08.207Z",
+        "utc_stop": "2022-07-12T18:58:41.887Z",
+        "pressure": {
+          "min": 772.35,
+          "max": 813.0,
+          "mean": 796.53,
+          "samples": 31249,
+          "hours_with_data": 24,
+          "covered_h": 8.4,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0495___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0495/WE__0495___________DER_PS__________________P01.CSV",
+            "sha256": "aea5279cb6b278115f8d04f8a90dfc3441aa671a00d4bd48388916a18742b189"
+          }
+        },
+        "air_temperature": {
+          "min": 189.11,
+          "max": 258.88,
+          "mean": 213.13,
+          "samples": 31870,
+          "hours_with_data": 24,
+          "covered_h": 8.6,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0495___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0495/WE__0495___________CAL_ATS_________________P01.CSV",
+            "sha256": "2a71d7ee816f3e7c0192d0c0098489505b2a27fe5800de271142f91a1ddb2e03"
+          }
+        }
+      },
+      {
+        "sol": 496,
+        "utc_start": "2022-07-12T19:39:42.907Z",
+        "utc_stop": "2022-07-13T19:38:17.587Z",
+        "pressure": {
+          "min": 768.65,
+          "max": 809.42,
+          "mean": 792.84,
+          "samples": 30206,
+          "hours_with_data": 24,
+          "covered_h": 8.2,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:05",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "14:05",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:18",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0496___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0496/WE__0496___________DER_PS__________________P01.CSV",
+            "sha256": "5ac2154ad10947177e10d080f0c5358c4093ea40b90d694f7e2804f6e6489d42"
+          }
+        },
+        "air_temperature": {
+          "min": 190.47,
+          "max": 258.78,
+          "mean": 213.98,
+          "samples": 30841,
+          "hours_with_data": 24,
+          "covered_h": 8.3,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:06",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "14:06",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:18",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0496___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0496/WE__0496___________CAL_ATS_________________P01.CSV",
+            "sha256": "edc0711bafed16b340bd89c569e4b740022db75ff6a0ecdded795a69da24f084"
+          }
+        }
+      },
+      {
+        "sol": 497,
+        "utc_start": "2022-07-13T20:19:18.606Z",
+        "utc_stop": "2022-07-14T20:17:53.287Z",
+        "pressure": {
+          "min": 770.35,
+          "max": 807.45,
+          "mean": 792.04,
+          "samples": 28489,
+          "hours_with_data": 24,
+          "covered_h": 7.7,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:15"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:05"
+            },
+            {
+              "from_lmst": "03:25",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:05",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:05",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0497___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0497/WE__0497___________DER_PS__________________P01.CSV",
+            "sha256": "578621026649e34e80a92ff7c496fdcb98dda26b724c01101c282aeed8851a68"
+          }
+        },
+        "air_temperature": {
+          "min": 190.4,
+          "max": 258.0,
+          "mean": 210.35,
+          "samples": 29124,
+          "hours_with_data": 24,
+          "covered_h": 7.9,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:15"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:05"
+            },
+            {
+              "from_lmst": "03:26",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:06",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:06",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:06",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0497___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0497/WE__0497___________CAL_ATS_________________P01.CSV",
+            "sha256": "4254abb328f50e6b68bd4034841fcbf3e35e2286e9ebb7dbbf0f77c7326d159c"
+          }
+        }
+      },
+      {
+        "sol": 498,
+        "utc_start": "2022-07-14T20:58:54.306Z",
+        "utc_stop": "2022-07-15T20:57:27.987Z",
+        "pressure": {
+          "min": 768.67,
+          "max": 810.58,
+          "mean": 789.08,
+          "samples": 35465,
+          "hours_with_data": 24,
+          "covered_h": 9.6,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "17:33",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0498___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0498/WE__0498___________DER_PS__________________P01.CSV",
+            "sha256": "24ef4ec7ee05b6be92497731ac1cbe9b52f9717e841609b9e449ea964991da72"
+          }
+        },
+        "air_temperature": {
+          "min": 189.97,
+          "max": 254.1,
+          "mean": 215.35,
+          "samples": 36059,
+          "hours_with_data": 24,
+          "covered_h": 9.7,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "17:34",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0498___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0498/WE__0498___________CAL_ATS_________________P01.CSV",
+            "sha256": "e40ee02e773e0d8afb9e0e8980a96d65a050ae49fa0c9b91025ac73f59d7d3f1"
+          }
+        }
+      },
+      {
+        "sol": 499,
+        "utc_start": "2022-07-15T21:38:29.006Z",
+        "utc_stop": "2022-07-16T21:21:38.679Z",
+        "pressure": {
+          "min": 764.93,
+          "max": 805.68,
+          "mean": 788.75,
+          "samples": 35193,
+          "hours_with_data": 24,
+          "covered_h": 9.5,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:19",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0499___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0499/WE__0499___________DER_PS__________________P01.CSV",
+            "sha256": "31aeacfba40ed34276f8884b39d4b11059043b4b9209f294ef1432e0ae7e0621"
+          }
+        },
+        "air_temperature": {
+          "min": 191.53,
+          "max": 260.37,
+          "mean": 214.83,
+          "samples": 35760,
+          "hours_with_data": 24,
+          "covered_h": 9.7,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:06",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0499___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0499/WE__0499___________CAL_ATS_________________P01.CSV",
+            "sha256": "da204d5b99c3fa193f9be841d9f464d2e0f59c6b37bb5360b89d12d640a10884"
+          }
+        }
+      },
+      {
+        "sol": 500,
+        "utc_start": "2022-07-16T22:18:04.706Z",
+        "utc_stop": "2022-07-17T22:16:38.386Z",
+        "pressure": {
+          "min": 769.8,
+          "max": 808.12,
+          "mean": 794.32,
+          "samples": 31253,
+          "hours_with_data": 24,
+          "covered_h": 8.4,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0500___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0500/WE__0500___________DER_PS__________________P01.CSV",
+            "sha256": "988eaf6b84a5a88094b9b350275c1bc2d14637f60a93c56eabd6e7ae5c3e4a22"
+          }
+        },
+        "air_temperature": {
+          "min": 190.56,
+          "max": 257.51,
+          "mean": 211.56,
+          "samples": 31874,
+          "hours_with_data": 24,
+          "covered_h": 8.6,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0500___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0500/WE__0500___________CAL_ATS_________________P01.CSV",
+            "sha256": "14cb6fec22daed2ceaef66355629a0fe12c41999bae4c9694a35be62e9a05280"
+          }
+        }
+      },
+      {
+        "sol": 501,
+        "utc_start": "2022-07-17T22:57:39.406Z",
+        "utc_stop": "2022-07-18T22:40:41.079Z",
+        "pressure": {
+          "min": 766.27,
+          "max": 808.26,
+          "mean": 790.01,
+          "samples": 28796,
+          "hours_with_data": 24,
+          "covered_h": 7.8,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0501___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0501/WE__0501___________DER_PS__________________P01.CSV",
+            "sha256": "65cf8602c8be5d3ce2c1d3030ad2c1c6ebfdd6b1bb39a385613b0ce61e568d51"
+          }
+        },
+        "air_temperature": {
+          "min": 190.49,
+          "max": 254.99,
+          "mean": 213.23,
+          "samples": 29444,
+          "hours_with_data": 24,
+          "covered_h": 8.0,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0501___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0501/WE__0501___________CAL_ATS_________________P01.CSV",
+            "sha256": "861b06ddc655801b8d9e876757613082ffcfca432231b6df0a86e56550496e85"
+          }
+        }
+      },
+      {
+        "sol": 502,
+        "utc_start": "2022-07-18T23:37:15.106Z",
+        "utc_stop": "2022-07-19T23:20:23.779Z",
+        "pressure": {
+          "min": 770.03,
+          "max": 809.07,
+          "mean": 790.94,
+          "samples": 38946,
+          "hours_with_data": 24,
+          "covered_h": 10.5,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "13:05",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "19:05",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0502___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0502/WE__0502___________DER_PS__________________P01.CSV",
+            "sha256": "6da73644f075fdba25284f1283a6223d47d5469331f2ce498665ce248fb58475"
+          }
+        },
+        "air_temperature": {
+          "min": 190.27,
+          "max": 252.97,
+          "mean": 215.12,
+          "samples": 39432,
+          "hours_with_data": 24,
+          "covered_h": 10.7,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "13:06",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "15:06",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "17:06",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "19:06",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "21:06",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "23:06",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0502___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0502/WE__0502___________CAL_ATS_________________P01.CSV",
+            "sha256": "5f3761ee6f53a7a82ae77d77e2424f7dace4714b7732c6435f3c8fb1a6f12bcb"
+          }
+        }
+      },
+      {
+        "sol": 503,
+        "utc_start": "2022-07-20T00:16:49.805Z",
+        "utc_stop": "2022-07-21T00:15:24.486Z",
+        "pressure": {
+          "min": 763.42,
+          "max": 805.22,
+          "mean": 787.79,
+          "samples": 36479,
+          "hours_with_data": 24,
+          "covered_h": 9.9,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "04:05",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "06:05",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "08:05",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "10:05",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "12:45"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0503___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0503/WE__0503___________DER_PS__________________P01.CSV",
+            "sha256": "5061ce9f5f36f0074a0ea07e4a4bf03426fb12f6619a1eb5c15cb23e093c9d34"
+          }
+        },
+        "air_temperature": {
+          "min": 188.14,
+          "max": 253.29,
+          "mean": 210.4,
+          "samples": 36992,
+          "hours_with_data": 24,
+          "covered_h": 10.0,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:06",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "02:06",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "04:06",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "06:06",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "08:06",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "10:06",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "12:45"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:06",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0503___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0503/WE__0503___________CAL_ATS_________________P01.CSV",
+            "sha256": "15cea8bcae3aaea3bb56943f37dafa3f7affed554b0b969f0a9ec4a81ec944d3"
+          }
+        }
+      },
+      {
+        "sol": 504,
+        "utc_start": "2022-07-21T00:56:25.505Z",
+        "utc_stop": "2022-07-22T00:54:59.186Z",
+        "pressure": {
+          "min": 767.45,
+          "max": 804.06,
+          "mean": 784.83,
+          "samples": 37716,
+          "hours_with_data": 24,
+          "covered_h": 10.2,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "05:05",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0504___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0504/WE__0504___________DER_PS__________________P01.CSV",
+            "sha256": "d651df9a4c34d5e698dbe7ab1435c765b2fd1731f9f7449980fa39394a1d6d77"
+          }
+        },
+        "air_temperature": {
+          "min": 191.57,
+          "max": 254.88,
+          "mean": 214.85,
+          "samples": 38256,
+          "hours_with_data": 24,
+          "covered_h": 10.3,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "03:06",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "05:06",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0504___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0504/WE__0504___________CAL_ATS_________________P01.CSV",
+            "sha256": "4043016edfb1e734b08ca36e1e6bdb30fb9e5f9b3f1286e6238c37316c3721f1"
+          }
+        }
+      },
+      {
+        "sol": 505,
+        "utc_start": "2022-07-22T01:36:00.205Z",
+        "utc_stop": "2022-07-23T01:34:33.885Z",
+        "pressure": {
+          "min": 765.01,
+          "max": 809.62,
+          "mean": 789.61,
+          "samples": 30959,
+          "hours_with_data": 24,
+          "covered_h": 8.4,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "04:05",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:05",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0505___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0505/WE__0505___________DER_PS__________________P01.CSV",
+            "sha256": "3265dc26d0cdb93943f98e420e6571d16eed28c2be965434254bcd2747c09aa4"
+          }
+        },
+        "air_temperature": {
+          "min": 189.67,
+          "max": 254.18,
+          "mean": 210.15,
+          "samples": 31550,
+          "hours_with_data": 24,
+          "covered_h": 8.5,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "02:06",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "04:06",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:06",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0505___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0505/WE__0505___________CAL_ATS_________________P01.CSV",
+            "sha256": "2772759445a0c7d4b4bdfabf34a8bdc8af820540bde259c0ddfff3a95630b246"
+          }
+        }
+      },
+      {
+        "sol": 506,
+        "utc_start": "2022-07-23T02:15:35.905Z",
+        "utc_stop": "2022-07-24T02:14:09.585Z",
+        "pressure": {
+          "min": 764.53,
+          "max": 803.22,
+          "mean": 786.84,
+          "samples": 31879,
+          "hours_with_data": 24,
+          "covered_h": 8.6,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:03"
+            },
+            {
+              "from_lmst": "05:08",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0506___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0506/WE__0506___________DER_PS__________________P01.CSV",
+            "sha256": "9eebd1941aedd766363857624d9b8ecef9af4019c74b0f89da9e8e9f9a6e1f63"
+          }
+        },
+        "air_temperature": {
+          "min": 188.72,
+          "max": 255.75,
+          "mean": 210.78,
+          "samples": 32500,
+          "hours_with_data": 24,
+          "covered_h": 8.8,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "03:06",
+              "to_lmst": "04:03"
+            },
+            {
+              "from_lmst": "05:09",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0506___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0506/WE__0506___________CAL_ATS_________________P01.CSV",
+            "sha256": "7084d125b507e9882452b44fd898e13bdee169fb81a81be5e73bbc6e76db6866"
+          }
+        }
+      },
+      {
+        "sol": 507,
+        "utc_start": "2022-07-24T02:55:10.605Z",
+        "utc_stop": "2022-07-25T02:53:45.285Z",
+        "pressure": {
+          "min": 766.93,
+          "max": 805.29,
+          "mean": 789.76,
+          "samples": 28799,
+          "hours_with_data": 24,
+          "covered_h": 7.8,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:05",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0507___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0507/WE__0507___________DER_PS__________________P01.CSV",
+            "sha256": "74d5023648ec5cbf0eaea3772579cfd4482d3ec232c641da5a0866b129891851"
+          }
+        },
+        "air_temperature": {
+          "min": 188.81,
+          "max": 255.72,
+          "mean": 212.94,
+          "samples": 29454,
+          "hours_with_data": 24,
+          "covered_h": 8.0,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:05",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0507___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0507/WE__0507___________CAL_ATS_________________P01.CSV",
+            "sha256": "fb697e37ab04f54b163fd177fc4137837eeda425a8c6fad5c4e46ca2c4c5f838"
+          }
+        }
+      },
+      {
+        "sol": 508,
+        "utc_start": "2022-07-25T03:34:46.304Z",
+        "utc_stop": "2022-07-26T03:33:20.985Z",
+        "pressure": {
+          "min": 767.18,
+          "max": 806.04,
+          "mean": 789.52,
+          "samples": 28799,
+          "hours_with_data": 24,
+          "covered_h": 7.8,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0508___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0508/WE__0508___________DER_PS__________________P01.CSV",
+            "sha256": "5ba53b3e3e26774c27cfd09f1cc6fcb0a0727cbbc6f7e34622b15c317078fcf3"
+          }
+        },
+        "air_temperature": {
+          "min": 185.1,
+          "max": 251.78,
+          "mean": 212.28,
+          "samples": 29454,
+          "hours_with_data": 24,
+          "covered_h": 8.0,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0508___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0508/WE__0508___________CAL_ATS_________________P01.CSV",
+            "sha256": "01a7f597e053ef2468b3173ad6ed3b20755cfe9aa9a3933f658531bc2d2935d6"
+          }
+        }
+      },
+      {
+        "sol": 509,
+        "utc_start": "2022-07-26T04:14:21.004Z",
+        "utc_stop": "2022-07-27T04:12:55.685Z",
+        "pressure": {
+          "min": 767.25,
+          "max": 803.65,
+          "mean": 790.17,
+          "samples": 32196,
+          "hours_with_data": 24,
+          "covered_h": 8.7,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:03"
+            },
+            {
+              "from_lmst": "03:23",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0509___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0509/WE__0509___________DER_PS__________________P01.CSV",
+            "sha256": "ec1a2f81f590a40425bee1e0916039e53bae63f383e990c7ec9c9b797e330a35"
+          }
+        },
+        "air_temperature": {
+          "min": 187.68,
+          "max": 254.62,
+          "mean": 211.2,
+          "samples": 32847,
+          "hours_with_data": 24,
+          "covered_h": 8.9,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:03"
+            },
+            {
+              "from_lmst": "03:24",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0509___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0509/WE__0509___________CAL_ATS_________________P01.CSV",
+            "sha256": "3c850619a1f7e7a1670628a19c352cc1935a8434458ba6e7d40dd80176509469"
+          }
+        }
+      },
+      {
+        "sol": 510,
+        "utc_start": "2022-07-27T04:53:56.704Z",
+        "utc_stop": "2022-07-28T04:52:31.384Z",
+        "pressure": {
+          "min": 761.19,
+          "max": 797.81,
+          "mean": 784.07,
+          "samples": 31632,
+          "hours_with_data": 24,
+          "covered_h": 8.8,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:03",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "14:16",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:02"
+            },
+            {
+              "from_lmst": "22:22",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0510___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0510/WE__0510___________DER_PS__________________P01.CSV",
+            "sha256": "19281328c2827c6d700e8b31b9ac167a612e3ade845c32fe640e0268a578739a"
+          }
+        },
+        "air_temperature": {
+          "min": 187.76,
+          "max": 253.64,
+          "mean": 213.72,
+          "samples": 32283,
+          "hours_with_data": 24,
+          "covered_h": 8.9,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "07:03",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "14:17",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:06",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:02"
+            },
+            {
+              "from_lmst": "22:23",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0510___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0510/WE__0510___________CAL_ATS_________________P01.CSV",
+            "sha256": "26e36071cfc7abe32b882e3e8c28e5e9fb6cc3381676389b55be9e570138bdb3"
+          }
+        }
+      },
+      {
+        "sol": 511,
+        "utc_start": "2022-07-28T05:33:32.404Z",
+        "utc_stop": "2022-07-29T05:32:06.084Z",
+        "pressure": {
+          "min": 767.25,
+          "max": 803.67,
+          "mean": 788.28,
+          "samples": 28811,
+          "hours_with_data": 24,
+          "covered_h": 7.8,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:05",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:20",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0511___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0511/WE__0511___________DER_PS__________________P01.CSV",
+            "sha256": "2e9020b657495999607f2d92084f801f17a30aba42bc5c7c9a371529dfbe1978"
+          }
+        },
+        "air_temperature": {
+          "min": 187.38,
+          "max": 254.57,
+          "mean": 212.12,
+          "samples": 29505,
+          "hours_with_data": 24,
+          "covered_h": 8.0,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:21",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:05",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:21",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:21",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0511___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0511/WE__0511___________CAL_ATS_________________P01.CSV",
+            "sha256": "c5f5eb36917ed7dea614ebac0cce726637ea17724bb00bba42b500ffba2507cb"
+          }
+        }
+      },
+      {
+        "sol": 512,
+        "utc_start": "2022-07-29T06:13:07.104Z",
+        "utc_stop": "2022-07-30T06:11:41.784Z",
+        "pressure": {
+          "min": 761.19,
+          "max": 802.87,
+          "mean": 785.7,
+          "samples": 27878,
+          "hours_with_data": 24,
+          "covered_h": 7.5,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:20",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:20",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:20",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:20",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:20",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:20",
+              "to_lmst": "17:59"
+            },
+            {
+              "from_lmst": "18:19",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:20",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:20",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:20",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:20",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0512___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0512/WE__0512___________DER_PS__________________P01.CSV",
+            "sha256": "2086c2c783388379d47daba2c32bb733ee59703a848cb7e8225f047a8ae38296"
+          }
+        },
+        "air_temperature": {
+          "min": 186.16,
+          "max": 253.07,
+          "mean": 211.69,
+          "samples": 28572,
+          "hours_with_data": 24,
+          "covered_h": 7.7,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:20",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:21",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:21",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:21",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:21",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:21",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:21",
+              "to_lmst": "17:59"
+            },
+            {
+              "from_lmst": "18:20",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:21",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:21",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:06",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:21",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:21",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0512___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0512/WE__0512___________CAL_ATS_________________P01.CSV",
+            "sha256": "916967962addd7bd20feb75c7cafdb03d55b79c20f46835a1bbf1592b7aff5b2"
+          }
+        }
+      },
+      {
+        "sol": 513,
+        "utc_start": "2022-07-30T06:52:42.803Z",
+        "utc_stop": "2022-07-31T06:35:43.476Z",
+        "pressure": {
+          "min": 763.83,
+          "max": 802.98,
+          "mean": 785.11,
+          "samples": 18536,
+          "hours_with_data": 24,
+          "covered_h": 5.0,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:20",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:20",
+              "to_lmst": "01:57"
+            },
+            {
+              "from_lmst": "02:17",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:20",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:20",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:20",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:20",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:20",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:20",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:20",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:20",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:20",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:05",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:05",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:05",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:05",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:05",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:05",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:05",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0513___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0513/WE__0513___________DER_PS__________________P01.CSV",
+            "sha256": "4117e46d7c08983936267c222e2ed833325e7353e9ba5522314b49598106227e"
+          }
+        },
+        "air_temperature": {
+          "min": 188.8,
+          "max": 254.67,
+          "mean": 206.16,
+          "samples": 19256,
+          "hours_with_data": 24,
+          "covered_h": 5.2,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:21",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:21",
+              "to_lmst": "01:57"
+            },
+            {
+              "from_lmst": "02:18",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:21",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:21",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:21",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:21",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:21",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:21",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:21",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:21",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:21",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:05",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:05",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:05",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:05",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:05",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:05",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:05",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0513___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0513/WE__0513___________CAL_ATS_________________P01.CSV",
+            "sha256": "bef1c54b6b5d3f60786a006373073a370e59d3b69bb98166a2d421f89986f57a"
+          }
+        }
+      },
+      {
+        "sol": 514,
+        "utc_start": "2022-07-31T07:32:17.503Z",
+        "utc_stop": "2022-08-01T07:15:19.176Z",
+        "pressure": {
+          "min": 766.8,
+          "max": 807.18,
+          "mean": 790.59,
+          "samples": 7344,
+          "hours_with_data": 24,
+          "covered_h": 2.0,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:05",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:05",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:05",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:05",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:05",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:05",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:05",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:05",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:05",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:05",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:05",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:05",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:05",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:05",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:05",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:05",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0514___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0514/WE__0514___________DER_PS__________________P01.CSV",
+            "sha256": "68f78a589349f59ffc59f24afd5940440a4cfeb616ce0e1de060a320b096e623"
+          }
+        },
+        "air_temperature": {
+          "min": 187.72,
+          "max": 248.89,
+          "mean": 210.74,
+          "samples": 8051,
+          "hours_with_data": 24,
+          "covered_h": 2.2,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:05",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:05",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:05",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:05",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:05",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:05",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:05",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:05",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:05",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:05",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:05",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:05",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:05",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:05",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:05",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:05",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0514___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0514/WE__0514___________CAL_ATS_________________P01.CSV",
+            "sha256": "39cc131849986449e0b0392d1ed9d01c2f5e8ec969b5d921923431651db4bbda"
+          }
+        }
+      },
+      {
+        "sol": 515,
+        "utc_start": "2022-08-01T08:11:53.203Z",
+        "utc_stop": "2022-08-02T07:54:53.876Z",
+        "pressure": {
+          "min": 764.04,
+          "max": 800.78,
+          "mean": 786.15,
+          "samples": 7344,
+          "hours_with_data": 24,
+          "covered_h": 2.0,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:05",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:05",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:05",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:05",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:05",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:05",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:05",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:05",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:05",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:05",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:05",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:05",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:05",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:05",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:05",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:05",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0515___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0515/WE__0515___________DER_PS__________________P01.CSV",
+            "sha256": "ec911b96e18cc1688a8b4e6ef2db5fecebbbaffe11c0959281ab28f588538d55"
+          }
+        },
+        "air_temperature": {
+          "min": 188.88,
+          "max": 253.18,
+          "mean": 211.81,
+          "samples": 8038,
+          "hours_with_data": 24,
+          "covered_h": 2.2,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:05",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:05",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:05",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:05",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:05",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:05",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:05",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:05",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:05",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:05",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:05",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:05",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:05",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:05",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:05",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:05",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0515___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0515/WE__0515___________CAL_ATS_________________P01.CSV",
+            "sha256": "88db621c0ec2501b2f8005e1ff58bcde03a365c8e55542089cf5ecc883792aef"
+          }
+        }
+      },
+      {
+        "sol": 516,
+        "utc_start": "2022-08-02T08:51:27.903Z",
+        "utc_stop": "2022-08-03T08:34:37.576Z",
+        "pressure": {
+          "min": 769.75,
+          "max": 803.51,
+          "mean": 788.51,
+          "samples": 7440,
+          "hours_with_data": 24,
+          "covered_h": 2.0,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:05",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:05",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:05",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:05",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:05",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:05",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:05",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:05",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:05",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:05",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:05",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:05",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:05",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:05",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:05",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:05",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:05",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:05",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:05",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:05",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:05",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_derived_env:we__0516___________der_ps__________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_derived_env/sol_0420_0539/sol_0516/WE__0516___________DER_PS__________________P01.CSV",
+            "sha256": "4d50e6a15508814d7815d532bae9b5791cb2de66d1ad01d135fed2d086a01643"
+          }
+        },
+        "air_temperature": {
+          "min": 187.92,
+          "max": 247.72,
+          "mean": 211.34,
+          "samples": 8147,
+          "hours_with_data": 24,
+          "covered_h": 2.2,
+          "lmst_gaps": [
+            {
+              "from_lmst": "00:05",
+              "to_lmst": "01:00"
+            },
+            {
+              "from_lmst": "01:05",
+              "to_lmst": "02:00"
+            },
+            {
+              "from_lmst": "02:05",
+              "to_lmst": "03:00"
+            },
+            {
+              "from_lmst": "03:05",
+              "to_lmst": "04:00"
+            },
+            {
+              "from_lmst": "04:05",
+              "to_lmst": "05:00"
+            },
+            {
+              "from_lmst": "05:05",
+              "to_lmst": "06:00"
+            },
+            {
+              "from_lmst": "06:05",
+              "to_lmst": "07:00"
+            },
+            {
+              "from_lmst": "07:05",
+              "to_lmst": "08:00"
+            },
+            {
+              "from_lmst": "08:05",
+              "to_lmst": "09:00"
+            },
+            {
+              "from_lmst": "09:05",
+              "to_lmst": "10:00"
+            },
+            {
+              "from_lmst": "10:05",
+              "to_lmst": "11:00"
+            },
+            {
+              "from_lmst": "11:05",
+              "to_lmst": "12:00"
+            },
+            {
+              "from_lmst": "12:06",
+              "to_lmst": "13:00"
+            },
+            {
+              "from_lmst": "13:06",
+              "to_lmst": "14:00"
+            },
+            {
+              "from_lmst": "14:06",
+              "to_lmst": "15:00"
+            },
+            {
+              "from_lmst": "15:06",
+              "to_lmst": "16:00"
+            },
+            {
+              "from_lmst": "16:06",
+              "to_lmst": "17:00"
+            },
+            {
+              "from_lmst": "17:06",
+              "to_lmst": "18:00"
+            },
+            {
+              "from_lmst": "18:06",
+              "to_lmst": "19:00"
+            },
+            {
+              "from_lmst": "19:05",
+              "to_lmst": "20:00"
+            },
+            {
+              "from_lmst": "20:06",
+              "to_lmst": "21:00"
+            },
+            {
+              "from_lmst": "21:06",
+              "to_lmst": "22:00"
+            },
+            {
+              "from_lmst": "22:06",
+              "to_lmst": "23:00"
+            },
+            {
+              "from_lmst": "23:06",
+              "to_lmst": "24:00"
+            }
+          ],
+          "product": {
+            "lid": "urn:nasa:pds:mars2020_meda:data_calibrated_env:we__0516___________cal_ats_________________p",
+            "version": "1.0",
+            "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/data_calibrated_env/sol_0420_0539/sol_0516/WE__0516___________CAL_ATS_________________P01.CSV",
+            "sha256": "6021c011035f468a1011daa975a62bcdf9dd55f7f577d827da71a6b45fa662d6"
+          }
+        }
+      }
+    ]
+  },
+  "radiation": {
+    "id": "rad-gale-2012-2013",
+    "title": "Curiosity RAD surface radiation at Gale crater (archival, not Jezero)",
+    "archival": true,
+    "instrument": "Radiation Assessment Detector (RAD), Curiosity rover (MSL)",
+    "place": {
+      "name": "Gale crater",
+      "mission": "Mars Science Laboratory (Curiosity)",
+      "coordinates": [
+        137.4417,
+        -4.5895
+      ],
+      "coordinates_note": "Bradbury Landing, Curiosity's landing site; the window covers its early drive to Yellowknife Bay.",
+      "elevation_m": -4400,
+      "elevation_note": "About -4.4 km relative to the MOLA datum (Hassler et al. 2014)."
+    },
+    "window": {
+      "utc_start": "2012-08-07",
+      "utc_stop": "2013-06-01",
+      "note": "About 300 sols near the maximum of solar cycle 24."
+    },
+    "measurements": [
+      {
+        "id": "gcr-absorbed-dose-rate",
+        "label": "Average galactic cosmic ray (GCR) absorbed dose rate",
+        "value": 0.21,
+        "uncertainty": 0.04,
+        "unit": "mGy/day",
+        "source_ids": [
+          "hassler-2014"
+        ]
+      },
+      {
+        "id": "gcr-dose-equivalent-rate",
+        "label": "Average GCR dose equivalent rate",
+        "value": 0.67,
+        "uncertainty": null,
+        "unit": "mSv/day",
+        "source_ids": [
+          "swri-2013-rad"
+        ]
+      }
+    ],
+    "limits": [
+      "Measured at Gale crater by Curiosity, not at Jezero crater; Perseverance carries no radiation detector.",
+      "Measured 2012-2013 near solar maximum; the Hawksbill Gap sols (mid-2022) had different solar activity, which changes the GCR flux.",
+      "Jezero's floor (about -2.5 km) is about 1.9 km higher than Gale's landing site, so it has less atmosphere overhead and a somewhat higher dose is expected.",
+      "Averages over months; they exclude large solar particle events and say nothing about the dose of a single walk.",
+      "Not a dose estimate for any crew, suit or route option."
+    ],
+    "source_ids": [
+      "hassler-2014",
+      "swri-2013-rad"
+    ]
+  },
+  "sources": [
+    {
+      "id": "pds-meda",
+      "title": "Mars 2020 MEDA bundle (urn:nasa:pds:mars2020_meda), derived and calibrated environmental data",
+      "url": "https://pds-atmospheres.nmsu.edu/PDS/data/PDS4/Mars2020/mars2020_meda/",
+      "credit": "NASA/JPL-Caltech/CAB(CSIC-INTA); PDS Atmospheres Node",
+      "license": "NASA PDS public data",
+      "doi": null
+    },
+    {
+      "id": "meda-instrument",
+      "title": "Rodriguez-Manfredi et al. (2021), The Mars Environmental Dynamics Analyzer, MEDA, Space Science Reviews 217, 48",
+      "url": "https://doi.org/10.1007/s11214-021-00816-9",
+      "credit": "Rodriguez-Manfredi, J.A., et al.",
+      "license": "CC BY 4.0",
+      "doi": "10.1007/s11214-021-00816-9"
+    },
+    {
+      "id": "hassler-2014",
+      "title": "Hassler et al. (2014), Mars' surface radiation environment measured with the Mars Science Laboratory's Curiosity rover, Science 343, 1244797",
+      "url": "https://doi.org/10.1126/science.1244797",
+      "credit": "Hassler, D.M., et al., MSL Science Team",
+      "license": "Cited; values restated, no text reproduced",
+      "doi": "10.1126/science.1244797"
+    },
+    {
+      "id": "swri-2013-rad",
+      "title": "SwRI scientists publish first radiation measurements from the surface of Mars (press release, 9 Dec 2013)",
+      "url": "https://www.swri.org/press-release/swri-scientists-publish-first-radiation-measurements-surface-mars",
+      "credit": "Southwest Research Institute",
+      "license": "Cited; values restated, no text reproduced",
+      "doi": null
+    }
+  ]
+}
