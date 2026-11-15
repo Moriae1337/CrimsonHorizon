@@ -23,8 +23,8 @@ SCOPE = {
     "A": {"ascent_m": 13.34, "max_grade_deg": {"2": 20.69, "5": 14.82, "10": 14.15}},
     "B": {"ascent_m": 17.80, "max_grade_deg": {"2": 22.13, "5": 14.93, "10": 13.95}},
 }
-# The local grid is a second bilinear resampling of the source crop, which
-# smooths short relief: 2 m grades drop by up to 1.6 deg, 5 m by up to 0.2 deg.
+# The local grid cross-check is a second bilinear resampling of the source
+# crop, which smooths short relief: 2 m grades drop by up to 1.6 deg.
 LOCAL_TOLERANCE = {"ascent_m": 0.05, "2": 1.6, "5": 0.25, "10": 0.1}
 
 
@@ -160,36 +160,40 @@ def test_full_coverage_has_no_gaps() -> None:
 # Committed record -------------------------------------------------------------
 
 
-def test_record_comes_from_the_committed_grid(record: dict) -> None:
-    local = load(SCENARIO_DIR / "dtm_local.json")
+def test_record_comes_from_the_committed_source_crop(record: dict) -> None:
     crop = load(SCENARIO_DIR / "dtm_primary_window.json")
-    assert record["dtm"]["data_sha256"] == local["data_sha256"]
-    assert record["dtm"]["source_crop"]["data_sha256"] == crop["data_sha256"]
-    assert record["dtm"]["transform"] == local["local"]["transform"]
-    assert record["dtm"]["shape"] == local["local"]["shape"]
+    local = load(SCENARIO_DIR / "dtm_local.json")
+    dtm = record["dtm"]
+    assert dtm["data_sha256"] == crop["data_sha256"]
+    assert dtm["window"] == crop["window"]
+    assert dtm["shape"] == [crop["window"]["height"], crop["window"]["width"]]
+    assert "+proj=eqc" in dtm["crs_proj4"]
+    assert dtm["local_grid"]["data_sha256"] == local["data_sha256"]
+    assert dtm["local_grid"]["transform"] == local["local"]["transform"]
     assert record["nominal_step_m"] == 5.0
     assert record["units"]["grade"] == "degrees"
 
 
-def test_source_crop_check_reproduces_the_scope(record: dict) -> None:
-    for option, locked in SCOPE.items():
-        check = record["source_crop_check"][option]
-        assert check["ascent_m"] == pytest.approx(locked["ascent_m"], abs=0.01)
-        for step, value in locked["max_grade_deg"].items():
-            assert check["max_grade_deg"][step] == pytest.approx(value, abs=0.01)
-
-
-def test_local_grid_metrics_stay_close_to_the_scope(record: dict) -> None:
+def test_served_metrics_reproduce_the_scope(record: dict) -> None:
     for option, locked in SCOPE.items():
         info = record["options"][option]
-        assert info["ascent_m"] == pytest.approx(
+        assert info["ascent_m"] == pytest.approx(locked["ascent_m"], abs=0.01)
+        for step, value in locked["max_grade_deg"].items():
+            assert info["max_grade_deg"][step] == pytest.approx(value, abs=0.01)
+
+
+def test_local_grid_check_stays_close_to_the_scope(record: dict) -> None:
+    for option, locked in SCOPE.items():
+        check = record["local_grid_check"][option]
+        assert check["ascent_m"] == pytest.approx(
             locked["ascent_m"], abs=LOCAL_TOLERANCE["ascent_m"]
         )
         for step, value in locked["max_grade_deg"].items():
-            assert info["max_grade_deg"][step] == pytest.approx(
+            assert check["max_grade_deg"][step] == pytest.approx(
                 value, abs=LOCAL_TOLERANCE[step]
             )
-        assert info["max_grade_deg"]["5"] == pytest.approx(15, abs=0.5)
+            # Smoothing never steepens the served grade.
+            assert check["max_grade_deg"][step] <= value + 0.01
 
 
 def test_profiles_match_routes_and_metrics(record: dict) -> None:
