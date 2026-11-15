@@ -165,5 +165,11 @@ Jezero, Gale, Gusev, Endeavour and Eberswalde. Built by
   place also gets a small map (`PlaceMap.tsx`): Viking colour under the global CTX
   mosaic (`GLOBAL_CTX_LAYER`, to about 10 m/px), framed on the IAU size, with the
   crater rim drawn as a circle of the IAU diameter. Tile helpers shared with the 2D
-  map live in `marsTiles.ts`.
+  map live in `marsTiles.ts`. "Open on 2D map" frames the same extent (`placeExtent`)
+  and switches the 2D base layer to the global CTX mosaic, which the frontend adds
+  to the API's catalog; MOLA and Viking stop at 463 and 232 m/px.
+- Caching: `/sites/{id}/terrain` and `/sites/{id}/traverse` send `Cache-Control:
+public, no-cache` with an `ETag` from the data files' size and mtime, so browsers
+  revalidate (304 when unchanged) and a rebuilt package is never shown with a stale
+  one. The planner also clips the traverse to the loaded package (`clipTraverse`).
 - Both views are lazy-loaded so the 2D map bundle does not include three.js.

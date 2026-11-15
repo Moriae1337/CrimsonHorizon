@@ -155,7 +155,12 @@ def test_sites_endpoints() -> None:
     terrain = client.get("/sites/columbia-hills/terrain")
     assert terrain.status_code == 200
     assert terrain.json()["region"] == "Gusev crater"
-    assert "max-age" in terrain.headers["cache-control"]
+    # Rebuilt packages must reach browsers: revalidate with an ETag, 304 when unchanged.
+    assert "no-cache" in terrain.headers["cache-control"]
+    etag = terrain.headers["etag"]
+    again = client.get("/sites/columbia-hills/terrain", headers={"If-None-Match": etag})
+    assert again.status_code == 304
+    assert again.headers["etag"] == etag
 
     texture = client.get("/sites/columbia-hills/texture.jpg")
     assert texture.status_code == 200
@@ -267,4 +272,9 @@ def test_traverse_endpoint(site_id: str) -> None:
         assert b["bottom"] <= s["y"] <= b["top"]
         assert s["sol_start"] <= s["sol_end"]
     assert all(len(line) > 1 for line in doc["lines"])
+    assert "no-cache" in res.headers["cache-control"]
+    cached = client.get(
+        f"/sites/{site_id}/traverse", headers={"If-None-Match": res.headers["etag"]}
+    )
+    assert cached.status_code == 304
     assert client.get("/sites/nowhere/traverse").status_code == 404

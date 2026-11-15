@@ -13,6 +13,23 @@ import {
 
 /** Mars projection and equirectangular WMTS tile layers, shared by the 2D map and the globe card. */
 
+const KM_PER_DEG = (Math.PI * 3_396_190) / 180 / 1000
+
+/**
+ * Lon/lat extent that frames a named feature: its IAU size with a margin, at least
+ * 10 km across, wider in longitude away from the equator.
+ */
+export function placeExtent(
+  lon: number,
+  lat: number,
+  diameterKm: number,
+): [number, number, number, number] {
+  const halfKm = Math.max((Math.max(diameterKm, 0.5) / 2) * 1.35, 5)
+  const dLat = halfKm / KM_PER_DEG
+  const dLon = dLat / Math.max(0.05, Math.cos((lat * Math.PI) / 180))
+  return [lon - dLon, lat - dLat, lon + dLon, lat + dLat]
+}
+
 export function getOrCreateMarsProjection(crs: string, radiusM: number): Projection {
   const existing = getProjection(crs)
   if (existing) return existing

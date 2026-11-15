@@ -5,6 +5,7 @@ import { DEFAULT_MAP_CATALOG } from './marsCatalog.ts'
 import { CRATERS, CRATER_IDS, craterByIauName, type CraterInfo } from './craters.ts'
 import { SITE_LABELS } from './plannerText.ts'
 import { PlaceMap } from './PlaceMap.tsx'
+import { placeExtent } from './marsTiles.ts'
 import { fetchNomenclature, type IauFeature, type SiteId } from './sites.ts'
 import { useTranslation } from './i18n/useTranslation.ts'
 
@@ -71,7 +72,8 @@ export interface MarsGlobeProps {
   onOpenSite: (id: SiteId) => void
   /** Opens the 2D route planner on a site. */
   onOpenPlanner: (id: SiteId) => void
-  onOpenMap: (lon: number, lat: number, zoom: number) => void
+  /** Opens the 2D map framed on a lon/lat extent. */
+  onOpenMap: (extent: [number, number, number, number]) => void
 }
 
 export function MarsGlobe({ onOpenSite, onOpenPlanner, onOpenMap }: MarsGlobeProps) {
@@ -519,11 +521,7 @@ export function MarsGlobe({ onOpenSite, onOpenPlanner, onOpenMap }: MarsGlobePro
             <button
               type="button"
               onClick={() =>
-                onOpenMap(
-                  selected.lon,
-                  selected.lat,
-                  Math.max(3, Math.min(10, 12 - Math.log2(selected.diameter_km))),
-                )
+                onOpenMap(placeExtent(selected.lon, selected.lat, selected.diameter_km))
               }
               className="rounded-lg bg-accent px-2.5 py-1 font-medium hover:bg-accent-hover cursor-pointer"
             >

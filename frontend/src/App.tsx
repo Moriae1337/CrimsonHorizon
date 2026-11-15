@@ -1,6 +1,6 @@
 import { Suspense, lazy, useMemo, useState } from 'react'
 import { MarsMap, type ViewFocus } from './MarsMap.tsx'
-import { formatMarsCoordinate } from './marsCatalog.ts'
+import { GLOBAL_CTX_LAYER, formatMarsCoordinate } from './marsCatalog.ts'
 import { useBackendHealth, type BackendStatus } from './useBackendHealth.ts'
 import { useMarsData } from './useMarsData.ts'
 import { ScenarioPanel } from './ScenarioPanel.tsx'
@@ -45,7 +45,15 @@ const STATUS_LABELS: Record<BackendStatus, { en: string; uk: string }> = {
 
 function App() {
   const { status, error } = useBackendHealth()
-  const { catalog, landmarks } = useMarsData()
+  const { catalog: apiCatalog, landmarks } = useMarsData()
+  // The global CTX mosaic is offered as a base layer next to the API's Mars Trek layers.
+  const catalog = useMemo(
+    () =>
+      apiCatalog.layers.some((l) => l.id === GLOBAL_CTX_LAYER.id)
+        ? apiCatalog
+        : { ...apiCatalog, layers: [...apiCatalog.layers, GLOBAL_CTX_LAYER] },
+    [apiCatalog],
+  )
   const scenarioState = useScenario(SCENARIO_ID)
   const { scenario } = scenarioState
   const environmentState = useEnvironment(SCENARIO_ID)
@@ -214,9 +222,11 @@ function App() {
                 setSidebarMode('planner')
                 setViewMode('map')
               }}
-              onOpenMap={(lon, lat, z) => {
+              onOpenMap={(extent) => {
                 setSidebarMode('scenario')
-                setFocusTarget({ center: [lon, lat], zoom: z, nonce: Date.now() })
+                // CTX (to about 10 m/px) shows the place; MOLA and Viking stop at 232–463 m/px.
+                setActiveBaseLayerId(GLOBAL_CTX_LAYER.id)
+                setFocusTarget({ extent, nonce: Date.now() })
                 setViewMode('map')
               }}
             />
