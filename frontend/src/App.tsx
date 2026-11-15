@@ -9,18 +9,36 @@ import { useScenario } from './useScenario'
 
 const SCENARIO_ID = 'hawksbill-gap'
 const FOCUS_BUTTON =
-  'flex-1 rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400'
+  'flex-1 rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8F5A53]'
 
-const STATUS_STYLES: Record<BackendStatus, { label: string; dot: string; text: string }> = {
-  connecting: { label: 'Connecting', dot: 'bg-amber-400', text: 'text-amber-300' },
-  connected: { label: 'Connected', dot: 'bg-emerald-400', text: 'text-emerald-300' },
-  disconnected: { label: 'Disconnected', dot: 'bg-red-500', text: 'text-red-400' },
+const STATUS_CONFIG: Record<
+  BackendStatus,
+  { label: string; dot: string; text: string; badge: string }
+> = {
+  connecting: {
+    label: 'Connecting',
+    dot: 'bg-[#8F5A53] animate-pulse',
+    text: 'text-[#A3A3A3]',
+    badge: 'border-[#8F5A53]/30 bg-[#8F5A53]/20 text-[#EBEBEB]',
+  },
+  connected: {
+    label: 'Connected',
+    dot: 'bg-emerald-400',
+    text: 'text-[#EBEBEB]',
+    badge: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200',
+  },
+  disconnected: {
+    label: 'Disconnected',
+    dot: 'bg-[#8F5A53]',
+    text: 'text-[#A3A3A3]',
+    badge: 'border-[#8F5A53]/40 bg-[#8F5A53]/20 text-[#EBEBEB]',
+  },
 }
 
 function App() {
   const { status, error } = useBackendHealth()
   const { catalog, landmarks, dataSource } = useMarsData()
-  const style = STATUS_STYLES[status]
+  const statusInfo = STATUS_CONFIG[status]
   const scenarioState = useScenario(SCENARIO_ID)
   const { scenario } = scenarioState
   // Off by default: every drive in the track is already part of a route option, so
@@ -40,7 +58,7 @@ function App() {
 
   const [activeBaseLayerId, setActiveBaseLayerId] = useState<string>('mola-color-hillshade')
   const [visibleOverlayIds, setVisibleOverlayIds] = useState<Set<string>>(
-    () => new Set(['jezero-ctx-ortho', 'jezero-hirise-ortho']),
+    () => new Set(['jezero-ctx-ortho']),
   )
   const [selectedLandmarkId, setSelectedLandmarkId] = useState<string | null>(
     'octavia-e-butler-landing',
@@ -78,19 +96,23 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-950 text-slate-100">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 bg-slate-900/90 px-4 py-2.5">
-        <div className="flex items-baseline gap-3">
-          <h1 className="text-lg font-bold tracking-tight text-orange-500 sm:text-xl">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-[#171717] text-[#EBEBEB]">
+      {/* Top Header */}
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-[#333333] bg-[#212121] px-4 py-2.5">
+        <div className="flex items-center gap-3">
+          <span className="inline-flex items-center rounded-md bg-[#8F5A53]/25 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-[#EBEBEB]">
+            UI PLAYGROUND
+          </span>
+          <h1 className="text-lg font-bold tracking-tight text-[#EBEBEB] sm:text-xl">
             CrimsonHorizon
           </h1>
-          <span className="hidden text-xs uppercase tracking-wider text-slate-400 sm:inline">
+          <span className="hidden text-xs text-[#A3A3A3] sm:inline">
             Jezero Crater · {catalog.crs}
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 text-xs">
-          <span className="rounded border border-slate-700 bg-slate-950/70 px-2 py-1 font-mono text-slate-300">
+        <div className="flex flex-wrap items-center gap-3 text-xs">
+          <span className="rounded-lg border border-[#333333] bg-[#1A1A1A] px-2.5 py-1 font-mono text-[#EBEBEB]">
             {cursorCoords
               ? formatMarsCoordinate(cursorCoords[0], cursorCoords[1])
               : formatMarsCoordinate(catalog.default_center[0], catalog.default_center[1])}
@@ -98,26 +120,27 @@ function App() {
           </span>
 
           <div
-            className="flex items-center gap-2"
+            className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${statusInfo.badge}`}
             role="status"
             aria-live="polite"
             title={error ?? undefined}
           >
-            <span className="text-slate-400">API:</span>
-            <span className={`h-2 w-2 rounded-full ${style.dot}`} aria-hidden="true" />
-            <span className={`font-semibold ${style.text}`}>{style.label}</span>
-            <span className="text-slate-500">
+            <span className={`h-2 w-2 rounded-full ${statusInfo.dot}`} aria-hidden="true" />
+            <span>API: {statusInfo.label}</span>
+            <span className="text-[#A3A3A3]">
               ({dataSource === 'backend' ? 'live catalog' : 'built-in catalog'})
             </span>
           </div>
         </div>
       </header>
 
+      {/* Main Layout: Sidebar & Map Canvas */}
       <div className="flex min-h-0 flex-1 flex-col md:flex-row">
-        <aside className="flex w-full shrink-0 flex-col gap-4 overflow-y-auto border-b border-slate-800 bg-slate-900/75 p-4 md:w-80 md:border-r md:border-b-0">
+        <aside className="flex w-full shrink-0 flex-col gap-4 overflow-y-auto border-b border-[#333333] bg-[#212121] p-4 md:w-80 md:border-r md:border-b-0">
+          {/* Quick Focus Section */}
           <section>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Quick Focus
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]">
+              01 — Quick Focus
             </h2>
             <div className="mt-2 flex flex-wrap gap-2">
               <button
@@ -126,21 +149,21 @@ function App() {
                 onClick={() => {
                   if (scenario) setFocusTarget({ extent: extentOf(scenario), nonce: Date.now() })
                 }}
-                className={`${FOCUS_BUTTON} border-orange-500/40 bg-orange-500/15 text-orange-300 hover:bg-orange-500/25 disabled:cursor-not-allowed disabled:border-slate-800 disabled:bg-slate-900 disabled:text-slate-500`}
+                className={`${FOCUS_BUTTON} cursor-pointer border-transparent bg-[#8F5A53] text-[#EBEBEB] shadow-sm hover:bg-[#9F665E] active:bg-[#7E4D46] disabled:cursor-not-allowed disabled:bg-[#282828] disabled:text-[#737373]`}
               >
                 Hawksbill Gap
               </button>
               <button
                 type="button"
                 onClick={() => jumpTo(catalog.default_center, catalog.default_zoom)}
-                className={`${FOCUS_BUTTON} border-slate-700 bg-slate-800/70 text-slate-200 hover:bg-slate-800`}
+                className={`${FOCUS_BUTTON} cursor-pointer border-transparent bg-[#EBEBEB] text-[#212121] shadow-sm hover:bg-white active:bg-[#D6D6D6]`}
               >
                 Jezero overview
               </button>
               <button
                 type="button"
                 onClick={() => jumpTo([0, 0], 2)}
-                className={`${FOCUS_BUTTON} border-slate-700 bg-slate-800/70 text-slate-200 hover:bg-slate-800`}
+                className={`${FOCUS_BUTTON} cursor-pointer border-[#3E3E3E] bg-transparent text-[#EBEBEB] hover:border-[#EBEBEB] hover:bg-[#2A2A2A]`}
               >
                 Global Mars
               </button>
@@ -163,54 +186,71 @@ function App() {
             }}
           />
 
+          {/* Global Base Layer */}
           <section>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Global Base Layer
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]">
+              02 — Base Layer
             </h2>
             <div className="mt-2 space-y-1.5">
-              {globalLayers.map((layer) => (
-                <label
-                  key={layer.id}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/50 px-2.5 py-2 text-xs hover:border-slate-700"
-                >
-                  <input
-                    type="radio"
-                    name="mars-base-layer"
-                    checked={activeBaseLayerId === layer.id}
-                    onChange={() => setActiveBaseLayerId(layer.id)}
-                    className="accent-orange-500"
-                  />
-                  <span>{layer.name}</span>
-                </label>
-              ))}
+              {globalLayers.map((layer) => {
+                const isSelected = activeBaseLayerId === layer.id
+                return (
+                  <label
+                    key={layer.id}
+                    className={`flex cursor-pointer items-center gap-2.5 rounded-lg border px-2.5 py-2 text-xs transition-colors ${
+                      isSelected
+                        ? 'border-[#8F5A53] bg-[#8F5A53]/15 text-[#EBEBEB]'
+                        : 'border-[#333333] bg-[#1A1A1A] text-[#A3A3A3] hover:border-[#4A4A4A] hover:text-[#EBEBEB]'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="mars-base-layer"
+                      checked={isSelected}
+                      onChange={() => setActiveBaseLayerId(layer.id)}
+                      className="accent-[#8F5A53]"
+                    />
+                    <span>{layer.name}</span>
+                  </label>
+                )
+              })}
             </div>
           </section>
 
+          {/* Jezero Overlays */}
           <section>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Jezero Overlays
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]">
+              03 — Jezero Overlays
             </h2>
             <div className="mt-2 space-y-1.5">
-              {overlayLayers.map((layer) => (
-                <label
-                  key={layer.id}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg border border-slate-800 bg-slate-950/50 px-2.5 py-2 text-xs hover:border-slate-700"
-                >
-                  <input
-                    type="checkbox"
-                    checked={visibleOverlayIds.has(layer.id)}
-                    onChange={() => toggleOverlay(layer.id)}
-                    className="accent-orange-500"
-                  />
-                  <span>{layer.name}</span>
-                </label>
-              ))}
+              {overlayLayers.map((layer) => {
+                const isChecked = visibleOverlayIds.has(layer.id)
+                return (
+                  <label
+                    key={layer.id}
+                    className={`flex cursor-pointer items-center gap-2.5 rounded-lg border px-2.5 py-2 text-xs transition-colors ${
+                      isChecked
+                        ? 'border-[#8F5A53] bg-[#8F5A53]/15 text-[#EBEBEB]'
+                        : 'border-[#333333] bg-[#1A1A1A] text-[#A3A3A3] hover:border-[#4A4A4A] hover:text-[#EBEBEB]'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => toggleOverlay(layer.id)}
+                      className="accent-[#8F5A53]"
+                    />
+                    <span>{layer.name}</span>
+                  </label>
+                )
+              })}
             </div>
           </section>
 
+          {/* Jezero Reference Points */}
           <section>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Jezero Reference Points
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]">
+              04 — Reference Points
             </h2>
             <div className="mt-2 space-y-1.5">
               {landmarks.features.map((feature) => {
@@ -220,14 +260,14 @@ function App() {
                     key={feature.id}
                     type="button"
                     onClick={() => jumpTo(feature.geometry.coordinates, 14, feature.id)}
-                    className={`w-full rounded-lg border px-2.5 py-2 text-left text-xs transition ${
+                    className={`w-full cursor-pointer rounded-lg border px-2.5 py-2 text-left text-xs transition-colors ${
                       isSelected
-                        ? 'border-orange-500/60 bg-orange-500/15 text-orange-200'
-                        : 'border-slate-800 bg-slate-950/50 text-slate-200 hover:border-slate-700'
+                        ? 'border-[#8F5A53] bg-[#8F5A53]/25 text-[#EBEBEB] shadow-sm'
+                        : 'border-[#333333] bg-[#1A1A1A] text-[#EBEBEB] hover:border-[#4A4A4A]'
                     }`}
                   >
                     <div className="font-semibold">{feature.properties.name}</div>
-                    <div className="mt-0.5 font-mono text-[11px] text-slate-400">
+                    <div className="mt-0.5 font-mono text-[11px] text-[#A3A3A3]">
                       {formatMarsCoordinate(
                         feature.geometry.coordinates[0],
                         feature.geometry.coordinates[1],
@@ -239,20 +279,22 @@ function App() {
             </div>
           </section>
 
+          {/* Selected Landmark Details */}
           {selectedLandmark && (
-            <section className="rounded-lg border border-slate-800 bg-slate-950/70 p-3 text-xs">
-              <div className="font-semibold text-orange-300">
-                {selectedLandmark.properties.name}
-              </div>
-              <p className="mt-1 text-slate-300">{selectedLandmark.properties.summary}</p>
-              <p className="mt-2 text-[11px] text-slate-500">
+            <section className="rounded-xl border border-[#333333] bg-[#1A1A1A] p-3.5 text-xs">
+              <div className="font-semibold text-[#EBEBEB]">{selectedLandmark.properties.name}</div>
+              <p className="mt-1 leading-relaxed text-[#A3A3A3]">
+                {selectedLandmark.properties.summary}
+              </p>
+              <p className="mt-2 font-mono text-[11px] text-[#737373]">
                 Source: {selectedLandmark.properties.source}
               </p>
             </section>
           )}
         </aside>
 
-        <main className="relative min-h-72 flex-1">
+        {/* Map Viewport */}
+        <main className="relative min-h-72 flex-1 bg-[#171717]">
           <MarsMap
             catalog={catalog}
             landmarks={landmarks}

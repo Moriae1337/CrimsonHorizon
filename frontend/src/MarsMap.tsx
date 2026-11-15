@@ -85,6 +85,9 @@ function createWmtsLayer(layer: MapLayer, projection: Projection, zIndex: number
   return new TileLayer({
     extent: layer.extent,
     minZoom,
+    // No layer maxZoom: past the source's last level OpenLayers upscales its tiles,
+    // which the Hawksbill Gap view (up to MARS_MAX_VIEW_ZOOM) relies on. A layer
+    // maxZoom would hide the imagery and leave a black map there.
     zIndex,
     properties: { layerId: layer.id, scope: layer.scope },
     source: new XYZ({
@@ -158,15 +161,15 @@ export function MarsMap({
         return new Style({
           image: new CircleStyle({
             radius: isSelected ? 8 : 6,
-            fill: new Fill({ color: isSelected ? '#f97316' : '#38bdf8' }),
-            stroke: new Stroke({ color: '#0f172a', width: 2 }),
+            fill: new Fill({ color: isSelected ? '#8F5A53' : '#EBEBEB' }),
+            stroke: new Stroke({ color: isSelected ? '#EBEBEB' : '#212121', width: 2 }),
           }),
           text: new Text({
             text: label,
             offsetY: -15,
             font: '600 12px ui-sans-serif, system-ui, sans-serif',
-            fill: new Fill({ color: '#f8fafc' }),
-            stroke: new Stroke({ color: '#020617', width: 3 }),
+            fill: new Fill({ color: '#EBEBEB' }),
+            stroke: new Stroke({ color: '#212121', width: 3 }),
           }),
         })
       },
@@ -215,33 +218,48 @@ export function MarsMap({
       }),
     })
 
+    let moveRafId: number | null = null
+    let lastCoords: [number, number] | null = null
+    let lastPixel: [number, number] | null = null
+
     map.on('pointermove', (event) => {
       if (event.dragging) return
-      const [lon, lat] = event.coordinate
-      callbacksRef.current.onCursorMove([lon, lat])
-      const hasLandmark = map.hasFeatureAtPixel(event.pixel, {
-        hitTolerance: 6,
-        layerFilter: (layer) => layer === vectorLayer || layer === stopLayer,
-      })
-      container.style.cursor = hasLandmark ? 'pointer' : ''
+      lastCoords = event.coordinate as [number, number]
+      lastPixel = event.pixel as [number, number]
 
-      const tooltip = tooltipRef.current
-      if (!tooltip) return
-      const hint = map.forEachFeatureAtPixel(
-        event.pixel,
-        (feature) => feature.get('tooltip') as string | undefined,
-        {
-          hitTolerance: 5,
-          layerFilter: (layer) =>
-            layer === stopLayer || layer === routeLayer || layer === trackLayer,
-        },
-      )
-      if (hint) {
-        tooltip.textContent = hint
-        tooltip.style.transform = `translate(${event.pixel[0] + 14}px, ${event.pixel[1] + 14}px)`
-        tooltip.hidden = false
-      } else {
-        tooltip.hidden = true
+      if (moveRafId === null) {
+        moveRafId = requestAnimationFrame(() => {
+          moveRafId = null
+          if (lastCoords) {
+            callbacksRef.current.onCursorMove(lastCoords)
+          }
+          const pixel = lastPixel
+          if (!pixel) return
+          const hasClickable = map.hasFeatureAtPixel(pixel, {
+            hitTolerance: 6,
+            layerFilter: (layer) => layer === vectorLayer || layer === stopLayer,
+          })
+          container.style.cursor = hasClickable ? 'pointer' : ''
+
+          const tooltip = tooltipRef.current
+          if (!tooltip) return
+          const hint = map.forEachFeatureAtPixel(
+            pixel,
+            (feature) => feature.get('tooltip') as string | undefined,
+            {
+              hitTolerance: 5,
+              layerFilter: (layer) =>
+                layer === stopLayer || layer === routeLayer || layer === trackLayer,
+            },
+          )
+          if (hint) {
+            tooltip.textContent = hint
+            tooltip.style.transform = `translate(${pixel[0] + 14}px, ${pixel[1] + 14}px)`
+            tooltip.hidden = false
+          } else {
+            tooltip.hidden = true
+          }
+        })
       }
     })
 
@@ -264,10 +282,16 @@ export function MarsMap({
       callbacksRef.current.onSelectLandmark(typeof clicked === 'string' ? clicked : null)
     })
 
+    let zoomRafId: number | null = null
     map.getView().on('change:resolution', () => {
-      const z = map.getView().getZoom()
-      if (typeof z === 'number') {
-        callbacksRef.current.onZoomChange(z)
+      if (zoomRafId === null) {
+        zoomRafId = requestAnimationFrame(() => {
+          zoomRafId = null
+          const z = map.getView().getZoom()
+          if (typeof z === 'number') {
+            callbacksRef.current.onZoomChange(z)
+          }
+        })
       }
     })
 
@@ -285,8 +309,11 @@ export function MarsMap({
     stopLayerRef.current = stopLayer
 
     return () => {
+      if (moveRafId !== null) cancelAnimationFrame(moveRafId)
+      if (zoomRafId !== null) cancelAnimationFrame(zoomRafId)
       container.style.cursor = ''
       map.setTarget(undefined)
+      map.dispose()
       mapRef.current = null
       tileLayersRef.current.clear()
       vectorSourceRef.current = null
@@ -373,7 +400,7 @@ export function MarsMap({
     <div className="relative h-full w-full">
       <div
         ref={containerRef}
-        className="h-full w-full bg-slate-950"
+        className="h-full w-full bg-[#171717]"
         aria-label="Interactive Mars surface map centered on Jezero Crater"
         onMouseLeave={() => {
           onCursorMove(null)
@@ -384,7 +411,7 @@ export function MarsMap({
         ref={tooltipRef}
         hidden
         aria-hidden="true"
-        className="pointer-events-none absolute top-0 left-0 z-10 max-w-72 rounded border border-slate-700 bg-slate-950/90 px-2 py-1 text-xs text-slate-100 shadow"
+        className="border-card-border bg-card/95 text-text-main pointer-events-none absolute top-0 left-0 z-10 max-w-72 rounded border px-2 py-1 text-xs shadow"
       />
     </div>
   )

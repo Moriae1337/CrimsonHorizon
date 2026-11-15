@@ -13,6 +13,10 @@ npm run check       # Format check, lint, tests, build
 npm run format      # Format frontend code, Markdown, JSON, and YAML across the repo
 ```
 
+## Styling and design system
+
+All user interface code must comply with the 3-color palette design system (`#212121`, `#EBEBEB`, `#8F5A53`). See [specs/design-system.md](design-system.md) for full component specifications, Tailwind tokens, and accessibility standards.
+
 From `backend/`:
 
 ```sh

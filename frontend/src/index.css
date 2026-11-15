@@ -1,29 +1,56 @@
 @import 'tailwindcss';
 
+@theme {
+  /* Core 3-Color Palette */
+  --color-main: #212121;
+  --color-secondary: #ebebeb;
+  --color-accent: #8f5a53;
+
+  /* Accent Interactive States */
+  --color-accent-hover: #9f665e;
+  --color-accent-active: #7e4d46;
+  --color-accent-subtle: #8f5a5333;
+
+  /* Surfaces & Canvas */
+  --color-canvas: #171717;
+  --color-card: #212121;
+  --color-card-elevated: #282828;
+  --color-card-border: #333333;
+  --color-input: #1a1a1a;
+  --color-input-border: #333333;
+
+  /* Text Hierarchies */
+  --color-text-main: #ebebeb;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #737373;
+}
+
+/* OpenLayers UI controls matching the 3-color palette */
 .ol-control {
-  background-color: rgba(15, 23, 42, 0.78);
-  border: 1px solid rgba(51, 65, 85, 0.9);
+  background-color: rgba(33, 33, 33, 0.92);
+  border: 1px solid #333333;
   border-radius: 0.5rem;
   padding: 2px;
 }
 
 .ol-control button {
-  background-color: rgba(30, 41, 59, 0.95);
-  color: #f1f5f9;
+  background-color: rgba(40, 40, 40, 0.95);
+  color: #ebebeb;
   border-radius: 0.375rem;
   font-weight: 600;
+  transition: background-color 0.15s ease;
 }
 
 .ol-control button:hover,
 .ol-control button:focus {
-  background-color: rgba(234, 88, 12, 0.85);
-  color: #ffffff;
+  background-color: #8f5a53;
+  color: #ebebeb;
   outline: none;
 }
 
 .ol-scale-line {
-  background-color: rgba(15, 23, 42, 0.82);
-  border: 1px solid rgba(51, 65, 85, 0.9);
+  background-color: rgba(33, 33, 33, 0.92);
+  border: 1px solid #333333;
   border-radius: 0.5rem;
   bottom: 0.75rem;
   left: 0.75rem;
@@ -31,22 +58,27 @@
 }
 
 .ol-scale-line-inner {
-  border-color: #fb923c;
-  color: #f8fafc;
+  border-color: #8f5a53;
+  color: #ebebeb;
   font-size: 0.75rem;
 }
 
 .ol-attribution {
-  background-color: rgba(15, 23, 42, 0.82);
-  border: 1px solid rgba(51, 65, 85, 0.9);
+  background-color: rgba(33, 33, 33, 0.92);
+  border: 1px solid #333333;
   border-radius: 0.5rem;
   bottom: 0.75rem;
   right: 0.75rem;
-  color: #cbd5e1;
+  color: #a3a3a3;
   font-size: 0.7rem;
   max-width: calc(100% - 10rem);
 }
 
 .ol-attribution button {
-  color: #f1f5f9;
+  color: #ebebeb;
+}
+
+/* Custom form elements */
+input[type='range'] {
+  accent-color: #8f5a53;
 }

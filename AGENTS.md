@@ -4,7 +4,9 @@ Static React frontend + stateless FastAPI backend in one repository.
 
 - `frontend/`: React, TypeScript, Vite, Tailwind; npm. UI and HTTP calls only.
   `App.tsx` renders the page, `useBackendHealth.ts` manages connection state,
-  and `api.ts` handles health requests.
+  and `api.ts` handles health requests. All UI components, colors, and styling
+  must strictly follow the 3-color palette design system defined in
+  [specs/design-system.md](specs/design-system.md).
 - `backend/`: FastAPI, Python 3.12+; uv. `app/main.py` defines endpoints,
   `app/config.py` reads configuration, `tests/` contains pytest tests.
   Future GIS processing and route computation belong here.
@@ -15,5 +17,6 @@ Static React frontend + stateless FastAPI backend in one repository.
   Use real, cited Mars data only.
 
 Architecture details: [specs/architecture.md](specs/architecture.md).
+Design system & palette: [specs/design-system.md](specs/design-system.md).
 Project overview: [README.md](README.md).
 Development checks: [specs/development.md](specs/development.md).

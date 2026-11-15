@@ -22,4 +22,4 @@ The application foundation is ready:
 
 Maps, Mars dataset integration, GIS processing, and route planning are not implemented yet.
 
-See [specs/architecture.md](specs/architecture.md) for architecture details.
+See [specs/architecture.md](specs/architecture.md) for architecture details and [specs/design-system.md](specs/design-system.md) for the 3-color palette design system.

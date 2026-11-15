@@ -25,11 +25,13 @@ There is no database, cache, queue, or authentication. The backend holds no stat
 
 ### Frontend (`frontend/`)
 
-- Renders the user interface (currently a landing page).
+- Renders the user interface (interactive Mars surface map and expedition controls).
 - Calls the backend over HTTP. The base URL comes from `VITE_API_URL` at build time.
 - Shows loading, success, and error states for every backend call.
 - `App.tsx` renders the page; `useBackendHealth.ts` owns connection state and
   request cleanup; `api.ts` makes and validates the health request.
+- Strictly adheres to the 3-color palette (`#212121`, `#EBEBEB`, `#8F5A53`) and
+  design system specified in [specs/design-system.md](design-system.md).
 - Contains no scientific computation. Heavy processing belongs in the backend.
 
 ### Backend (`backend/`)
