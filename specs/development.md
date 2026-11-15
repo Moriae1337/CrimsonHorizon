@@ -2,6 +2,7 @@
 
 CI runs backend checks, frontend checks, and secret scanning on pushes and pull requests.
 Dependabot opens weekly update PRs for npm, uv, and GitHub Actions.
+Deployment steps and smoke tests are in [release.md](release.md).
 
 ## Local commands
 

@@ -11,6 +11,8 @@ unchanged. Tracking issue: CH26-031 (#49).
 - `200`: the scenario document below, served from a file committed under
   `backend/data/` with no upstream request at runtime.
 - `404`: unknown `scenario_id`, with FastAPI's default `{"detail": "..."}` body.
+- `503`: the committed file is missing, unreadable, invalid JSON, or has an
+  unsupported MAJOR; body `{"detail": "Scenario temporarily unavailable"}`.
 
 ## Versioning
 

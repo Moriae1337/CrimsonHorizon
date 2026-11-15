@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
@@ -6,6 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import get_cors_origins
 from app.scenario import SCENARIO_PATHS, load_scenario
 from app.terrain import get_jezero_landmarks, get_map_catalog
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="CrimsonHorizon API")
 
@@ -44,4 +47,11 @@ def scenario(scenario_id: str) -> dict[str, Any]:
     """Return a prepared field scenario (contract: specs/scenario-api.md)."""
     if scenario_id not in SCENARIO_PATHS:
         raise HTTPException(status_code=404, detail="Scenario not found")
-    return load_scenario(scenario_id)
+    try:
+        return load_scenario(scenario_id)
+    except (OSError, ValueError):
+        # Missing, unreadable, malformed, or unsupported-version bundle.
+        logger.exception("Scenario %r is unavailable", scenario_id)
+        raise HTTPException(
+            status_code=503, detail="Scenario temporarily unavailable"
+        ) from None
