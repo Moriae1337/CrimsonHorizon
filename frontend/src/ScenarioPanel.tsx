@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { formatMarsCoordinate } from './marsCatalog'
 import { formatMeters, formatSols, type Scenario, type ScenarioStatus } from './scenario'
 import {
@@ -17,10 +18,18 @@ interface ScenarioPanelProps {
   canRetry: boolean
   showRoverTrack: boolean
   selectedStopId: string | null
+  selectedOptionId: string | null
   onRetry: () => void
   onToggleRoverTrack: () => void
   onSelectStop: (id: string) => void
+  onSelectOption: (id: string) => void
 }
+
+// Selected list items use the design-system Accent.
+const SELECTABLE =
+  'flex w-full items-start gap-2 rounded-lg border px-2 py-1.5 text-left transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8F5A53]'
+const SELECTED = 'border-[#8F5A53] bg-[#8F5A53]/20'
+const UNSELECTED = 'border-slate-800 bg-slate-950/50 hover:border-slate-700'
 
 const STATUS_TEXT: Record<ScenarioStatus, string> = {
   loading: 'Loading scenario…',
@@ -80,10 +89,28 @@ export function ScenarioPanel({
   canRetry,
   showRoverTrack,
   selectedStopId,
+  selectedOptionId,
   onRetry,
   onToggleRoverTrack,
   onSelectStop,
+  onSelectOption,
 }: ScenarioPanelProps) {
+  const listRef = useRef<HTMLDivElement | null>(null)
+
+  // A selection made on the map brings its panel entry into view.
+  useEffect(() => {
+    const ids = [
+      selectedStopId && `stop:${selectedStopId}`,
+      selectedOptionId && `option:${selectedOptionId}`,
+    ]
+    for (const id of ids) {
+      if (!id) continue
+      listRef.current
+        ?.querySelector(`[data-selection-id="${CSS.escape(id)}"]`)
+        ?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    }
+  }, [selectedStopId, selectedOptionId])
+
   const failed = status === 'unavailable' || status === 'unsupported'
   const connectorOption = scenario?.route_options.find((o) => o.proposed_m > 0)
   const trackSols = scenario?.rover_track.features.map((f) => f.properties.sol) ?? []
@@ -121,7 +148,7 @@ export function ScenarioPanel({
       )}
 
       {scenario && (
-        <>
+        <div ref={listRef}>
           <h3 className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
             Science stops
           </h3>
@@ -133,12 +160,9 @@ export function ScenarioPanel({
                   <button
                     type="button"
                     aria-pressed={selected}
+                    data-selection-id={`stop:${stop.id}`}
                     onClick={() => onSelectStop(stop.id)}
-                    className={`flex w-full items-start gap-2 rounded-lg border px-2 py-1.5 text-left transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400 ${
-                      selected
-                        ? 'border-fuchsia-400/70 bg-fuchsia-400/10'
-                        : 'border-slate-800 bg-slate-950/50 hover:border-slate-700'
-                    }`}
+                    className={`${SELECTABLE} ${selected ? SELECTED : UNSELECTED}`}
                   >
                     <StopSwatch />
                     <span>
@@ -177,24 +201,33 @@ export function ScenarioPanel({
           <ul className="mt-1.5 space-y-1.5 text-xs">
             {scenario.route_options.map((option) => {
               const style = optionStyle(scenario.route_options, option.id)
+              const selected = option.id === selectedOptionId
               return (
-                <li key={option.id} className="flex items-start gap-2">
-                  <LineSwatch color={style.color} width={style.width} />
-                  <span>
-                    <span
-                      className="mr-1 inline-block rounded px-1 text-[11px] font-bold text-slate-950"
-                      style={{ backgroundColor: style.color }}
-                      aria-hidden="true"
-                    >
-                      {option.id}
+                <li key={option.id}>
+                  <button
+                    type="button"
+                    aria-pressed={selected}
+                    data-selection-id={`option:${option.id}`}
+                    onClick={() => onSelectOption(option.id)}
+                    className={`${SELECTABLE} ${selected ? SELECTED : UNSELECTED}`}
+                  >
+                    <LineSwatch color={style.color} width={style.width} />
+                    <span>
+                      <span
+                        className="mr-1 inline-block rounded px-1 text-[11px] font-bold text-slate-950"
+                        style={{ backgroundColor: style.color }}
+                        aria-hidden="true"
+                      >
+                        {option.id}
+                      </span>
+                      <span className="text-slate-200">{option.label}</span>
+                      <span className="block text-slate-400">
+                        {formatMeters(option.round_trip_m)} round trip
+                        {option.proposed_m > 0 &&
+                          `, includes ${option.proposed_m} m proposed each way`}
+                      </span>
                     </span>
-                    <span className="text-slate-200">{option.label}</span>
-                    <span className="block text-slate-400">
-                      {formatMeters(option.round_trip_m)} round trip
-                      {option.proposed_m > 0 &&
-                        `, includes ${option.proposed_m} m proposed each way`}
-                    </span>
-                  </span>
+                  </button>
                 </li>
               )
             })}
@@ -249,7 +282,7 @@ export function ScenarioPanel({
               </span>
             </span>
           </label>
-        </>
+        </div>
       )}
     </section>
   )
