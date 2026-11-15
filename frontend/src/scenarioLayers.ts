@@ -16,6 +16,9 @@ const OPTION_COLORS = ['#fbbf24', '#22d3ee', '#a3e635', '#f472b6']
 const CASING = 'rgba(2, 6, 23, 0.85)'
 const TRACK_COLOR = '#f8fafc'
 const LABEL_FONT = '600 12px ui-sans-serif, system-ui, sans-serif'
+// Selection highlight (specs/design-system.md): Accent halo with a Secondary outline.
+export const SELECTION_ACCENT = '#8F5A53'
+export const SELECTION_OUTLINE = '#EBEBEB'
 
 // Map labels (badges, connector note, sol tags) appear from about zoom 15 (~1.2 m/px)
 // down, where they no longer cover the lines they describe.
@@ -133,7 +136,30 @@ export function buildTrackFeatures(scenario: Scenario): Feature[] {
   })
 }
 
-export function routeStyle(options: readonly RouteOption[]) {
+/** Route option a clicked map feature belongs to (lines, connector, badge), or null. */
+export function featureOptionId(feature: FeatureLike): string | null {
+  const option = feature.get('option')
+  return typeof option === 'string' ? option : null
+}
+
+/** Bounding box of an option's outbound lines, for fitting the map to the selected option. */
+export function optionExtent(
+  scenario: Scenario,
+  optionId: string,
+): [number, number, number, number] | null {
+  const coords = scenario.routes.features
+    .filter((f) => f.properties.option === optionId && f.properties.leg === 'outbound')
+    .flatMap((f) => f.geometry.coordinates)
+  if (coords.length === 0) return null
+  const lons = coords.map((c) => c[0])
+  const lats = coords.map((c) => c[1])
+  return [Math.min(...lons), Math.min(...lats), Math.max(...lons), Math.max(...lats)]
+}
+
+export function routeStyle(
+  options: readonly RouteOption[],
+  selectedOptionId: () => string | null = () => null,
+) {
   return (feature: FeatureLike, resolution: number): Style[] => {
     const role = feature.get('role')
     const labelled = resolution <= LABEL_MAX_RESOLUTION
@@ -158,6 +184,18 @@ export function routeStyle(options: readonly RouteOption[]) {
     }
 
     const option = optionStyle(options, String(feature.get('option')))
+    const selected = featureOptionId(feature) === selectedOptionId()
+    // Drawn beneath the casing; above every unselected option so the pick reads first.
+    const halo = (width: number) =>
+      new Style({
+        zIndex: 40 + options.length * 10,
+        stroke: new Stroke({
+          color: SELECTION_ACCENT,
+          width: width + 10,
+          lineJoin: 'round',
+          lineCap: 'round',
+        }),
+      })
     if (role === 'badge') {
       if (!labelled) return []
       return [
@@ -168,7 +206,10 @@ export function routeStyle(options: readonly RouteOption[]) {
             font: '700 13px ui-sans-serif, system-ui, sans-serif',
             fill: new Fill({ color: '#020617' }),
             backgroundFill: new Fill({ color: option.color }),
-            backgroundStroke: new Stroke({ color: CASING, width: 2 }),
+            backgroundStroke: new Stroke({
+              color: selected ? SELECTION_OUTLINE : CASING,
+              width: selected ? 3 : 2,
+            }),
             padding: [2, 6, 1, 6],
           }),
         }),
@@ -201,19 +242,21 @@ export function routeStyle(options: readonly RouteOption[]) {
           }),
         }),
       ]
-      return labelled ? lines : lines.slice(0, 2)
+      const drawn = labelled ? lines : lines.slice(0, 2)
+      return selected ? [...drawn, halo(4)] : drawn
     }
 
-    return [
+    const lines = [
       new Style({
-        zIndex: option.zIndex,
+        zIndex: selected ? 45 + options.length * 10 : option.zIndex,
         stroke: new Stroke({ color: CASING, width: option.width + 3, lineJoin: 'round' }),
       }),
       new Style({
-        zIndex: option.zIndex + 1,
+        zIndex: selected ? 46 + options.length * 10 : option.zIndex + 1,
         stroke: new Stroke({ color: option.color, width: option.width, lineJoin: 'round' }),
       }),
     ]
+    return selected ? [...lines, halo(option.width)] : lines
   }
 }
 
@@ -324,7 +367,18 @@ export function stopStyle(selectedStopId: () => string | null) {
         radius,
         angle: 0,
         fill: new Fill({ color: STOP_COLOR }),
-        stroke: new Stroke({ color: selected ? '#f8fafc' : CASING, width: selected ? 3 : 2.5 }),
+        stroke: new Stroke({
+          color: selected ? SELECTION_OUTLINE : CASING,
+          width: selected ? 3 : 2.5,
+        }),
+      }),
+    })
+    // Accent ring behind the selected diamond (the design system's selection color).
+    const halo = new Style({
+      zIndex: 209,
+      image: new CircleStyle({
+        radius: radius + 4,
+        stroke: new Stroke({ color: SELECTION_ACCENT, width: 4 }),
       }),
     })
     // Inner dot: the drill-hole cue, readable without color.
@@ -332,7 +386,8 @@ export function stopStyle(selectedStopId: () => string | null) {
       zIndex: selected ? 211 : 201,
       image: new CircleStyle({ radius: 2.5, fill: new Fill({ color: '#020617' }) }),
     })
-    if (resolution > STOP_LABEL_MAX_RESOLUTION) return [marker, hole]
+    const extra = selected ? [halo] : []
+    if (resolution > STOP_LABEL_MAX_RESOLUTION) return [marker, hole, ...extra]
     const label = new Style({
       zIndex: selected ? 212 : 202,
       text: new Text({
@@ -343,11 +398,14 @@ export function stopStyle(selectedStopId: () => string | null) {
         offsetY: { up: -(radius + 4), down: radius + 4, level: 0 }[placement.vertical],
         fill: new Fill({ color: '#020617' }),
         backgroundFill: new Fill({ color: STOP_COLOR }),
-        backgroundStroke: new Stroke({ color: selected ? '#f8fafc' : CASING, width: 1.5 }),
+        backgroundStroke: new Stroke({
+          color: selected ? SELECTION_ACCENT : CASING,
+          width: selected ? 3 : 1.5,
+        }),
         padding: [2, 5, 1, 5],
       }),
     })
-    return [marker, hole, label]
+    return [marker, hole, label, ...extra]
   }
 }
 

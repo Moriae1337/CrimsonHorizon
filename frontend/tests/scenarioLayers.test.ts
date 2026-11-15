@@ -4,7 +4,12 @@ import type Point from 'ol/geom/Point.js'
 import RegularShape from 'ol/style/RegularShape.js'
 import { parseScenario, type ScenarioStop } from '../src/scenario.ts'
 import {
+  SELECTION_ACCENT,
+  buildRouteFeatures,
   buildStopFeatures,
+  featureOptionId,
+  optionExtent,
+  routeStyle,
   formatSamples,
   stopLabel,
   stopLabelPlacement,
@@ -124,4 +129,49 @@ test('draws stops as a diamond and labels them when zoomed in', () => {
 
   const selected = stopStyle(() => 'wildcat-ridge')(feature, 1e-5)
   assert.ok((selected[0].getImage() as RegularShape).getRadius() > shape.getRadius())
+})
+
+test('maps every clickable route feature back to its option', () => {
+  const scenario = parseScenario(makeScenarioPayload())
+  const features = buildRouteFeatures(scenario)
+  const options = features.map(featureOptionId)
+  // Outbound lines (A1, A2 connector, B1), one badge per option, then the Start point.
+  assert.deepEqual(options, ['A', 'A', 'B', 'A', 'B', null])
+})
+
+test('fits the selected option to its outbound lines', () => {
+  const scenario = parseScenario(makeScenarioPayload())
+  const coords = scenario.routes.features
+    .filter((f) => f.properties.option === 'B' && f.properties.leg === 'outbound')
+    .flatMap((f) => f.geometry.coordinates)
+  const lons = coords.map((c) => c[0])
+  const lats = coords.map((c) => c[1])
+  assert.deepEqual(optionExtent(scenario, 'B'), [
+    Math.min(...lons),
+    Math.min(...lats),
+    Math.max(...lons),
+    Math.max(...lats),
+  ])
+  assert.equal(optionExtent(scenario, 'missing'), null)
+})
+
+test('highlights only the selected route option with the accent halo', () => {
+  const scenario = parseScenario(makeScenarioPayload())
+  const [lineA, , lineB] = buildRouteFeatures(scenario)
+  const style = routeStyle(scenario.route_options, () => 'B')
+  const haloColor = (styles: ReturnType<typeof style>) =>
+    styles.map((s) => s.getStroke()?.getColor()).filter((c) => c === SELECTION_ACCENT)
+  assert.equal(haloColor(style(lineA, 1e-3)).length, 0)
+  assert.equal(haloColor(style(lineB, 1e-3)).length, 1)
+  assert.equal(haloColor(routeStyle(scenario.route_options)(lineB, 1e-3)).length, 0)
+})
+
+test('rings the selected stop in the accent color', () => {
+  const [feature] = buildStopFeatures(twoStopScenario())
+  const ring = (selected: string | null) =>
+    stopStyle(() => selected)(feature, 1e-3).filter(
+      (s) => (s.getImage() as RegularShape | null)?.getStroke?.()?.getColor() === SELECTION_ACCENT,
+    )
+  assert.equal(ring(null).length, 0)
+  assert.equal(ring('wildcat-ridge').length, 1)
 })

@@ -17,6 +17,7 @@ import {
   buildRouteFeatures,
   buildStopFeatures,
   buildTrackFeatures,
+  featureOptionId,
   routeStyle,
   stopStyle,
   trackStyle,
@@ -46,8 +47,10 @@ interface MarsMapProps {
   scenario: Scenario | null
   showRoverTrack: boolean
   selectedStopId: string | null
+  selectedOptionId: string | null
   onSelectLandmark: (id: string | null) => void
   onSelectStop: (id: string | null) => void
+  onSelectOption: (id: string) => void
   onCursorMove: (coords: [number, number] | null) => void
   onZoomChange: (zoom: number) => void
 }
@@ -111,8 +114,10 @@ export function MarsMap({
   scenario,
   showRoverTrack,
   selectedStopId,
+  selectedOptionId,
   onSelectLandmark,
   onSelectStop,
+  onSelectOption,
   onCursorMove,
   onZoomChange,
 }: MarsMapProps) {
@@ -126,13 +131,26 @@ export function MarsMap({
   const trackLayerRef = useRef<VectorLayer<VectorSource> | null>(null)
   const stopLayerRef = useRef<VectorLayer<VectorSource> | null>(null)
   const selectedStopIdRef = useRef<string | null>(selectedStopId)
+  const selectedOptionIdRef = useRef<string | null>(selectedOptionId)
   const tooltipRef = useRef<HTMLDivElement | null>(null)
   const selectedIdRef = useRef<string | null>(selectedLandmarkId)
-  const callbacksRef = useRef({ onSelectLandmark, onSelectStop, onCursorMove, onZoomChange })
+  const callbacksRef = useRef({
+    onSelectLandmark,
+    onSelectStop,
+    onSelectOption,
+    onCursorMove,
+    onZoomChange,
+  })
 
   useEffect(() => {
-    callbacksRef.current = { onSelectLandmark, onSelectStop, onCursorMove, onZoomChange }
-  }, [onSelectLandmark, onSelectStop, onCursorMove, onZoomChange])
+    callbacksRef.current = {
+      onSelectLandmark,
+      onSelectStop,
+      onSelectOption,
+      onCursorMove,
+      onZoomChange,
+    }
+  }, [onSelectLandmark, onSelectStop, onSelectOption, onCursorMove, onZoomChange])
 
   useEffect(() => {
     const container = containerRef.current
@@ -235,10 +253,17 @@ export function MarsMap({
           }
           const pixel = lastPixel
           if (!pixel) return
-          const hasClickable = map.hasFeatureAtPixel(pixel, {
-            hitTolerance: 6,
-            layerFilter: (layer) => layer === vectorLayer || layer === stopLayer,
-          })
+          const hasClickable =
+            map.forEachFeatureAtPixel(
+              pixel,
+              (feature, layer) =>
+                layer === vectorLayer || layer === stopLayer || featureOptionId(feature) !== null,
+              {
+                hitTolerance: 6,
+                layerFilter: (layer) =>
+                  layer === vectorLayer || layer === stopLayer || layer === routeLayer,
+              },
+            ) === true
           container.style.cursor = hasClickable ? 'pointer' : ''
 
           const tooltip = tooltipRef.current
@@ -272,6 +297,16 @@ export function MarsMap({
       )
       if (stop) {
         callbacksRef.current.onSelectStop(stop)
+        return
+      }
+      // Then a route option's line, connector or badge selects that option.
+      const option = map.forEachFeatureAtPixel(
+        event.pixel,
+        (feature) => featureOptionId(feature) ?? undefined,
+        { hitTolerance: 5, layerFilter: (layer) => layer === routeLayer },
+      )
+      if (option) {
+        callbacksRef.current.onSelectOption(option)
         return
       }
       callbacksRef.current.onSelectStop(null)
@@ -336,7 +371,7 @@ export function MarsMap({
     stopSource?.clear()
     if (tooltipRef.current) tooltipRef.current.hidden = true
     if (!scenario) return
-    routeLayer.setStyle(routeStyle(scenario.route_options))
+    routeLayer.setStyle(routeStyle(scenario.route_options, () => selectedOptionIdRef.current))
     routeSource?.addFeatures(buildRouteFeatures(scenario))
     trackSource?.addFeatures(buildTrackFeatures(scenario))
     stopSource?.addFeatures(buildStopFeatures(scenario))
@@ -346,6 +381,11 @@ export function MarsMap({
     selectedStopIdRef.current = selectedStopId
     stopLayerRef.current?.changed()
   }, [selectedStopId])
+
+  useEffect(() => {
+    selectedOptionIdRef.current = selectedOptionId
+    routeLayerRef.current?.changed()
+  }, [selectedOptionId])
 
   useEffect(() => {
     trackLayerRef.current?.setVisible(showRoverTrack)

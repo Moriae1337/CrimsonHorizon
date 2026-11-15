@@ -4,7 +4,7 @@ import { formatMarsCoordinate } from './marsCatalog'
 import { useBackendHealth, type BackendStatus } from './useBackendHealth'
 import { useMarsData } from './useMarsData'
 import { ScenarioPanel } from './ScenarioPanel'
-import { extentOf } from './scenarioLayers'
+import { extentOf, optionExtent } from './scenarioLayers'
 import { useScenario } from './useScenario'
 
 const SCENARIO_ID = 'hawksbill-gap'
@@ -46,6 +46,8 @@ function App() {
   const [showRoverTrack, setShowRoverTrack] = useState(false)
   // Kept separate from the landmark selection: picking a stop never clears a landmark.
   const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
+  // The planner's chosen route option, shared by the panel list and the map lines.
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
 
   const globalLayers = useMemo(
     () => catalog.layers.filter((layer) => layer.scope === 'global'),
@@ -184,6 +186,14 @@ function App() {
               setSelectedStopId(id)
               if (stop) jumpTo([stop.coordinates[0], stop.coordinates[1]], 18)
             }}
+            selectedOptionId={selectedOptionId}
+            onSelectOption={(id) => {
+              // Pressing the selected option again clears it, like a toggle button.
+              const next = id === selectedOptionId ? null : id
+              setSelectedOptionId(next)
+              const extent = next && scenario ? optionExtent(scenario, next) : null
+              if (extent) setFocusTarget({ extent, nonce: Date.now() })
+            }}
           />
 
           {/* Global Base Layer */}
@@ -306,7 +316,9 @@ function App() {
             showRoverTrack={showRoverTrack}
             selectedStopId={selectedStopId}
             onSelectLandmark={setSelectedLandmarkId}
+            selectedOptionId={selectedOptionId}
             onSelectStop={setSelectedStopId}
+            onSelectOption={setSelectedOptionId}
             onCursorMove={setCursorCoords}
             onZoomChange={setZoom}
           />
