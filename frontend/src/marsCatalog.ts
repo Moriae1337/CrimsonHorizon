@@ -48,7 +48,8 @@ export const MARS_CRS = 'IAU2000:104905'
 export const MARS_RADIUS_M = 3_396_190.0
 export const MARS_EQUATORIAL_METERS_PER_DEGREE = (Math.PI * MARS_RADIUS_M) / 180
 export const MARS_WORLD_EXTENT: [number, number, number, number] = [-180, -90, 180, 90]
-export const MARS_MAX_VIEW_ZOOM = 17
+// Two levels past the HiRISE tiles (z17, 0.25 m/px) so metre-scale scenario routes stay readable.
+export const MARS_MAX_VIEW_ZOOM = 19
 
 export const DEFAULT_MAP_CATALOG: MapCatalog = {
   crs: MARS_CRS,

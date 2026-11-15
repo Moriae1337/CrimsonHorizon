@@ -4,6 +4,7 @@ import type {
   MarsLandmarkFeature,
   MarsLandmarksGeoJson,
 } from './marsCatalog.ts'
+import { parseScenario, type Scenario } from './scenario.ts'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -105,4 +106,25 @@ export async function fetchLandmarks(
     throw new Error('Landmarks endpoint returned an unexpected response.')
   }
   return data as unknown as MarsLandmarksGeoJson
+}
+
+/**
+ * Loads one prepared scenario (contract v1). Rejects with
+ * ScenarioVersionError for another MAJOR version, ScenarioFormatError for an invalid
+ * payload, and an AbortError when `signal` aborts, even after the body arrived.
+ */
+export async function fetchScenario(
+  apiUrl: string,
+  scenarioId: string,
+  signal: AbortSignal,
+): Promise<Scenario> {
+  const response = await fetch(`${apiUrl}/scenarios/${encodeURIComponent(scenarioId)}`, {
+    signal,
+  })
+  if (!response.ok) {
+    throw new Error(`Scenario request failed with HTTP ${response.status}.`)
+  }
+  const data: unknown = await response.json()
+  signal.throwIfAborted()
+  return parseScenario(data, scenarioId)
 }
