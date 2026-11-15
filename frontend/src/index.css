@@ -1,10 +1,21 @@
 @import 'tailwindcss';
 
+:root {
+  --ch-black: #212121;
+  --ch-white: #ebebeb;
+  --ch-accent: #8f5a53;
+}
+
 @theme {
   /* Core 3-Color Palette */
   --color-main: #212121;
   --color-secondary: #ebebeb;
   --color-accent: #8f5a53;
+
+  /* Explicit --ch tokens */
+  --color-ch-black: #212121;
+  --color-ch-white: #ebebeb;
+  --color-ch-accent: #8f5a53;
 
   /* Accent Interactive States */
   --color-accent-hover: #9f665e;
