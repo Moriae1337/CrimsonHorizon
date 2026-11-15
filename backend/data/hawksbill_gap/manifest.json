@@ -181,6 +181,28 @@
       "doi": "10.17189/1522646",
       "credit": "NASA/JPL-Caltech/LANL/CNES/CNRS, Mars 2020 SuperCam team, NASA PDS Geosciences Node",
       "license": "NASA PDS public archive",
+      "verification": {
+        "verified_on": "2026-11-14",
+        "version_id": "1.2",
+        "processing_level": "Calibrated",
+        "product_type": "CP2 (IRSpec single spectrum)",
+        "sol": 515,
+        "start_time_utc": "2022-08-01T20:56:53.574Z",
+        "target": "Berry_Hollow_515_scam",
+        "rover_motion_counter": "26_1222",
+        "measurement_condition": "Passive VISIR spectrum of the Berry Hollow abrasion patch (8 mm deep, abraded sol 504); raster point 1 of 5; laser off",
+        "data_url": "https://pds-geosciences.wustl.edu/m2020/urn-nasa-pds-mars2020_supercam/data_calibrated_spectra/sol_00515/scam_0515_0712658963_589_cp2_scam01515_berry_hollow_515_sca_01p01.fits",
+        "data_sha256": "dee0cc72ebc135cbf3e0776a7632a2a994fd23368e726a906496b1a1cd1eff39",
+        "label_sha256": "3efc7c2a31339f98f76fec42cdf71c03e3cb0f59a0d34aed31bcf311197225fd",
+        "wavelength_um": [1.31149, 2.59002],
+        "spectral_channels": 256,
+        "quality": {
+          "saturated": 0,
+          "glitch": 3,
+          "spike": 2,
+          "flagged_um": [2.5606, 2.5036, 2.476, 2.4224, 1.5162]
+        }
+      },
       "convention": {
         "crs": "none",
         "note": "Point measurement tied to the Berry Hollow abrasion patch at Wildcat Ridge by target name, not by coordinates."
@@ -196,6 +218,28 @@
       "doi": "10.17189/1522646",
       "credit": "NASA/JPL-Caltech/LANL/CNES/CNRS, Mars 2020 SuperCam team, NASA PDS Geosciences Node",
       "license": "NASA PDS public archive",
+      "verification": {
+        "verified_on": "2026-11-14",
+        "version_id": "1.2",
+        "processing_level": "Calibrated",
+        "product_type": "CP2 (IRSpec single spectrum)",
+        "sol": 493,
+        "start_time_utc": "2022-07-10T06:25:19.181Z",
+        "target": "Thornton_Gap_493_scam",
+        "rover_motion_counter": "26_1004",
+        "measurement_condition": "Passive VISIR spectrum of the Thornton Gap abrasion patch (7 mm deep, abraded sol 482); raster point 1 of 5; laser off",
+        "data_url": "https://pds-geosciences.wustl.edu/m2020/urn-nasa-pds-mars2020_supercam/data_calibrated_spectra/sol_00493/scam_0493_0710705884_778_cp2_scam01493_thornton_gap_493_sca_01p01.fits",
+        "data_sha256": "a49a69245ef0d6ba4a8452585040dab3ae42fe0ded019f0fe8889cc55514f8fd",
+        "label_sha256": "6cf23fcd74e30714d784c9fa81636a874d3fea61cd1e97014ca06bedd82f3a44",
+        "wavelength_um": [1.31153, 2.5901],
+        "spectral_channels": 256,
+        "quality": {
+          "saturated": 0,
+          "glitch": 0,
+          "spike": 8,
+          "flagged_um": [2.1778, 2.1637, 1.8733, 1.8477, 1.5727, 1.5028, 1.4299, 1.4269]
+        }
+      },
       "convention": {
         "crs": "none",
         "note": "Point measurement tied to the Thornton Gap abrasion patch at Skinner Ridge by target name, not by coordinates."
