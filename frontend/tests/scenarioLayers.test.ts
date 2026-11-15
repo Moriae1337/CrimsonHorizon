@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
+import LineString from 'ol/geom/LineString.js'
 import type Point from 'ol/geom/Point.js'
 import RegularShape from 'ol/style/RegularShape.js'
 import { parseScenario, type ScenarioStop } from '../src/scenario.ts'
@@ -139,6 +140,142 @@ test('maps every clickable route feature back to its option', () => {
   assert.deepEqual(options, ['A', 'A', 'B', 'A', 'B', null])
 })
 
+// Simulate missing coverage in a subspan of the existing route fixture.
+const terrainGap = {
+  id: 'terrain-gap-b-1',
+  kind: 'terrain-gap',
+  option: 'B',
+  from_m: 5,
+  to_m: 15,
+  length_m: 10,
+  source_ids: ['dtm-primary'],
+  review_status: 'open',
+  summary: 'No valid DTM elevation.',
+  geometry: {
+    type: 'LineString',
+    coordinates: [
+      [77.4062, 18.4577],
+      [77.4061, 18.458],
+    ],
+  },
+}
+
+function coveragePayload(unknowns: unknown[]) {
+  const payload = makeScenarioPayload()
+  return {
+    ...payload,
+    schema_version: '1.2',
+    sources: [
+      ...(payload.sources as unknown[]),
+      {
+        id: 'dtm-primary',
+        title: 'Mars 2020 Terrain Relative Navigation HiRISE DTM Mosaic',
+        url: 'https://doi.org/10.5066/P9REJ9JN',
+        credit: 'USGS Astrogeology',
+      },
+    ],
+    unknowns,
+  }
+}
+
+test('draws a partial terrain gap at its supplied geometry with its own line pattern', () => {
+  const scenario = parseScenario(
+    coveragePayload([terrainGap, { ...terrainGap, id: 'steep-b-1', kind: 'steep-segment' }]),
+  )
+  const features = buildRouteFeatures(scenario)
+  const gaps = features.filter((feature) => feature.get('role') === 'terrain-gap')
+  assert.equal(gaps.length, 1)
+  const [gap] = gaps
+  const geometry = gap.getGeometry()
+  assert.ok(geometry instanceof LineString)
+  assert.deepEqual(geometry.getCoordinates(), terrainGap.geometry.coordinates)
+  assert.equal(featureOptionId(gap), 'B')
+  assert.match(gap.get('tooltip'), /elevation, grade and ascent unavailable.*5–15 m/i)
+
+  const style = routeStyle(scenario.route_options, () => 'B')
+  const connector = features.find((feature) => feature.get('role') === 'connector')!
+  const covered = features.find((feature) => feature.getId() === 'b-outbound-1')!
+  const gapLine = style(gap, 1e-3).find((s) => s.getStroke()?.getLineDash()?.length === 4)
+  assert.ok(gapLine)
+  assert.notDeepEqual(
+    gapLine.getStroke()?.getLineDash(),
+    style(connector, 1e-3)
+      .find((s) => s.getStroke()?.getLineDash())
+      ?.getStroke()
+      ?.getLineDash(),
+  )
+  assert.ok(style(covered, 1e-3).every((s) => s.getZIndex()! < gapLine.getZIndex()!))
+})
+
+test('draws fully covered routes with their normal geometry and no gap overlay', () => {
+  const scenario = parseScenario(
+    coveragePayload([{ ...terrainGap, id: 'steep-b-1', kind: 'steep-segment' }]),
+  )
+  const features = buildRouteFeatures(scenario)
+  assert.ok(features.every((feature) => feature.get('role') !== 'terrain-gap'))
+  const route = features.find((feature) => feature.getId() === 'b-outbound-1')
+  const geometry = route?.getGeometry()
+  assert.ok(route && geometry instanceof LineString)
+  assert.deepEqual(geometry.getCoordinates(), [
+    [77.4063, 18.4574],
+    [77.4059, 18.4586],
+  ])
+  assert.ok(
+    routeStyle(scenario.route_options)(route, 1e-3).every((s) => !s.getStroke()?.getLineDash()),
+  )
+})
+
+test('keeps the covered option visible where its path overlaps another option’s gap', () => {
+  const scenario = parseScenario(coveragePayload([terrainGap]))
+  const features = buildRouteFeatures(scenario)
+  const covered = features.find((feature) => feature.getId() === 'a-outbound-1')!
+  const gap = features.find((feature) => feature.get('role') === 'terrain-gap')!
+  const coveredLine = covered.getGeometry() as LineString
+  const gapLine = gap.getGeometry() as LineString
+  // The fixture's outbound lines share the same coordinates, including this subspan.
+  for (const [lon, lat] of gapLine.getCoordinates()) {
+    const [closestLon, closestLat] = coveredLine.getClosestPoint([lon, lat])
+    assert.ok(Math.hypot(lon - closestLon, lat - closestLat) < 1e-12)
+  }
+
+  for (const selected of [null, 'A', 'B']) {
+    const style = routeStyle(scenario.route_options, () => selected)
+    const coveredEdge = Math.max(
+      ...style(covered, 1e-5).map((s) => (s.getStroke()?.getWidth() ?? 0) / 2),
+    )
+    for (const layer of style(gap, 1e-5)) {
+      const stroke = layer.getStroke()!
+      const gapEdge = Math.abs(stroke.getOffset() ?? 0) - (stroke.getWidth() ?? 0) / 2
+      assert.ok(gapEdge > coveredEdge, `Gap overlaps Option A with selection ${selected}`)
+    }
+  }
+})
+
+test('rejects a terrain gap whose position or route option is invalid', () => {
+  assert.throws(
+    () => parseScenario(coveragePayload([{ ...terrainGap, option: 'C' }])),
+    /unknowns\[0\]\.option/,
+  )
+  assert.throws(
+    () =>
+      parseScenario(
+        coveragePayload([
+          {
+            ...terrainGap,
+            geometry: {
+              type: 'LineString',
+              coordinates: [
+                [181, 18],
+                [77, 18],
+              ],
+            },
+          },
+        ]),
+      ),
+    /unknowns\[0\]\.geometry\.coordinates\[0\]/,
+  )
+})
+
 test('fits the selected option to its outbound lines', () => {
   const scenario = parseScenario(makeScenarioPayload())
   const coords = scenario.routes.features
@@ -160,7 +297,9 @@ test('highlights only the selected route option with the accent halo', () => {
   const [lineA, , lineB] = buildRouteFeatures(scenario)
   const style = routeStyle(scenario.route_options, () => 'B')
   const haloColor = (styles: ReturnType<typeof style>) =>
-    styles.map((s) => s.getStroke()?.getColor()).filter((c) => c === SELECTION_ACCENT)
+    styles.filter(
+      (s) => s.getStroke()?.getColor() === SELECTION_ACCENT && s.getStroke()!.getWidth()! > 10,
+    )
   assert.equal(haloColor(style(lineA, 1e-3)).length, 0)
   assert.equal(haloColor(style(lineB, 1e-3)).length, 1)
   assert.equal(haloColor(routeStyle(scenario.route_options)(lineB, 1e-3)).length, 0)

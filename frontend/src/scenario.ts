@@ -474,6 +474,9 @@ export function parseScenario(data: unknown, expectedId?: string): Scenario {
         return []
       }
       const option = text(zone.option, `${path}.option`)
+      const from_m = length(zone.from_m, `${path}.from_m`)
+      const to_m = length(zone.to_m, `${path}.to_m`)
+      if (kind === 'terrain-gap' && to_m < from_m) fail(`${path}.to_m must be at or after from_m`)
       if (!optionIds.has(option)) fail(`${path}.option "${option}" is not a route option`)
       return [
         {
@@ -484,8 +487,8 @@ export function parseScenario(data: unknown, expectedId?: string): Scenario {
             option,
             kind,
             source_ids: sourceIds(zone.source_ids, `${path}.source_ids`, known),
-            from_m: length(zone.from_m, `${path}.from_m`),
-            to_m: length(zone.to_m, `${path}.to_m`),
+            from_m,
+            to_m,
             length_m: length(zone.length_m, `${path}.length_m`),
             review_status: optionalText(zone.review_status, `${path}.review_status`),
             summary: optionalText(zone.summary, `${path}.summary`),

@@ -14,6 +14,8 @@ import WMTSTileGrid from 'ol/tilegrid/WMTS'
 import { useEffect, useRef } from 'react'
 import type { Scenario } from './scenario'
 import {
+  TERRAIN_GAP_DASH,
+  TERRAIN_GAP_LABEL,
   buildRouteFeatures,
   buildStopFeatures,
   buildTrackFeatures,
@@ -268,15 +270,26 @@ export function MarsMap({
 
           const tooltip = tooltipRef.current
           if (!tooltip) return
-          const hint = map.forEachFeatureAtPixel(
+          // Prefer coverage information where the gap overlaps tracks or route lines.
+          const gapHint = map.forEachFeatureAtPixel(
             pixel,
-            (feature) => feature.get('tooltip') as string | undefined,
-            {
-              hitTolerance: 5,
-              layerFilter: (layer) =>
-                layer === stopLayer || layer === routeLayer || layer === trackLayer,
-            },
+            (feature) =>
+              feature.get('role') === 'terrain-gap'
+                ? (feature.get('tooltip') as string)
+                : undefined,
+            { hitTolerance: 5, layerFilter: (layer) => layer === routeLayer },
           )
+          const hint =
+            gapHint ??
+            map.forEachFeatureAtPixel(
+              pixel,
+              (feature) => feature.get('tooltip') as string | undefined,
+              {
+                hitTolerance: 5,
+                layerFilter: (layer) =>
+                  layer === stopLayer || layer === routeLayer || layer === trackLayer,
+              },
+            )
           if (hint) {
             tooltip.textContent = hint
             tooltip.style.transform = `translate(${pixel[0] + 14}px, ${pixel[1] + 14}px)`
@@ -447,6 +460,20 @@ export function MarsMap({
           if (tooltipRef.current) tooltipRef.current.hidden = true
         }}
       />
+      {scenario?.caution_zones.some(({ properties }) => properties.kind === 'terrain-gap') && (
+        <div className="border-card-border bg-card text-text-main pointer-events-none absolute top-2 left-1/2 z-10 flex w-max max-w-[calc(100%-5rem)] -translate-x-1/2 items-center gap-2 rounded border px-2 py-1 text-xs">
+          <svg viewBox="0 0 34 10" width="34" height="10" className="shrink-0" aria-hidden="true">
+            <path
+              d="M0 5h34"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="4"
+              strokeDasharray={TERRAIN_GAP_DASH.join(' ')}
+            />
+          </svg>
+          <span>{TERRAIN_GAP_LABEL}</span>
+        </div>
+      )}
       <div
         ref={tooltipRef}
         hidden
