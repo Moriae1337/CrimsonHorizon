@@ -1,0 +1,5689 @@
+{
+  "scenario_id": "hawksbill-gap",
+  "stop_id": "skinner-ridge",
+  "created_at": "2026-11-14T12:43:41Z",
+  "field_question": "Is the Skinner Ridge sandstone block in place (lower Rockytop) or a float block (upper Rockytop)?",
+  "objective": "Evaluate whether line of sight from the Option A standoff viewpoint (~22 m southwest) permits inspection of the basal contact interface to determine bedding continuity, or whether intervening topography obscures the contact.",
+  "assumptions": [
+    "Observer eye height is 1.5 m above local ground surface.",
+    "Terrain elevation is bilinearly sampled from the primary 1 m USGS Mars 2020 HiRISE DTM.",
+    "Sightlines are straight rays connecting observer eye elevation to target top elevation.",
+    "Planetary curvature over ~22 m distance introduces < 0.1 mm vertical offset and is negligible.",
+    "Basal contact sits at ground level (target height 0.0 m).",
+    "Upper bedding and facies features sit at raised elevations (+0.5 m to +1.0 m)."
+  ],
+  "target": {
+    "name": "Skinner Ridge block",
+    "sample_name": "Swift Run",
+    "mission_designation": "M2020-490-11",
+    "coring_sol": 490,
+    "coordinates": [
+      77.40617078,
+      18.458931
+    ],
+    "ground_elevation_m": -2520.431,
+    "description": "Fine-to-medium grained laminated sandstone block (~1 m across) at the front of Jezero's western fan."
+  },
+  "standpoints": {
+    "illustrative_standoff": {
+      "standpoint_id": "standpoint-option-a-illustrative",
+      "label": "Illustrative Option A standoff (~22 m SW, matching scope rough check)",
+      "description": "Offset southwest along the Option A approach terrain (~21.2 m - 22 m), matching the scope's 0.15 m obstruction check.",
+      "coordinates": [
+        77.40589579,
+        18.45868638
+      ],
+      "ground_elevation_m": -2522.751,
+      "eye_height_m": 1.5,
+      "eye_elevation_m": -2521.251,
+      "distance_to_target_m": 21.2,
+      "viewing_azimuth_deg": 46.84,
+      "evaluations": {
+        "height_0_0m": {
+          "target_height_m": 0.0,
+          "target_elevation_m": -2520.431,
+          "status": "obstructed",
+          "is_obstructed": true,
+          "min_clearance_m": -0.149,
+          "obstruction_m": 0.149,
+          "critical_point": {
+            "fraction": 0.86,
+            "distance_from_observer_m": 18.23,
+            "distance_from_target_m": 2.97,
+            "coordinates": [
+              77.40613228,
+              18.45889675
+            ],
+            "terrain_elevation_m": -2520.397,
+            "sightline_elevation_m": -2520.546
+          },
+          "profile": [
+            {
+              "fraction": 0.0,
+              "distance_m": 0.0,
+              "lon": 77.40589579,
+              "lat": 18.45868638,
+              "terrain_elevation_m": -2522.751,
+              "sightline_elevation_m": -2521.251,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.01,
+              "distance_m": 0.21,
+              "lon": 77.40589854,
+              "lat": 18.45868883,
+              "terrain_elevation_m": -2522.736,
+              "sightline_elevation_m": -2521.243,
+              "clearance_m": 1.493
+            },
+            {
+              "fraction": 0.02,
+              "distance_m": 0.42,
+              "lon": 77.40590129,
+              "lat": 18.45869127,
+              "terrain_elevation_m": -2522.721,
+              "sightline_elevation_m": -2521.235,
+              "clearance_m": 1.486
+            },
+            {
+              "fraction": 0.03,
+              "distance_m": 0.64,
+              "lon": 77.40590404,
+              "lat": 18.45869372,
+              "terrain_elevation_m": -2522.705,
+              "sightline_elevation_m": -2521.227,
+              "clearance_m": 1.478
+            },
+            {
+              "fraction": 0.04,
+              "distance_m": 0.85,
+              "lon": 77.40590679,
+              "lat": 18.45869616,
+              "terrain_elevation_m": -2522.689,
+              "sightline_elevation_m": -2521.219,
+              "clearance_m": 1.47
+            },
+            {
+              "fraction": 0.05,
+              "distance_m": 1.06,
+              "lon": 77.40590954,
+              "lat": 18.45869861,
+              "terrain_elevation_m": -2522.673,
+              "sightline_elevation_m": -2521.21,
+              "clearance_m": 1.462
+            },
+            {
+              "fraction": 0.06,
+              "distance_m": 1.27,
+              "lon": 77.40591229,
+              "lat": 18.45870106,
+              "terrain_elevation_m": -2522.656,
+              "sightline_elevation_m": -2521.202,
+              "clearance_m": 1.454
+            },
+            {
+              "fraction": 0.07,
+              "distance_m": 1.48,
+              "lon": 77.40591504,
+              "lat": 18.4587035,
+              "terrain_elevation_m": -2522.64,
+              "sightline_elevation_m": -2521.194,
+              "clearance_m": 1.446
+            },
+            {
+              "fraction": 0.08,
+              "distance_m": 1.7,
+              "lon": 77.40591779,
+              "lat": 18.45870595,
+              "terrain_elevation_m": -2522.623,
+              "sightline_elevation_m": -2521.186,
+              "clearance_m": 1.437
+            },
+            {
+              "fraction": 0.09,
+              "distance_m": 1.91,
+              "lon": 77.40592054,
+              "lat": 18.4587084,
+              "terrain_elevation_m": -2522.606,
+              "sightline_elevation_m": -2521.178,
+              "clearance_m": 1.429
+            },
+            {
+              "fraction": 0.1,
+              "distance_m": 2.12,
+              "lon": 77.40592329,
+              "lat": 18.45871084,
+              "terrain_elevation_m": -2522.591,
+              "sightline_elevation_m": -2521.169,
+              "clearance_m": 1.422
+            },
+            {
+              "fraction": 0.11,
+              "distance_m": 2.33,
+              "lon": 77.40592604,
+              "lat": 18.45871329,
+              "terrain_elevation_m": -2522.577,
+              "sightline_elevation_m": -2521.161,
+              "clearance_m": 1.416
+            },
+            {
+              "fraction": 0.12,
+              "distance_m": 2.54,
+              "lon": 77.40592879,
+              "lat": 18.45871573,
+              "terrain_elevation_m": -2522.562,
+              "sightline_elevation_m": -2521.153,
+              "clearance_m": 1.409
+            },
+            {
+              "fraction": 0.13,
+              "distance_m": 2.76,
+              "lon": 77.40593154,
+              "lat": 18.45871818,
+              "terrain_elevation_m": -2522.548,
+              "sightline_elevation_m": -2521.145,
+              "clearance_m": 1.403
+            },
+            {
+              "fraction": 0.14,
+              "distance_m": 2.97,
+              "lon": 77.40593429,
+              "lat": 18.45872063,
+              "terrain_elevation_m": -2522.534,
+              "sightline_elevation_m": -2521.137,
+              "clearance_m": 1.397
+            },
+            {
+              "fraction": 0.15,
+              "distance_m": 3.18,
+              "lon": 77.40593704,
+              "lat": 18.45872307,
+              "terrain_elevation_m": -2522.519,
+              "sightline_elevation_m": -2521.128,
+              "clearance_m": 1.391
+            },
+            {
+              "fraction": 0.16,
+              "distance_m": 3.39,
+              "lon": 77.40593979,
+              "lat": 18.45872552,
+              "terrain_elevation_m": -2522.506,
+              "sightline_elevation_m": -2521.12,
+              "clearance_m": 1.386
+            },
+            {
+              "fraction": 0.17,
+              "distance_m": 3.6,
+              "lon": 77.40594254,
+              "lat": 18.45872797,
+              "terrain_elevation_m": -2522.493,
+              "sightline_elevation_m": -2521.112,
+              "clearance_m": 1.381
+            },
+            {
+              "fraction": 0.18,
+              "distance_m": 3.82,
+              "lon": 77.40594529,
+              "lat": 18.45873041,
+              "terrain_elevation_m": -2522.48,
+              "sightline_elevation_m": -2521.104,
+              "clearance_m": 1.376
+            },
+            {
+              "fraction": 0.19,
+              "distance_m": 4.03,
+              "lon": 77.40594804,
+              "lat": 18.45873286,
+              "terrain_elevation_m": -2522.467,
+              "sightline_elevation_m": -2521.096,
+              "clearance_m": 1.372
+            },
+            {
+              "fraction": 0.2,
+              "distance_m": 4.24,
+              "lon": 77.40595079,
+              "lat": 18.4587353,
+              "terrain_elevation_m": -2522.454,
+              "sightline_elevation_m": -2521.087,
+              "clearance_m": 1.367
+            },
+            {
+              "fraction": 0.21,
+              "distance_m": 4.45,
+              "lon": 77.40595354,
+              "lat": 18.45873775,
+              "terrain_elevation_m": -2522.441,
+              "sightline_elevation_m": -2521.079,
+              "clearance_m": 1.362
+            },
+            {
+              "fraction": 0.22,
+              "distance_m": 4.66,
+              "lon": 77.40595629,
+              "lat": 18.4587402,
+              "terrain_elevation_m": -2522.429,
+              "sightline_elevation_m": -2521.071,
+              "clearance_m": 1.358
+            },
+            {
+              "fraction": 0.23,
+              "distance_m": 4.88,
+              "lon": 77.40595904,
+              "lat": 18.45874264,
+              "terrain_elevation_m": -2522.416,
+              "sightline_elevation_m": -2521.063,
+              "clearance_m": 1.353
+            },
+            {
+              "fraction": 0.24,
+              "distance_m": 5.09,
+              "lon": 77.40596179,
+              "lat": 18.45874509,
+              "terrain_elevation_m": -2522.404,
+              "sightline_elevation_m": -2521.055,
+              "clearance_m": 1.349
+            },
+            {
+              "fraction": 0.25,
+              "distance_m": 5.3,
+              "lon": 77.40596454,
+              "lat": 18.45874754,
+              "terrain_elevation_m": -2522.392,
+              "sightline_elevation_m": -2521.046,
+              "clearance_m": 1.346
+            },
+            {
+              "fraction": 0.26,
+              "distance_m": 5.51,
+              "lon": 77.40596729,
+              "lat": 18.45874998,
+              "terrain_elevation_m": -2522.38,
+              "sightline_elevation_m": -2521.038,
+              "clearance_m": 1.342
+            },
+            {
+              "fraction": 0.27,
+              "distance_m": 5.72,
+              "lon": 77.40597004,
+              "lat": 18.45875243,
+              "terrain_elevation_m": -2522.369,
+              "sightline_elevation_m": -2521.03,
+              "clearance_m": 1.339
+            },
+            {
+              "fraction": 0.28,
+              "distance_m": 5.94,
+              "lon": 77.40597279,
+              "lat": 18.45875487,
+              "terrain_elevation_m": -2522.357,
+              "sightline_elevation_m": -2521.022,
+              "clearance_m": 1.335
+            },
+            {
+              "fraction": 0.29,
+              "distance_m": 6.15,
+              "lon": 77.40597554,
+              "lat": 18.45875732,
+              "terrain_elevation_m": -2522.346,
+              "sightline_elevation_m": -2521.014,
+              "clearance_m": 1.332
+            },
+            {
+              "fraction": 0.3,
+              "distance_m": 6.36,
+              "lon": 77.40597829,
+              "lat": 18.45875977,
+              "terrain_elevation_m": -2522.334,
+              "sightline_elevation_m": -2521.005,
+              "clearance_m": 1.329
+            },
+            {
+              "fraction": 0.31,
+              "distance_m": 6.57,
+              "lon": 77.40598104,
+              "lat": 18.45876221,
+              "terrain_elevation_m": -2522.322,
+              "sightline_elevation_m": -2520.997,
+              "clearance_m": 1.325
+            },
+            {
+              "fraction": 0.32,
+              "distance_m": 6.78,
+              "lon": 77.40598379,
+              "lat": 18.45876466,
+              "terrain_elevation_m": -2522.311,
+              "sightline_elevation_m": -2520.989,
+              "clearance_m": 1.322
+            },
+            {
+              "fraction": 0.33,
+              "distance_m": 6.99,
+              "lon": 77.40598654,
+              "lat": 18.4587671,
+              "terrain_elevation_m": -2522.3,
+              "sightline_elevation_m": -2520.981,
+              "clearance_m": 1.319
+            },
+            {
+              "fraction": 0.34,
+              "distance_m": 7.21,
+              "lon": 77.40598929,
+              "lat": 18.45876955,
+              "terrain_elevation_m": -2522.289,
+              "sightline_elevation_m": -2520.973,
+              "clearance_m": 1.317
+            },
+            {
+              "fraction": 0.35,
+              "distance_m": 7.42,
+              "lon": 77.40599204,
+              "lat": 18.458772,
+              "terrain_elevation_m": -2522.279,
+              "sightline_elevation_m": -2520.964,
+              "clearance_m": 1.314
+            },
+            {
+              "fraction": 0.36,
+              "distance_m": 7.63,
+              "lon": 77.40599479,
+              "lat": 18.45877444,
+              "terrain_elevation_m": -2522.268,
+              "sightline_elevation_m": -2520.956,
+              "clearance_m": 1.312
+            },
+            {
+              "fraction": 0.37,
+              "distance_m": 7.84,
+              "lon": 77.40599754,
+              "lat": 18.45877689,
+              "terrain_elevation_m": -2522.258,
+              "sightline_elevation_m": -2520.948,
+              "clearance_m": 1.31
+            },
+            {
+              "fraction": 0.38,
+              "distance_m": 8.05,
+              "lon": 77.40600029,
+              "lat": 18.45877934,
+              "terrain_elevation_m": -2522.247,
+              "sightline_elevation_m": -2520.94,
+              "clearance_m": 1.307
+            },
+            {
+              "fraction": 0.39,
+              "distance_m": 8.27,
+              "lon": 77.40600304,
+              "lat": 18.45878178,
+              "terrain_elevation_m": -2522.236,
+              "sightline_elevation_m": -2520.932,
+              "clearance_m": 1.304
+            },
+            {
+              "fraction": 0.4,
+              "distance_m": 8.48,
+              "lon": 77.40600579,
+              "lat": 18.45878423,
+              "terrain_elevation_m": -2522.224,
+              "sightline_elevation_m": -2520.923,
+              "clearance_m": 1.301
+            },
+            {
+              "fraction": 0.41,
+              "distance_m": 8.69,
+              "lon": 77.40600854,
+              "lat": 18.45878667,
+              "terrain_elevation_m": -2522.213,
+              "sightline_elevation_m": -2520.915,
+              "clearance_m": 1.298
+            },
+            {
+              "fraction": 0.42,
+              "distance_m": 8.9,
+              "lon": 77.40601129,
+              "lat": 18.45878912,
+              "terrain_elevation_m": -2522.202,
+              "sightline_elevation_m": -2520.907,
+              "clearance_m": 1.295
+            },
+            {
+              "fraction": 0.43,
+              "distance_m": 9.11,
+              "lon": 77.40601404,
+              "lat": 18.45879157,
+              "terrain_elevation_m": -2522.192,
+              "sightline_elevation_m": -2520.899,
+              "clearance_m": 1.293
+            },
+            {
+              "fraction": 0.44,
+              "distance_m": 9.33,
+              "lon": 77.40601679,
+              "lat": 18.45879401,
+              "terrain_elevation_m": -2522.182,
+              "sightline_elevation_m": -2520.891,
+              "clearance_m": 1.291
+            },
+            {
+              "fraction": 0.45,
+              "distance_m": 9.54,
+              "lon": 77.40601954,
+              "lat": 18.45879646,
+              "terrain_elevation_m": -2522.172,
+              "sightline_elevation_m": -2520.882,
+              "clearance_m": 1.289
+            },
+            {
+              "fraction": 0.46,
+              "distance_m": 9.75,
+              "lon": 77.40602229,
+              "lat": 18.45879891,
+              "terrain_elevation_m": -2522.162,
+              "sightline_elevation_m": -2520.874,
+              "clearance_m": 1.288
+            },
+            {
+              "fraction": 0.47,
+              "distance_m": 9.96,
+              "lon": 77.40602504,
+              "lat": 18.45880135,
+              "terrain_elevation_m": -2522.153,
+              "sightline_elevation_m": -2520.866,
+              "clearance_m": 1.287
+            },
+            {
+              "fraction": 0.48,
+              "distance_m": 10.17,
+              "lon": 77.40602779,
+              "lat": 18.4588038,
+              "terrain_elevation_m": -2522.144,
+              "sightline_elevation_m": -2520.858,
+              "clearance_m": 1.286
+            },
+            {
+              "fraction": 0.49,
+              "distance_m": 10.39,
+              "lon": 77.40603054,
+              "lat": 18.45880624,
+              "terrain_elevation_m": -2522.136,
+              "sightline_elevation_m": -2520.85,
+              "clearance_m": 1.287
+            },
+            {
+              "fraction": 0.5,
+              "distance_m": 10.6,
+              "lon": 77.40603329,
+              "lat": 18.45880869,
+              "terrain_elevation_m": -2522.129,
+              "sightline_elevation_m": -2520.841,
+              "clearance_m": 1.288
+            },
+            {
+              "fraction": 0.51,
+              "distance_m": 10.81,
+              "lon": 77.40603603,
+              "lat": 18.45881114,
+              "terrain_elevation_m": -2522.123,
+              "sightline_elevation_m": -2520.833,
+              "clearance_m": 1.29
+            },
+            {
+              "fraction": 0.52,
+              "distance_m": 11.02,
+              "lon": 77.40603878,
+              "lat": 18.45881358,
+              "terrain_elevation_m": -2522.102,
+              "sightline_elevation_m": -2520.825,
+              "clearance_m": 1.277
+            },
+            {
+              "fraction": 0.53,
+              "distance_m": 11.23,
+              "lon": 77.40604153,
+              "lat": 18.45881603,
+              "terrain_elevation_m": -2522.076,
+              "sightline_elevation_m": -2520.817,
+              "clearance_m": 1.259
+            },
+            {
+              "fraction": 0.54,
+              "distance_m": 11.45,
+              "lon": 77.40604428,
+              "lat": 18.45881847,
+              "terrain_elevation_m": -2522.054,
+              "sightline_elevation_m": -2520.809,
+              "clearance_m": 1.246
+            },
+            {
+              "fraction": 0.55,
+              "distance_m": 11.66,
+              "lon": 77.40604703,
+              "lat": 18.45882092,
+              "terrain_elevation_m": -2522.038,
+              "sightline_elevation_m": -2520.8,
+              "clearance_m": 1.237
+            },
+            {
+              "fraction": 0.56,
+              "distance_m": 11.87,
+              "lon": 77.40604978,
+              "lat": 18.45882337,
+              "terrain_elevation_m": -2522.026,
+              "sightline_elevation_m": -2520.792,
+              "clearance_m": 1.234
+            },
+            {
+              "fraction": 0.57,
+              "distance_m": 12.08,
+              "lon": 77.40605253,
+              "lat": 18.45882581,
+              "terrain_elevation_m": -2522.02,
+              "sightline_elevation_m": -2520.784,
+              "clearance_m": 1.236
+            },
+            {
+              "fraction": 0.58,
+              "distance_m": 12.29,
+              "lon": 77.40605528,
+              "lat": 18.45882826,
+              "terrain_elevation_m": -2522.017,
+              "sightline_elevation_m": -2520.776,
+              "clearance_m": 1.242
+            },
+            {
+              "fraction": 0.59,
+              "distance_m": 12.51,
+              "lon": 77.40605803,
+              "lat": 18.45883071,
+              "terrain_elevation_m": -2521.976,
+              "sightline_elevation_m": -2520.768,
+              "clearance_m": 1.208
+            },
+            {
+              "fraction": 0.6,
+              "distance_m": 12.72,
+              "lon": 77.40606078,
+              "lat": 18.45883315,
+              "terrain_elevation_m": -2521.924,
+              "sightline_elevation_m": -2520.759,
+              "clearance_m": 1.164
+            },
+            {
+              "fraction": 0.61,
+              "distance_m": 12.93,
+              "lon": 77.40606353,
+              "lat": 18.4588356,
+              "terrain_elevation_m": -2521.872,
+              "sightline_elevation_m": -2520.751,
+              "clearance_m": 1.121
+            },
+            {
+              "fraction": 0.62,
+              "distance_m": 13.14,
+              "lon": 77.40606628,
+              "lat": 18.45883804,
+              "terrain_elevation_m": -2521.821,
+              "sightline_elevation_m": -2520.743,
+              "clearance_m": 1.078
+            },
+            {
+              "fraction": 0.63,
+              "distance_m": 13.35,
+              "lon": 77.40606903,
+              "lat": 18.45884049,
+              "terrain_elevation_m": -2521.77,
+              "sightline_elevation_m": -2520.735,
+              "clearance_m": 1.035
+            },
+            {
+              "fraction": 0.64,
+              "distance_m": 13.57,
+              "lon": 77.40607178,
+              "lat": 18.45884294,
+              "terrain_elevation_m": -2521.719,
+              "sightline_elevation_m": -2520.727,
+              "clearance_m": 0.993
+            },
+            {
+              "fraction": 0.65,
+              "distance_m": 13.78,
+              "lon": 77.40607453,
+              "lat": 18.45884538,
+              "terrain_elevation_m": -2521.659,
+              "sightline_elevation_m": -2520.718,
+              "clearance_m": 0.94
+            },
+            {
+              "fraction": 0.66,
+              "distance_m": 13.99,
+              "lon": 77.40607728,
+              "lat": 18.45884783,
+              "terrain_elevation_m": -2521.589,
+              "sightline_elevation_m": -2520.71,
+              "clearance_m": 0.879
+            },
+            {
+              "fraction": 0.67,
+              "distance_m": 14.2,
+              "lon": 77.40608003,
+              "lat": 18.45885028,
+              "terrain_elevation_m": -2521.519,
+              "sightline_elevation_m": -2520.702,
+              "clearance_m": 0.817
+            },
+            {
+              "fraction": 0.68,
+              "distance_m": 14.41,
+              "lon": 77.40608278,
+              "lat": 18.45885272,
+              "terrain_elevation_m": -2521.448,
+              "sightline_elevation_m": -2520.694,
+              "clearance_m": 0.754
+            },
+            {
+              "fraction": 0.69,
+              "distance_m": 14.63,
+              "lon": 77.40608553,
+              "lat": 18.45885517,
+              "terrain_elevation_m": -2521.377,
+              "sightline_elevation_m": -2520.686,
+              "clearance_m": 0.692
+            },
+            {
+              "fraction": 0.7,
+              "distance_m": 14.84,
+              "lon": 77.40608828,
+              "lat": 18.45885761,
+              "terrain_elevation_m": -2521.307,
+              "sightline_elevation_m": -2520.677,
+              "clearance_m": 0.63
+            },
+            {
+              "fraction": 0.71,
+              "distance_m": 15.05,
+              "lon": 77.40609103,
+              "lat": 18.45886006,
+              "terrain_elevation_m": -2521.233,
+              "sightline_elevation_m": -2520.669,
+              "clearance_m": 0.564
+            },
+            {
+              "fraction": 0.72,
+              "distance_m": 15.26,
+              "lon": 77.40609378,
+              "lat": 18.45886251,
+              "terrain_elevation_m": -2521.157,
+              "sightline_elevation_m": -2520.661,
+              "clearance_m": 0.496
+            },
+            {
+              "fraction": 0.73,
+              "distance_m": 15.47,
+              "lon": 77.40609653,
+              "lat": 18.45886495,
+              "terrain_elevation_m": -2521.083,
+              "sightline_elevation_m": -2520.653,
+              "clearance_m": 0.43
+            },
+            {
+              "fraction": 0.74,
+              "distance_m": 15.69,
+              "lon": 77.40609928,
+              "lat": 18.4588674,
+              "terrain_elevation_m": -2521.008,
+              "sightline_elevation_m": -2520.645,
+              "clearance_m": 0.363
+            },
+            {
+              "fraction": 0.75,
+              "distance_m": 15.9,
+              "lon": 77.40610203,
+              "lat": 18.45886984,
+              "terrain_elevation_m": -2520.931,
+              "sightline_elevation_m": -2520.636,
+              "clearance_m": 0.295
+            },
+            {
+              "fraction": 0.76,
+              "distance_m": 16.11,
+              "lon": 77.40610478,
+              "lat": 18.45887229,
+              "terrain_elevation_m": -2520.854,
+              "sightline_elevation_m": -2520.628,
+              "clearance_m": 0.225
+            },
+            {
+              "fraction": 0.77,
+              "distance_m": 16.32,
+              "lon": 77.40610753,
+              "lat": 18.45887474,
+              "terrain_elevation_m": -2520.782,
+              "sightline_elevation_m": -2520.62,
+              "clearance_m": 0.162
+            },
+            {
+              "fraction": 0.78,
+              "distance_m": 16.53,
+              "lon": 77.40611028,
+              "lat": 18.45887718,
+              "terrain_elevation_m": -2520.715,
+              "sightline_elevation_m": -2520.612,
+              "clearance_m": 0.103
+            },
+            {
+              "fraction": 0.79,
+              "distance_m": 16.75,
+              "lon": 77.40611303,
+              "lat": 18.45887963,
+              "terrain_elevation_m": -2520.65,
+              "sightline_elevation_m": -2520.604,
+              "clearance_m": 0.047
+            },
+            {
+              "fraction": 0.8,
+              "distance_m": 16.96,
+              "lon": 77.40611578,
+              "lat": 18.45888208,
+              "terrain_elevation_m": -2520.602,
+              "sightline_elevation_m": -2520.595,
+              "clearance_m": 0.007
+            },
+            {
+              "fraction": 0.81,
+              "distance_m": 17.17,
+              "lon": 77.40611853,
+              "lat": 18.45888452,
+              "terrain_elevation_m": -2520.555,
+              "sightline_elevation_m": -2520.587,
+              "clearance_m": -0.032
+            },
+            {
+              "fraction": 0.82,
+              "distance_m": 17.38,
+              "lon": 77.40612128,
+              "lat": 18.45888697,
+              "terrain_elevation_m": -2520.508,
+              "sightline_elevation_m": -2520.579,
+              "clearance_m": -0.071
+            },
+            {
+              "fraction": 0.83,
+              "distance_m": 17.59,
+              "lon": 77.40612403,
+              "lat": 18.45888941,
+              "terrain_elevation_m": -2520.471,
+              "sightline_elevation_m": -2520.571,
+              "clearance_m": -0.1
+            },
+            {
+              "fraction": 0.84,
+              "distance_m": 17.81,
+              "lon": 77.40612678,
+              "lat": 18.45889186,
+              "terrain_elevation_m": -2520.444,
+              "sightline_elevation_m": -2520.563,
+              "clearance_m": -0.119
+            },
+            {
+              "fraction": 0.85,
+              "distance_m": 18.02,
+              "lon": 77.40612953,
+              "lat": 18.45889431,
+              "terrain_elevation_m": -2520.418,
+              "sightline_elevation_m": -2520.554,
+              "clearance_m": -0.137
+            },
+            {
+              "fraction": 0.86,
+              "distance_m": 18.23,
+              "lon": 77.40613228,
+              "lat": 18.45889675,
+              "terrain_elevation_m": -2520.397,
+              "sightline_elevation_m": -2520.546,
+              "clearance_m": -0.149
+            },
+            {
+              "fraction": 0.87,
+              "distance_m": 18.44,
+              "lon": 77.40613503,
+              "lat": 18.4588992,
+              "terrain_elevation_m": -2520.403,
+              "sightline_elevation_m": -2520.538,
+              "clearance_m": -0.135
+            },
+            {
+              "fraction": 0.88,
+              "distance_m": 18.65,
+              "lon": 77.40613778,
+              "lat": 18.45890165,
+              "terrain_elevation_m": -2520.406,
+              "sightline_elevation_m": -2520.53,
+              "clearance_m": -0.124
+            },
+            {
+              "fraction": 0.89,
+              "distance_m": 18.86,
+              "lon": 77.40614053,
+              "lat": 18.45890409,
+              "terrain_elevation_m": -2520.407,
+              "sightline_elevation_m": -2520.522,
+              "clearance_m": -0.114
+            },
+            {
+              "fraction": 0.9,
+              "distance_m": 19.08,
+              "lon": 77.40614328,
+              "lat": 18.45890654,
+              "terrain_elevation_m": -2520.41,
+              "sightline_elevation_m": -2520.513,
+              "clearance_m": -0.104
+            },
+            {
+              "fraction": 0.91,
+              "distance_m": 19.29,
+              "lon": 77.40614603,
+              "lat": 18.45890898,
+              "terrain_elevation_m": -2520.409,
+              "sightline_elevation_m": -2520.505,
+              "clearance_m": -0.096
+            },
+            {
+              "fraction": 0.92,
+              "distance_m": 19.5,
+              "lon": 77.40614878,
+              "lat": 18.45891143,
+              "terrain_elevation_m": -2520.405,
+              "sightline_elevation_m": -2520.497,
+              "clearance_m": -0.092
+            },
+            {
+              "fraction": 0.93,
+              "distance_m": 19.71,
+              "lon": 77.40615153,
+              "lat": 18.45891388,
+              "terrain_elevation_m": -2520.402,
+              "sightline_elevation_m": -2520.489,
+              "clearance_m": -0.087
+            },
+            {
+              "fraction": 0.94,
+              "distance_m": 19.92,
+              "lon": 77.40615428,
+              "lat": 18.45891632,
+              "terrain_elevation_m": -2520.409,
+              "sightline_elevation_m": -2520.481,
+              "clearance_m": -0.071
+            },
+            {
+              "fraction": 0.95,
+              "distance_m": 20.14,
+              "lon": 77.40615703,
+              "lat": 18.45891877,
+              "terrain_elevation_m": -2520.417,
+              "sightline_elevation_m": -2520.472,
+              "clearance_m": -0.056
+            },
+            {
+              "fraction": 0.96,
+              "distance_m": 20.35,
+              "lon": 77.40615978,
+              "lat": 18.45892122,
+              "terrain_elevation_m": -2520.425,
+              "sightline_elevation_m": -2520.464,
+              "clearance_m": -0.04
+            },
+            {
+              "fraction": 0.97,
+              "distance_m": 20.56,
+              "lon": 77.40616253,
+              "lat": 18.45892366,
+              "terrain_elevation_m": -2520.43,
+              "sightline_elevation_m": -2520.456,
+              "clearance_m": -0.026
+            },
+            {
+              "fraction": 0.98,
+              "distance_m": 20.77,
+              "lon": 77.40616528,
+              "lat": 18.45892611,
+              "terrain_elevation_m": -2520.434,
+              "sightline_elevation_m": -2520.448,
+              "clearance_m": -0.014
+            },
+            {
+              "fraction": 0.99,
+              "distance_m": 20.98,
+              "lon": 77.40616803,
+              "lat": 18.45892855,
+              "terrain_elevation_m": -2520.436,
+              "sightline_elevation_m": -2520.44,
+              "clearance_m": -0.004
+            },
+            {
+              "fraction": 1.0,
+              "distance_m": 21.2,
+              "lon": 77.40617078,
+              "lat": 18.458931,
+              "terrain_elevation_m": -2520.431,
+              "sightline_elevation_m": -2520.431,
+              "clearance_m": 0.0
+            }
+          ]
+        },
+        "height_0_5m": {
+          "target_height_m": 0.5,
+          "target_elevation_m": -2519.931,
+          "status": "clear",
+          "is_obstructed": false,
+          "min_clearance_m": 0.281,
+          "obstruction_m": 0.0,
+          "critical_point": {
+            "fraction": 0.86,
+            "distance_from_observer_m": 18.23,
+            "distance_from_target_m": 2.97,
+            "coordinates": [
+              77.40613228,
+              18.45889675
+            ],
+            "terrain_elevation_m": -2520.397,
+            "sightline_elevation_m": -2520.116
+          },
+          "profile": [
+            {
+              "fraction": 0.0,
+              "distance_m": 0.0,
+              "lon": 77.40589579,
+              "lat": 18.45868638,
+              "terrain_elevation_m": -2522.751,
+              "sightline_elevation_m": -2521.251,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.01,
+              "distance_m": 0.21,
+              "lon": 77.40589854,
+              "lat": 18.45868883,
+              "terrain_elevation_m": -2522.736,
+              "sightline_elevation_m": -2521.238,
+              "clearance_m": 1.498
+            },
+            {
+              "fraction": 0.02,
+              "distance_m": 0.42,
+              "lon": 77.40590129,
+              "lat": 18.45869127,
+              "terrain_elevation_m": -2522.721,
+              "sightline_elevation_m": -2521.225,
+              "clearance_m": 1.496
+            },
+            {
+              "fraction": 0.03,
+              "distance_m": 0.64,
+              "lon": 77.40590404,
+              "lat": 18.45869372,
+              "terrain_elevation_m": -2522.705,
+              "sightline_elevation_m": -2521.212,
+              "clearance_m": 1.493
+            },
+            {
+              "fraction": 0.04,
+              "distance_m": 0.85,
+              "lon": 77.40590679,
+              "lat": 18.45869616,
+              "terrain_elevation_m": -2522.689,
+              "sightline_elevation_m": -2521.199,
+              "clearance_m": 1.49
+            },
+            {
+              "fraction": 0.05,
+              "distance_m": 1.06,
+              "lon": 77.40590954,
+              "lat": 18.45869861,
+              "terrain_elevation_m": -2522.673,
+              "sightline_elevation_m": -2521.185,
+              "clearance_m": 1.487
+            },
+            {
+              "fraction": 0.06,
+              "distance_m": 1.27,
+              "lon": 77.40591229,
+              "lat": 18.45870106,
+              "terrain_elevation_m": -2522.656,
+              "sightline_elevation_m": -2521.172,
+              "clearance_m": 1.484
+            },
+            {
+              "fraction": 0.07,
+              "distance_m": 1.48,
+              "lon": 77.40591504,
+              "lat": 18.4587035,
+              "terrain_elevation_m": -2522.64,
+              "sightline_elevation_m": -2521.159,
+              "clearance_m": 1.481
+            },
+            {
+              "fraction": 0.08,
+              "distance_m": 1.7,
+              "lon": 77.40591779,
+              "lat": 18.45870595,
+              "terrain_elevation_m": -2522.623,
+              "sightline_elevation_m": -2521.146,
+              "clearance_m": 1.477
+            },
+            {
+              "fraction": 0.09,
+              "distance_m": 1.91,
+              "lon": 77.40592054,
+              "lat": 18.4587084,
+              "terrain_elevation_m": -2522.606,
+              "sightline_elevation_m": -2521.133,
+              "clearance_m": 1.474
+            },
+            {
+              "fraction": 0.1,
+              "distance_m": 2.12,
+              "lon": 77.40592329,
+              "lat": 18.45871084,
+              "terrain_elevation_m": -2522.591,
+              "sightline_elevation_m": -2521.119,
+              "clearance_m": 1.472
+            },
+            {
+              "fraction": 0.11,
+              "distance_m": 2.33,
+              "lon": 77.40592604,
+              "lat": 18.45871329,
+              "terrain_elevation_m": -2522.577,
+              "sightline_elevation_m": -2521.106,
+              "clearance_m": 1.471
+            },
+            {
+              "fraction": 0.12,
+              "distance_m": 2.54,
+              "lon": 77.40592879,
+              "lat": 18.45871573,
+              "terrain_elevation_m": -2522.562,
+              "sightline_elevation_m": -2521.093,
+              "clearance_m": 1.469
+            },
+            {
+              "fraction": 0.13,
+              "distance_m": 2.76,
+              "lon": 77.40593154,
+              "lat": 18.45871818,
+              "terrain_elevation_m": -2522.548,
+              "sightline_elevation_m": -2521.08,
+              "clearance_m": 1.468
+            },
+            {
+              "fraction": 0.14,
+              "distance_m": 2.97,
+              "lon": 77.40593429,
+              "lat": 18.45872063,
+              "terrain_elevation_m": -2522.534,
+              "sightline_elevation_m": -2521.067,
+              "clearance_m": 1.467
+            },
+            {
+              "fraction": 0.15,
+              "distance_m": 3.18,
+              "lon": 77.40593704,
+              "lat": 18.45872307,
+              "terrain_elevation_m": -2522.519,
+              "sightline_elevation_m": -2521.053,
+              "clearance_m": 1.466
+            },
+            {
+              "fraction": 0.16,
+              "distance_m": 3.39,
+              "lon": 77.40593979,
+              "lat": 18.45872552,
+              "terrain_elevation_m": -2522.506,
+              "sightline_elevation_m": -2521.04,
+              "clearance_m": 1.466
+            },
+            {
+              "fraction": 0.17,
+              "distance_m": 3.6,
+              "lon": 77.40594254,
+              "lat": 18.45872797,
+              "terrain_elevation_m": -2522.493,
+              "sightline_elevation_m": -2521.027,
+              "clearance_m": 1.466
+            },
+            {
+              "fraction": 0.18,
+              "distance_m": 3.82,
+              "lon": 77.40594529,
+              "lat": 18.45873041,
+              "terrain_elevation_m": -2522.48,
+              "sightline_elevation_m": -2521.014,
+              "clearance_m": 1.466
+            },
+            {
+              "fraction": 0.19,
+              "distance_m": 4.03,
+              "lon": 77.40594804,
+              "lat": 18.45873286,
+              "terrain_elevation_m": -2522.467,
+              "sightline_elevation_m": -2521.001,
+              "clearance_m": 1.467
+            },
+            {
+              "fraction": 0.2,
+              "distance_m": 4.24,
+              "lon": 77.40595079,
+              "lat": 18.4587353,
+              "terrain_elevation_m": -2522.454,
+              "sightline_elevation_m": -2520.987,
+              "clearance_m": 1.467
+            },
+            {
+              "fraction": 0.21,
+              "distance_m": 4.45,
+              "lon": 77.40595354,
+              "lat": 18.45873775,
+              "terrain_elevation_m": -2522.441,
+              "sightline_elevation_m": -2520.974,
+              "clearance_m": 1.467
+            },
+            {
+              "fraction": 0.22,
+              "distance_m": 4.66,
+              "lon": 77.40595629,
+              "lat": 18.4587402,
+              "terrain_elevation_m": -2522.429,
+              "sightline_elevation_m": -2520.961,
+              "clearance_m": 1.468
+            },
+            {
+              "fraction": 0.23,
+              "distance_m": 4.88,
+              "lon": 77.40595904,
+              "lat": 18.45874264,
+              "terrain_elevation_m": -2522.416,
+              "sightline_elevation_m": -2520.948,
+              "clearance_m": 1.468
+            },
+            {
+              "fraction": 0.24,
+              "distance_m": 5.09,
+              "lon": 77.40596179,
+              "lat": 18.45874509,
+              "terrain_elevation_m": -2522.404,
+              "sightline_elevation_m": -2520.935,
+              "clearance_m": 1.469
+            },
+            {
+              "fraction": 0.25,
+              "distance_m": 5.3,
+              "lon": 77.40596454,
+              "lat": 18.45874754,
+              "terrain_elevation_m": -2522.392,
+              "sightline_elevation_m": -2520.921,
+              "clearance_m": 1.471
+            },
+            {
+              "fraction": 0.26,
+              "distance_m": 5.51,
+              "lon": 77.40596729,
+              "lat": 18.45874998,
+              "terrain_elevation_m": -2522.38,
+              "sightline_elevation_m": -2520.908,
+              "clearance_m": 1.472
+            },
+            {
+              "fraction": 0.27,
+              "distance_m": 5.72,
+              "lon": 77.40597004,
+              "lat": 18.45875243,
+              "terrain_elevation_m": -2522.369,
+              "sightline_elevation_m": -2520.895,
+              "clearance_m": 1.474
+            },
+            {
+              "fraction": 0.28,
+              "distance_m": 5.94,
+              "lon": 77.40597279,
+              "lat": 18.45875487,
+              "terrain_elevation_m": -2522.357,
+              "sightline_elevation_m": -2520.882,
+              "clearance_m": 1.475
+            },
+            {
+              "fraction": 0.29,
+              "distance_m": 6.15,
+              "lon": 77.40597554,
+              "lat": 18.45875732,
+              "terrain_elevation_m": -2522.346,
+              "sightline_elevation_m": -2520.869,
+              "clearance_m": 1.477
+            },
+            {
+              "fraction": 0.3,
+              "distance_m": 6.36,
+              "lon": 77.40597829,
+              "lat": 18.45875977,
+              "terrain_elevation_m": -2522.334,
+              "sightline_elevation_m": -2520.855,
+              "clearance_m": 1.479
+            },
+            {
+              "fraction": 0.31,
+              "distance_m": 6.57,
+              "lon": 77.40598104,
+              "lat": 18.45876221,
+              "terrain_elevation_m": -2522.322,
+              "sightline_elevation_m": -2520.842,
+              "clearance_m": 1.48
+            },
+            {
+              "fraction": 0.32,
+              "distance_m": 6.78,
+              "lon": 77.40598379,
+              "lat": 18.45876466,
+              "terrain_elevation_m": -2522.311,
+              "sightline_elevation_m": -2520.829,
+              "clearance_m": 1.482
+            },
+            {
+              "fraction": 0.33,
+              "distance_m": 6.99,
+              "lon": 77.40598654,
+              "lat": 18.4587671,
+              "terrain_elevation_m": -2522.3,
+              "sightline_elevation_m": -2520.816,
+              "clearance_m": 1.484
+            },
+            {
+              "fraction": 0.34,
+              "distance_m": 7.21,
+              "lon": 77.40598929,
+              "lat": 18.45876955,
+              "terrain_elevation_m": -2522.289,
+              "sightline_elevation_m": -2520.803,
+              "clearance_m": 1.487
+            },
+            {
+              "fraction": 0.35,
+              "distance_m": 7.42,
+              "lon": 77.40599204,
+              "lat": 18.458772,
+              "terrain_elevation_m": -2522.279,
+              "sightline_elevation_m": -2520.789,
+              "clearance_m": 1.489
+            },
+            {
+              "fraction": 0.36,
+              "distance_m": 7.63,
+              "lon": 77.40599479,
+              "lat": 18.45877444,
+              "terrain_elevation_m": -2522.268,
+              "sightline_elevation_m": -2520.776,
+              "clearance_m": 1.492
+            },
+            {
+              "fraction": 0.37,
+              "distance_m": 7.84,
+              "lon": 77.40599754,
+              "lat": 18.45877689,
+              "terrain_elevation_m": -2522.258,
+              "sightline_elevation_m": -2520.763,
+              "clearance_m": 1.495
+            },
+            {
+              "fraction": 0.38,
+              "distance_m": 8.05,
+              "lon": 77.40600029,
+              "lat": 18.45877934,
+              "terrain_elevation_m": -2522.247,
+              "sightline_elevation_m": -2520.75,
+              "clearance_m": 1.497
+            },
+            {
+              "fraction": 0.39,
+              "distance_m": 8.27,
+              "lon": 77.40600304,
+              "lat": 18.45878178,
+              "terrain_elevation_m": -2522.236,
+              "sightline_elevation_m": -2520.737,
+              "clearance_m": 1.499
+            },
+            {
+              "fraction": 0.4,
+              "distance_m": 8.48,
+              "lon": 77.40600579,
+              "lat": 18.45878423,
+              "terrain_elevation_m": -2522.224,
+              "sightline_elevation_m": -2520.723,
+              "clearance_m": 1.501
+            },
+            {
+              "fraction": 0.41,
+              "distance_m": 8.69,
+              "lon": 77.40600854,
+              "lat": 18.45878667,
+              "terrain_elevation_m": -2522.213,
+              "sightline_elevation_m": -2520.71,
+              "clearance_m": 1.503
+            },
+            {
+              "fraction": 0.42,
+              "distance_m": 8.9,
+              "lon": 77.40601129,
+              "lat": 18.45878912,
+              "terrain_elevation_m": -2522.202,
+              "sightline_elevation_m": -2520.697,
+              "clearance_m": 1.505
+            },
+            {
+              "fraction": 0.43,
+              "distance_m": 9.11,
+              "lon": 77.40601404,
+              "lat": 18.45879157,
+              "terrain_elevation_m": -2522.192,
+              "sightline_elevation_m": -2520.684,
+              "clearance_m": 1.508
+            },
+            {
+              "fraction": 0.44,
+              "distance_m": 9.33,
+              "lon": 77.40601679,
+              "lat": 18.45879401,
+              "terrain_elevation_m": -2522.182,
+              "sightline_elevation_m": -2520.671,
+              "clearance_m": 1.511
+            },
+            {
+              "fraction": 0.45,
+              "distance_m": 9.54,
+              "lon": 77.40601954,
+              "lat": 18.45879646,
+              "terrain_elevation_m": -2522.172,
+              "sightline_elevation_m": -2520.657,
+              "clearance_m": 1.514
+            },
+            {
+              "fraction": 0.46,
+              "distance_m": 9.75,
+              "lon": 77.40602229,
+              "lat": 18.45879891,
+              "terrain_elevation_m": -2522.162,
+              "sightline_elevation_m": -2520.644,
+              "clearance_m": 1.518
+            },
+            {
+              "fraction": 0.47,
+              "distance_m": 9.96,
+              "lon": 77.40602504,
+              "lat": 18.45880135,
+              "terrain_elevation_m": -2522.153,
+              "sightline_elevation_m": -2520.631,
+              "clearance_m": 1.522
+            },
+            {
+              "fraction": 0.48,
+              "distance_m": 10.17,
+              "lon": 77.40602779,
+              "lat": 18.4588038,
+              "terrain_elevation_m": -2522.144,
+              "sightline_elevation_m": -2520.618,
+              "clearance_m": 1.526
+            },
+            {
+              "fraction": 0.49,
+              "distance_m": 10.39,
+              "lon": 77.40603054,
+              "lat": 18.45880624,
+              "terrain_elevation_m": -2522.136,
+              "sightline_elevation_m": -2520.605,
+              "clearance_m": 1.532
+            },
+            {
+              "fraction": 0.5,
+              "distance_m": 10.6,
+              "lon": 77.40603329,
+              "lat": 18.45880869,
+              "terrain_elevation_m": -2522.129,
+              "sightline_elevation_m": -2520.591,
+              "clearance_m": 1.538
+            },
+            {
+              "fraction": 0.51,
+              "distance_m": 10.81,
+              "lon": 77.40603603,
+              "lat": 18.45881114,
+              "terrain_elevation_m": -2522.123,
+              "sightline_elevation_m": -2520.578,
+              "clearance_m": 1.545
+            },
+            {
+              "fraction": 0.52,
+              "distance_m": 11.02,
+              "lon": 77.40603878,
+              "lat": 18.45881358,
+              "terrain_elevation_m": -2522.102,
+              "sightline_elevation_m": -2520.565,
+              "clearance_m": 1.537
+            },
+            {
+              "fraction": 0.53,
+              "distance_m": 11.23,
+              "lon": 77.40604153,
+              "lat": 18.45881603,
+              "terrain_elevation_m": -2522.076,
+              "sightline_elevation_m": -2520.552,
+              "clearance_m": 1.524
+            },
+            {
+              "fraction": 0.54,
+              "distance_m": 11.45,
+              "lon": 77.40604428,
+              "lat": 18.45881847,
+              "terrain_elevation_m": -2522.054,
+              "sightline_elevation_m": -2520.539,
+              "clearance_m": 1.516
+            },
+            {
+              "fraction": 0.55,
+              "distance_m": 11.66,
+              "lon": 77.40604703,
+              "lat": 18.45882092,
+              "terrain_elevation_m": -2522.038,
+              "sightline_elevation_m": -2520.525,
+              "clearance_m": 1.512
+            },
+            {
+              "fraction": 0.56,
+              "distance_m": 11.87,
+              "lon": 77.40604978,
+              "lat": 18.45882337,
+              "terrain_elevation_m": -2522.026,
+              "sightline_elevation_m": -2520.512,
+              "clearance_m": 1.514
+            },
+            {
+              "fraction": 0.57,
+              "distance_m": 12.08,
+              "lon": 77.40605253,
+              "lat": 18.45882581,
+              "terrain_elevation_m": -2522.02,
+              "sightline_elevation_m": -2520.499,
+              "clearance_m": 1.521
+            },
+            {
+              "fraction": 0.58,
+              "distance_m": 12.29,
+              "lon": 77.40605528,
+              "lat": 18.45882826,
+              "terrain_elevation_m": -2522.017,
+              "sightline_elevation_m": -2520.486,
+              "clearance_m": 1.532
+            },
+            {
+              "fraction": 0.59,
+              "distance_m": 12.51,
+              "lon": 77.40605803,
+              "lat": 18.45883071,
+              "terrain_elevation_m": -2521.976,
+              "sightline_elevation_m": -2520.473,
+              "clearance_m": 1.503
+            },
+            {
+              "fraction": 0.6,
+              "distance_m": 12.72,
+              "lon": 77.40606078,
+              "lat": 18.45883315,
+              "terrain_elevation_m": -2521.924,
+              "sightline_elevation_m": -2520.459,
+              "clearance_m": 1.464
+            },
+            {
+              "fraction": 0.61,
+              "distance_m": 12.93,
+              "lon": 77.40606353,
+              "lat": 18.4588356,
+              "terrain_elevation_m": -2521.872,
+              "sightline_elevation_m": -2520.446,
+              "clearance_m": 1.426
+            },
+            {
+              "fraction": 0.62,
+              "distance_m": 13.14,
+              "lon": 77.40606628,
+              "lat": 18.45883804,
+              "terrain_elevation_m": -2521.821,
+              "sightline_elevation_m": -2520.433,
+              "clearance_m": 1.388
+            },
+            {
+              "fraction": 0.63,
+              "distance_m": 13.35,
+              "lon": 77.40606903,
+              "lat": 18.45884049,
+              "terrain_elevation_m": -2521.77,
+              "sightline_elevation_m": -2520.42,
+              "clearance_m": 1.35
+            },
+            {
+              "fraction": 0.64,
+              "distance_m": 13.57,
+              "lon": 77.40607178,
+              "lat": 18.45884294,
+              "terrain_elevation_m": -2521.719,
+              "sightline_elevation_m": -2520.407,
+              "clearance_m": 1.313
+            },
+            {
+              "fraction": 0.65,
+              "distance_m": 13.78,
+              "lon": 77.40607453,
+              "lat": 18.45884538,
+              "terrain_elevation_m": -2521.659,
+              "sightline_elevation_m": -2520.393,
+              "clearance_m": 1.265
+            },
+            {
+              "fraction": 0.66,
+              "distance_m": 13.99,
+              "lon": 77.40607728,
+              "lat": 18.45884783,
+              "terrain_elevation_m": -2521.589,
+              "sightline_elevation_m": -2520.38,
+              "clearance_m": 1.209
+            },
+            {
+              "fraction": 0.67,
+              "distance_m": 14.2,
+              "lon": 77.40608003,
+              "lat": 18.45885028,
+              "terrain_elevation_m": -2521.519,
+              "sightline_elevation_m": -2520.367,
+              "clearance_m": 1.152
+            },
+            {
+              "fraction": 0.68,
+              "distance_m": 14.41,
+              "lon": 77.40608278,
+              "lat": 18.45885272,
+              "terrain_elevation_m": -2521.448,
+              "sightline_elevation_m": -2520.354,
+              "clearance_m": 1.094
+            },
+            {
+              "fraction": 0.69,
+              "distance_m": 14.63,
+              "lon": 77.40608553,
+              "lat": 18.45885517,
+              "terrain_elevation_m": -2521.377,
+              "sightline_elevation_m": -2520.341,
+              "clearance_m": 1.037
+            },
+            {
+              "fraction": 0.7,
+              "distance_m": 14.84,
+              "lon": 77.40608828,
+              "lat": 18.45885761,
+              "terrain_elevation_m": -2521.307,
+              "sightline_elevation_m": -2520.327,
+              "clearance_m": 0.98
+            },
+            {
+              "fraction": 0.71,
+              "distance_m": 15.05,
+              "lon": 77.40609103,
+              "lat": 18.45886006,
+              "terrain_elevation_m": -2521.233,
+              "sightline_elevation_m": -2520.314,
+              "clearance_m": 0.919
+            },
+            {
+              "fraction": 0.72,
+              "distance_m": 15.26,
+              "lon": 77.40609378,
+              "lat": 18.45886251,
+              "terrain_elevation_m": -2521.157,
+              "sightline_elevation_m": -2520.301,
+              "clearance_m": 0.856
+            },
+            {
+              "fraction": 0.73,
+              "distance_m": 15.47,
+              "lon": 77.40609653,
+              "lat": 18.45886495,
+              "terrain_elevation_m": -2521.083,
+              "sightline_elevation_m": -2520.288,
+              "clearance_m": 0.795
+            },
+            {
+              "fraction": 0.74,
+              "distance_m": 15.69,
+              "lon": 77.40609928,
+              "lat": 18.4588674,
+              "terrain_elevation_m": -2521.008,
+              "sightline_elevation_m": -2520.275,
+              "clearance_m": 0.733
+            },
+            {
+              "fraction": 0.75,
+              "distance_m": 15.9,
+              "lon": 77.40610203,
+              "lat": 18.45886984,
+              "terrain_elevation_m": -2520.931,
+              "sightline_elevation_m": -2520.261,
+              "clearance_m": 0.67
+            },
+            {
+              "fraction": 0.76,
+              "distance_m": 16.11,
+              "lon": 77.40610478,
+              "lat": 18.45887229,
+              "terrain_elevation_m": -2520.854,
+              "sightline_elevation_m": -2520.248,
+              "clearance_m": 0.605
+            },
+            {
+              "fraction": 0.77,
+              "distance_m": 16.32,
+              "lon": 77.40610753,
+              "lat": 18.45887474,
+              "terrain_elevation_m": -2520.782,
+              "sightline_elevation_m": -2520.235,
+              "clearance_m": 0.547
+            },
+            {
+              "fraction": 0.78,
+              "distance_m": 16.53,
+              "lon": 77.40611028,
+              "lat": 18.45887718,
+              "terrain_elevation_m": -2520.715,
+              "sightline_elevation_m": -2520.222,
+              "clearance_m": 0.493
+            },
+            {
+              "fraction": 0.79,
+              "distance_m": 16.75,
+              "lon": 77.40611303,
+              "lat": 18.45887963,
+              "terrain_elevation_m": -2520.65,
+              "sightline_elevation_m": -2520.209,
+              "clearance_m": 0.442
+            },
+            {
+              "fraction": 0.8,
+              "distance_m": 16.96,
+              "lon": 77.40611578,
+              "lat": 18.45888208,
+              "terrain_elevation_m": -2520.602,
+              "sightline_elevation_m": -2520.195,
+              "clearance_m": 0.407
+            },
+            {
+              "fraction": 0.81,
+              "distance_m": 17.17,
+              "lon": 77.40611853,
+              "lat": 18.45888452,
+              "terrain_elevation_m": -2520.555,
+              "sightline_elevation_m": -2520.182,
+              "clearance_m": 0.373
+            },
+            {
+              "fraction": 0.82,
+              "distance_m": 17.38,
+              "lon": 77.40612128,
+              "lat": 18.45888697,
+              "terrain_elevation_m": -2520.508,
+              "sightline_elevation_m": -2520.169,
+              "clearance_m": 0.339
+            },
+            {
+              "fraction": 0.83,
+              "distance_m": 17.59,
+              "lon": 77.40612403,
+              "lat": 18.45888941,
+              "terrain_elevation_m": -2520.471,
+              "sightline_elevation_m": -2520.156,
+              "clearance_m": 0.315
+            },
+            {
+              "fraction": 0.84,
+              "distance_m": 17.81,
+              "lon": 77.40612678,
+              "lat": 18.45889186,
+              "terrain_elevation_m": -2520.444,
+              "sightline_elevation_m": -2520.143,
+              "clearance_m": 0.301
+            },
+            {
+              "fraction": 0.85,
+              "distance_m": 18.02,
+              "lon": 77.40612953,
+              "lat": 18.45889431,
+              "terrain_elevation_m": -2520.418,
+              "sightline_elevation_m": -2520.129,
+              "clearance_m": 0.288
+            },
+            {
+              "fraction": 0.86,
+              "distance_m": 18.23,
+              "lon": 77.40613228,
+              "lat": 18.45889675,
+              "terrain_elevation_m": -2520.397,
+              "sightline_elevation_m": -2520.116,
+              "clearance_m": 0.281
+            },
+            {
+              "fraction": 0.87,
+              "distance_m": 18.44,
+              "lon": 77.40613503,
+              "lat": 18.4588992,
+              "terrain_elevation_m": -2520.403,
+              "sightline_elevation_m": -2520.103,
+              "clearance_m": 0.3
+            },
+            {
+              "fraction": 0.88,
+              "distance_m": 18.65,
+              "lon": 77.40613778,
+              "lat": 18.45890165,
+              "terrain_elevation_m": -2520.406,
+              "sightline_elevation_m": -2520.09,
+              "clearance_m": 0.316
+            },
+            {
+              "fraction": 0.89,
+              "distance_m": 18.86,
+              "lon": 77.40614053,
+              "lat": 18.45890409,
+              "terrain_elevation_m": -2520.407,
+              "sightline_elevation_m": -2520.077,
+              "clearance_m": 0.331
+            },
+            {
+              "fraction": 0.9,
+              "distance_m": 19.08,
+              "lon": 77.40614328,
+              "lat": 18.45890654,
+              "terrain_elevation_m": -2520.41,
+              "sightline_elevation_m": -2520.063,
+              "clearance_m": 0.346
+            },
+            {
+              "fraction": 0.91,
+              "distance_m": 19.29,
+              "lon": 77.40614603,
+              "lat": 18.45890898,
+              "terrain_elevation_m": -2520.409,
+              "sightline_elevation_m": -2520.05,
+              "clearance_m": 0.359
+            },
+            {
+              "fraction": 0.92,
+              "distance_m": 19.5,
+              "lon": 77.40614878,
+              "lat": 18.45891143,
+              "terrain_elevation_m": -2520.405,
+              "sightline_elevation_m": -2520.037,
+              "clearance_m": 0.368
+            },
+            {
+              "fraction": 0.93,
+              "distance_m": 19.71,
+              "lon": 77.40615153,
+              "lat": 18.45891388,
+              "terrain_elevation_m": -2520.402,
+              "sightline_elevation_m": -2520.024,
+              "clearance_m": 0.378
+            },
+            {
+              "fraction": 0.94,
+              "distance_m": 19.92,
+              "lon": 77.40615428,
+              "lat": 18.45891632,
+              "terrain_elevation_m": -2520.409,
+              "sightline_elevation_m": -2520.011,
+              "clearance_m": 0.399
+            },
+            {
+              "fraction": 0.95,
+              "distance_m": 20.14,
+              "lon": 77.40615703,
+              "lat": 18.45891877,
+              "terrain_elevation_m": -2520.417,
+              "sightline_elevation_m": -2519.997,
+              "clearance_m": 0.419
+            },
+            {
+              "fraction": 0.96,
+              "distance_m": 20.35,
+              "lon": 77.40615978,
+              "lat": 18.45892122,
+              "terrain_elevation_m": -2520.425,
+              "sightline_elevation_m": -2519.984,
+              "clearance_m": 0.44
+            },
+            {
+              "fraction": 0.97,
+              "distance_m": 20.56,
+              "lon": 77.40616253,
+              "lat": 18.45892366,
+              "terrain_elevation_m": -2520.43,
+              "sightline_elevation_m": -2519.971,
+              "clearance_m": 0.459
+            },
+            {
+              "fraction": 0.98,
+              "distance_m": 20.77,
+              "lon": 77.40616528,
+              "lat": 18.45892611,
+              "terrain_elevation_m": -2520.434,
+              "sightline_elevation_m": -2519.958,
+              "clearance_m": 0.476
+            },
+            {
+              "fraction": 0.99,
+              "distance_m": 20.98,
+              "lon": 77.40616803,
+              "lat": 18.45892855,
+              "terrain_elevation_m": -2520.436,
+              "sightline_elevation_m": -2519.945,
+              "clearance_m": 0.491
+            },
+            {
+              "fraction": 1.0,
+              "distance_m": 21.2,
+              "lon": 77.40617078,
+              "lat": 18.458931,
+              "terrain_elevation_m": -2520.431,
+              "sightline_elevation_m": -2519.931,
+              "clearance_m": 0.5
+            }
+          ]
+        },
+        "height_1_0m": {
+          "target_height_m": 1.0,
+          "target_elevation_m": -2519.431,
+          "status": "clear",
+          "is_obstructed": false,
+          "min_clearance_m": 0.711,
+          "obstruction_m": 0.0,
+          "critical_point": {
+            "fraction": 0.86,
+            "distance_from_observer_m": 18.23,
+            "distance_from_target_m": 2.97,
+            "coordinates": [
+              77.40613228,
+              18.45889675
+            ],
+            "terrain_elevation_m": -2520.397,
+            "sightline_elevation_m": -2519.686
+          },
+          "profile": [
+            {
+              "fraction": 0.0,
+              "distance_m": 0.0,
+              "lon": 77.40589579,
+              "lat": 18.45868638,
+              "terrain_elevation_m": -2522.751,
+              "sightline_elevation_m": -2521.251,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.01,
+              "distance_m": 0.21,
+              "lon": 77.40589854,
+              "lat": 18.45868883,
+              "terrain_elevation_m": -2522.736,
+              "sightline_elevation_m": -2521.233,
+              "clearance_m": 1.503
+            },
+            {
+              "fraction": 0.02,
+              "distance_m": 0.42,
+              "lon": 77.40590129,
+              "lat": 18.45869127,
+              "terrain_elevation_m": -2522.721,
+              "sightline_elevation_m": -2521.215,
+              "clearance_m": 1.506
+            },
+            {
+              "fraction": 0.03,
+              "distance_m": 0.64,
+              "lon": 77.40590404,
+              "lat": 18.45869372,
+              "terrain_elevation_m": -2522.705,
+              "sightline_elevation_m": -2521.197,
+              "clearance_m": 1.508
+            },
+            {
+              "fraction": 0.04,
+              "distance_m": 0.85,
+              "lon": 77.40590679,
+              "lat": 18.45869616,
+              "terrain_elevation_m": -2522.689,
+              "sightline_elevation_m": -2521.179,
+              "clearance_m": 1.51
+            },
+            {
+              "fraction": 0.05,
+              "distance_m": 1.06,
+              "lon": 77.40590954,
+              "lat": 18.45869861,
+              "terrain_elevation_m": -2522.673,
+              "sightline_elevation_m": -2521.16,
+              "clearance_m": 1.512
+            },
+            {
+              "fraction": 0.06,
+              "distance_m": 1.27,
+              "lon": 77.40591229,
+              "lat": 18.45870106,
+              "terrain_elevation_m": -2522.656,
+              "sightline_elevation_m": -2521.142,
+              "clearance_m": 1.514
+            },
+            {
+              "fraction": 0.07,
+              "distance_m": 1.48,
+              "lon": 77.40591504,
+              "lat": 18.4587035,
+              "terrain_elevation_m": -2522.64,
+              "sightline_elevation_m": -2521.124,
+              "clearance_m": 1.516
+            },
+            {
+              "fraction": 0.08,
+              "distance_m": 1.7,
+              "lon": 77.40591779,
+              "lat": 18.45870595,
+              "terrain_elevation_m": -2522.623,
+              "sightline_elevation_m": -2521.106,
+              "clearance_m": 1.517
+            },
+            {
+              "fraction": 0.09,
+              "distance_m": 1.91,
+              "lon": 77.40592054,
+              "lat": 18.4587084,
+              "terrain_elevation_m": -2522.606,
+              "sightline_elevation_m": -2521.088,
+              "clearance_m": 1.519
+            },
+            {
+              "fraction": 0.1,
+              "distance_m": 2.12,
+              "lon": 77.40592329,
+              "lat": 18.45871084,
+              "terrain_elevation_m": -2522.591,
+              "sightline_elevation_m": -2521.069,
+              "clearance_m": 1.522
+            },
+            {
+              "fraction": 0.11,
+              "distance_m": 2.33,
+              "lon": 77.40592604,
+              "lat": 18.45871329,
+              "terrain_elevation_m": -2522.577,
+              "sightline_elevation_m": -2521.051,
+              "clearance_m": 1.526
+            },
+            {
+              "fraction": 0.12,
+              "distance_m": 2.54,
+              "lon": 77.40592879,
+              "lat": 18.45871573,
+              "terrain_elevation_m": -2522.562,
+              "sightline_elevation_m": -2521.033,
+              "clearance_m": 1.529
+            },
+            {
+              "fraction": 0.13,
+              "distance_m": 2.76,
+              "lon": 77.40593154,
+              "lat": 18.45871818,
+              "terrain_elevation_m": -2522.548,
+              "sightline_elevation_m": -2521.015,
+              "clearance_m": 1.533
+            },
+            {
+              "fraction": 0.14,
+              "distance_m": 2.97,
+              "lon": 77.40593429,
+              "lat": 18.45872063,
+              "terrain_elevation_m": -2522.534,
+              "sightline_elevation_m": -2520.997,
+              "clearance_m": 1.537
+            },
+            {
+              "fraction": 0.15,
+              "distance_m": 3.18,
+              "lon": 77.40593704,
+              "lat": 18.45872307,
+              "terrain_elevation_m": -2522.519,
+              "sightline_elevation_m": -2520.978,
+              "clearance_m": 1.541
+            },
+            {
+              "fraction": 0.16,
+              "distance_m": 3.39,
+              "lon": 77.40593979,
+              "lat": 18.45872552,
+              "terrain_elevation_m": -2522.506,
+              "sightline_elevation_m": -2520.96,
+              "clearance_m": 1.546
+            },
+            {
+              "fraction": 0.17,
+              "distance_m": 3.6,
+              "lon": 77.40594254,
+              "lat": 18.45872797,
+              "terrain_elevation_m": -2522.493,
+              "sightline_elevation_m": -2520.942,
+              "clearance_m": 1.551
+            },
+            {
+              "fraction": 0.18,
+              "distance_m": 3.82,
+              "lon": 77.40594529,
+              "lat": 18.45873041,
+              "terrain_elevation_m": -2522.48,
+              "sightline_elevation_m": -2520.924,
+              "clearance_m": 1.556
+            },
+            {
+              "fraction": 0.19,
+              "distance_m": 4.03,
+              "lon": 77.40594804,
+              "lat": 18.45873286,
+              "terrain_elevation_m": -2522.467,
+              "sightline_elevation_m": -2520.906,
+              "clearance_m": 1.562
+            },
+            {
+              "fraction": 0.2,
+              "distance_m": 4.24,
+              "lon": 77.40595079,
+              "lat": 18.4587353,
+              "terrain_elevation_m": -2522.454,
+              "sightline_elevation_m": -2520.887,
+              "clearance_m": 1.567
+            },
+            {
+              "fraction": 0.21,
+              "distance_m": 4.45,
+              "lon": 77.40595354,
+              "lat": 18.45873775,
+              "terrain_elevation_m": -2522.441,
+              "sightline_elevation_m": -2520.869,
+              "clearance_m": 1.572
+            },
+            {
+              "fraction": 0.22,
+              "distance_m": 4.66,
+              "lon": 77.40595629,
+              "lat": 18.4587402,
+              "terrain_elevation_m": -2522.429,
+              "sightline_elevation_m": -2520.851,
+              "clearance_m": 1.578
+            },
+            {
+              "fraction": 0.23,
+              "distance_m": 4.88,
+              "lon": 77.40595904,
+              "lat": 18.45874264,
+              "terrain_elevation_m": -2522.416,
+              "sightline_elevation_m": -2520.833,
+              "clearance_m": 1.583
+            },
+            {
+              "fraction": 0.24,
+              "distance_m": 5.09,
+              "lon": 77.40596179,
+              "lat": 18.45874509,
+              "terrain_elevation_m": -2522.404,
+              "sightline_elevation_m": -2520.815,
+              "clearance_m": 1.589
+            },
+            {
+              "fraction": 0.25,
+              "distance_m": 5.3,
+              "lon": 77.40596454,
+              "lat": 18.45874754,
+              "terrain_elevation_m": -2522.392,
+              "sightline_elevation_m": -2520.796,
+              "clearance_m": 1.596
+            },
+            {
+              "fraction": 0.26,
+              "distance_m": 5.51,
+              "lon": 77.40596729,
+              "lat": 18.45874998,
+              "terrain_elevation_m": -2522.38,
+              "sightline_elevation_m": -2520.778,
+              "clearance_m": 1.602
+            },
+            {
+              "fraction": 0.27,
+              "distance_m": 5.72,
+              "lon": 77.40597004,
+              "lat": 18.45875243,
+              "terrain_elevation_m": -2522.369,
+              "sightline_elevation_m": -2520.76,
+              "clearance_m": 1.609
+            },
+            {
+              "fraction": 0.28,
+              "distance_m": 5.94,
+              "lon": 77.40597279,
+              "lat": 18.45875487,
+              "terrain_elevation_m": -2522.357,
+              "sightline_elevation_m": -2520.742,
+              "clearance_m": 1.615
+            },
+            {
+              "fraction": 0.29,
+              "distance_m": 6.15,
+              "lon": 77.40597554,
+              "lat": 18.45875732,
+              "terrain_elevation_m": -2522.346,
+              "sightline_elevation_m": -2520.724,
+              "clearance_m": 1.622
+            },
+            {
+              "fraction": 0.3,
+              "distance_m": 6.36,
+              "lon": 77.40597829,
+              "lat": 18.45875977,
+              "terrain_elevation_m": -2522.334,
+              "sightline_elevation_m": -2520.705,
+              "clearance_m": 1.629
+            },
+            {
+              "fraction": 0.31,
+              "distance_m": 6.57,
+              "lon": 77.40598104,
+              "lat": 18.45876221,
+              "terrain_elevation_m": -2522.322,
+              "sightline_elevation_m": -2520.687,
+              "clearance_m": 1.635
+            },
+            {
+              "fraction": 0.32,
+              "distance_m": 6.78,
+              "lon": 77.40598379,
+              "lat": 18.45876466,
+              "terrain_elevation_m": -2522.311,
+              "sightline_elevation_m": -2520.669,
+              "clearance_m": 1.642
+            },
+            {
+              "fraction": 0.33,
+              "distance_m": 6.99,
+              "lon": 77.40598654,
+              "lat": 18.4587671,
+              "terrain_elevation_m": -2522.3,
+              "sightline_elevation_m": -2520.651,
+              "clearance_m": 1.649
+            },
+            {
+              "fraction": 0.34,
+              "distance_m": 7.21,
+              "lon": 77.40598929,
+              "lat": 18.45876955,
+              "terrain_elevation_m": -2522.289,
+              "sightline_elevation_m": -2520.633,
+              "clearance_m": 1.657
+            },
+            {
+              "fraction": 0.35,
+              "distance_m": 7.42,
+              "lon": 77.40599204,
+              "lat": 18.458772,
+              "terrain_elevation_m": -2522.279,
+              "sightline_elevation_m": -2520.614,
+              "clearance_m": 1.664
+            },
+            {
+              "fraction": 0.36,
+              "distance_m": 7.63,
+              "lon": 77.40599479,
+              "lat": 18.45877444,
+              "terrain_elevation_m": -2522.268,
+              "sightline_elevation_m": -2520.596,
+              "clearance_m": 1.672
+            },
+            {
+              "fraction": 0.37,
+              "distance_m": 7.84,
+              "lon": 77.40599754,
+              "lat": 18.45877689,
+              "terrain_elevation_m": -2522.258,
+              "sightline_elevation_m": -2520.578,
+              "clearance_m": 1.68
+            },
+            {
+              "fraction": 0.38,
+              "distance_m": 8.05,
+              "lon": 77.40600029,
+              "lat": 18.45877934,
+              "terrain_elevation_m": -2522.247,
+              "sightline_elevation_m": -2520.56,
+              "clearance_m": 1.687
+            },
+            {
+              "fraction": 0.39,
+              "distance_m": 8.27,
+              "lon": 77.40600304,
+              "lat": 18.45878178,
+              "terrain_elevation_m": -2522.236,
+              "sightline_elevation_m": -2520.542,
+              "clearance_m": 1.694
+            },
+            {
+              "fraction": 0.4,
+              "distance_m": 8.48,
+              "lon": 77.40600579,
+              "lat": 18.45878423,
+              "terrain_elevation_m": -2522.224,
+              "sightline_elevation_m": -2520.523,
+              "clearance_m": 1.701
+            },
+            {
+              "fraction": 0.41,
+              "distance_m": 8.69,
+              "lon": 77.40600854,
+              "lat": 18.45878667,
+              "terrain_elevation_m": -2522.213,
+              "sightline_elevation_m": -2520.505,
+              "clearance_m": 1.708
+            },
+            {
+              "fraction": 0.42,
+              "distance_m": 8.9,
+              "lon": 77.40601129,
+              "lat": 18.45878912,
+              "terrain_elevation_m": -2522.202,
+              "sightline_elevation_m": -2520.487,
+              "clearance_m": 1.715
+            },
+            {
+              "fraction": 0.43,
+              "distance_m": 9.11,
+              "lon": 77.40601404,
+              "lat": 18.45879157,
+              "terrain_elevation_m": -2522.192,
+              "sightline_elevation_m": -2520.469,
+              "clearance_m": 1.723
+            },
+            {
+              "fraction": 0.44,
+              "distance_m": 9.33,
+              "lon": 77.40601679,
+              "lat": 18.45879401,
+              "terrain_elevation_m": -2522.182,
+              "sightline_elevation_m": -2520.451,
+              "clearance_m": 1.731
+            },
+            {
+              "fraction": 0.45,
+              "distance_m": 9.54,
+              "lon": 77.40601954,
+              "lat": 18.45879646,
+              "terrain_elevation_m": -2522.172,
+              "sightline_elevation_m": -2520.432,
+              "clearance_m": 1.739
+            },
+            {
+              "fraction": 0.46,
+              "distance_m": 9.75,
+              "lon": 77.40602229,
+              "lat": 18.45879891,
+              "terrain_elevation_m": -2522.162,
+              "sightline_elevation_m": -2520.414,
+              "clearance_m": 1.748
+            },
+            {
+              "fraction": 0.47,
+              "distance_m": 9.96,
+              "lon": 77.40602504,
+              "lat": 18.45880135,
+              "terrain_elevation_m": -2522.153,
+              "sightline_elevation_m": -2520.396,
+              "clearance_m": 1.757
+            },
+            {
+              "fraction": 0.48,
+              "distance_m": 10.17,
+              "lon": 77.40602779,
+              "lat": 18.4588038,
+              "terrain_elevation_m": -2522.144,
+              "sightline_elevation_m": -2520.378,
+              "clearance_m": 1.766
+            },
+            {
+              "fraction": 0.49,
+              "distance_m": 10.39,
+              "lon": 77.40603054,
+              "lat": 18.45880624,
+              "terrain_elevation_m": -2522.136,
+              "sightline_elevation_m": -2520.36,
+              "clearance_m": 1.777
+            },
+            {
+              "fraction": 0.5,
+              "distance_m": 10.6,
+              "lon": 77.40603329,
+              "lat": 18.45880869,
+              "terrain_elevation_m": -2522.129,
+              "sightline_elevation_m": -2520.341,
+              "clearance_m": 1.788
+            },
+            {
+              "fraction": 0.51,
+              "distance_m": 10.81,
+              "lon": 77.40603603,
+              "lat": 18.45881114,
+              "terrain_elevation_m": -2522.123,
+              "sightline_elevation_m": -2520.323,
+              "clearance_m": 1.8
+            },
+            {
+              "fraction": 0.52,
+              "distance_m": 11.02,
+              "lon": 77.40603878,
+              "lat": 18.45881358,
+              "terrain_elevation_m": -2522.102,
+              "sightline_elevation_m": -2520.305,
+              "clearance_m": 1.797
+            },
+            {
+              "fraction": 0.53,
+              "distance_m": 11.23,
+              "lon": 77.40604153,
+              "lat": 18.45881603,
+              "terrain_elevation_m": -2522.076,
+              "sightline_elevation_m": -2520.287,
+              "clearance_m": 1.789
+            },
+            {
+              "fraction": 0.54,
+              "distance_m": 11.45,
+              "lon": 77.40604428,
+              "lat": 18.45881847,
+              "terrain_elevation_m": -2522.054,
+              "sightline_elevation_m": -2520.269,
+              "clearance_m": 1.786
+            },
+            {
+              "fraction": 0.55,
+              "distance_m": 11.66,
+              "lon": 77.40604703,
+              "lat": 18.45882092,
+              "terrain_elevation_m": -2522.038,
+              "sightline_elevation_m": -2520.25,
+              "clearance_m": 1.787
+            },
+            {
+              "fraction": 0.56,
+              "distance_m": 11.87,
+              "lon": 77.40604978,
+              "lat": 18.45882337,
+              "terrain_elevation_m": -2522.026,
+              "sightline_elevation_m": -2520.232,
+              "clearance_m": 1.794
+            },
+            {
+              "fraction": 0.57,
+              "distance_m": 12.08,
+              "lon": 77.40605253,
+              "lat": 18.45882581,
+              "terrain_elevation_m": -2522.02,
+              "sightline_elevation_m": -2520.214,
+              "clearance_m": 1.806
+            },
+            {
+              "fraction": 0.58,
+              "distance_m": 12.29,
+              "lon": 77.40605528,
+              "lat": 18.45882826,
+              "terrain_elevation_m": -2522.017,
+              "sightline_elevation_m": -2520.196,
+              "clearance_m": 1.822
+            },
+            {
+              "fraction": 0.59,
+              "distance_m": 12.51,
+              "lon": 77.40605803,
+              "lat": 18.45883071,
+              "terrain_elevation_m": -2521.976,
+              "sightline_elevation_m": -2520.178,
+              "clearance_m": 1.798
+            },
+            {
+              "fraction": 0.6,
+              "distance_m": 12.72,
+              "lon": 77.40606078,
+              "lat": 18.45883315,
+              "terrain_elevation_m": -2521.924,
+              "sightline_elevation_m": -2520.159,
+              "clearance_m": 1.764
+            },
+            {
+              "fraction": 0.61,
+              "distance_m": 12.93,
+              "lon": 77.40606353,
+              "lat": 18.4588356,
+              "terrain_elevation_m": -2521.872,
+              "sightline_elevation_m": -2520.141,
+              "clearance_m": 1.731
+            },
+            {
+              "fraction": 0.62,
+              "distance_m": 13.14,
+              "lon": 77.40606628,
+              "lat": 18.45883804,
+              "terrain_elevation_m": -2521.821,
+              "sightline_elevation_m": -2520.123,
+              "clearance_m": 1.698
+            },
+            {
+              "fraction": 0.63,
+              "distance_m": 13.35,
+              "lon": 77.40606903,
+              "lat": 18.45884049,
+              "terrain_elevation_m": -2521.77,
+              "sightline_elevation_m": -2520.105,
+              "clearance_m": 1.665
+            },
+            {
+              "fraction": 0.64,
+              "distance_m": 13.57,
+              "lon": 77.40607178,
+              "lat": 18.45884294,
+              "terrain_elevation_m": -2521.719,
+              "sightline_elevation_m": -2520.087,
+              "clearance_m": 1.633
+            },
+            {
+              "fraction": 0.65,
+              "distance_m": 13.78,
+              "lon": 77.40607453,
+              "lat": 18.45884538,
+              "terrain_elevation_m": -2521.659,
+              "sightline_elevation_m": -2520.068,
+              "clearance_m": 1.59
+            },
+            {
+              "fraction": 0.66,
+              "distance_m": 13.99,
+              "lon": 77.40607728,
+              "lat": 18.45884783,
+              "terrain_elevation_m": -2521.589,
+              "sightline_elevation_m": -2520.05,
+              "clearance_m": 1.539
+            },
+            {
+              "fraction": 0.67,
+              "distance_m": 14.2,
+              "lon": 77.40608003,
+              "lat": 18.45885028,
+              "terrain_elevation_m": -2521.519,
+              "sightline_elevation_m": -2520.032,
+              "clearance_m": 1.487
+            },
+            {
+              "fraction": 0.68,
+              "distance_m": 14.41,
+              "lon": 77.40608278,
+              "lat": 18.45885272,
+              "terrain_elevation_m": -2521.448,
+              "sightline_elevation_m": -2520.014,
+              "clearance_m": 1.434
+            },
+            {
+              "fraction": 0.69,
+              "distance_m": 14.63,
+              "lon": 77.40608553,
+              "lat": 18.45885517,
+              "terrain_elevation_m": -2521.377,
+              "sightline_elevation_m": -2519.996,
+              "clearance_m": 1.382
+            },
+            {
+              "fraction": 0.7,
+              "distance_m": 14.84,
+              "lon": 77.40608828,
+              "lat": 18.45885761,
+              "terrain_elevation_m": -2521.307,
+              "sightline_elevation_m": -2519.977,
+              "clearance_m": 1.33
+            },
+            {
+              "fraction": 0.71,
+              "distance_m": 15.05,
+              "lon": 77.40609103,
+              "lat": 18.45886006,
+              "terrain_elevation_m": -2521.233,
+              "sightline_elevation_m": -2519.959,
+              "clearance_m": 1.274
+            },
+            {
+              "fraction": 0.72,
+              "distance_m": 15.26,
+              "lon": 77.40609378,
+              "lat": 18.45886251,
+              "terrain_elevation_m": -2521.157,
+              "sightline_elevation_m": -2519.941,
+              "clearance_m": 1.216
+            },
+            {
+              "fraction": 0.73,
+              "distance_m": 15.47,
+              "lon": 77.40609653,
+              "lat": 18.45886495,
+              "terrain_elevation_m": -2521.083,
+              "sightline_elevation_m": -2519.923,
+              "clearance_m": 1.16
+            },
+            {
+              "fraction": 0.74,
+              "distance_m": 15.69,
+              "lon": 77.40609928,
+              "lat": 18.4588674,
+              "terrain_elevation_m": -2521.008,
+              "sightline_elevation_m": -2519.905,
+              "clearance_m": 1.103
+            },
+            {
+              "fraction": 0.75,
+              "distance_m": 15.9,
+              "lon": 77.40610203,
+              "lat": 18.45886984,
+              "terrain_elevation_m": -2520.931,
+              "sightline_elevation_m": -2519.886,
+              "clearance_m": 1.045
+            },
+            {
+              "fraction": 0.76,
+              "distance_m": 16.11,
+              "lon": 77.40610478,
+              "lat": 18.45887229,
+              "terrain_elevation_m": -2520.854,
+              "sightline_elevation_m": -2519.868,
+              "clearance_m": 0.985
+            },
+            {
+              "fraction": 0.77,
+              "distance_m": 16.32,
+              "lon": 77.40610753,
+              "lat": 18.45887474,
+              "terrain_elevation_m": -2520.782,
+              "sightline_elevation_m": -2519.85,
+              "clearance_m": 0.932
+            },
+            {
+              "fraction": 0.78,
+              "distance_m": 16.53,
+              "lon": 77.40611028,
+              "lat": 18.45887718,
+              "terrain_elevation_m": -2520.715,
+              "sightline_elevation_m": -2519.832,
+              "clearance_m": 0.883
+            },
+            {
+              "fraction": 0.79,
+              "distance_m": 16.75,
+              "lon": 77.40611303,
+              "lat": 18.45887963,
+              "terrain_elevation_m": -2520.65,
+              "sightline_elevation_m": -2519.814,
+              "clearance_m": 0.837
+            },
+            {
+              "fraction": 0.8,
+              "distance_m": 16.96,
+              "lon": 77.40611578,
+              "lat": 18.45888208,
+              "terrain_elevation_m": -2520.602,
+              "sightline_elevation_m": -2519.795,
+              "clearance_m": 0.807
+            },
+            {
+              "fraction": 0.81,
+              "distance_m": 17.17,
+              "lon": 77.40611853,
+              "lat": 18.45888452,
+              "terrain_elevation_m": -2520.555,
+              "sightline_elevation_m": -2519.777,
+              "clearance_m": 0.778
+            },
+            {
+              "fraction": 0.82,
+              "distance_m": 17.38,
+              "lon": 77.40612128,
+              "lat": 18.45888697,
+              "terrain_elevation_m": -2520.508,
+              "sightline_elevation_m": -2519.759,
+              "clearance_m": 0.749
+            },
+            {
+              "fraction": 0.83,
+              "distance_m": 17.59,
+              "lon": 77.40612403,
+              "lat": 18.45888941,
+              "terrain_elevation_m": -2520.471,
+              "sightline_elevation_m": -2519.741,
+              "clearance_m": 0.73
+            },
+            {
+              "fraction": 0.84,
+              "distance_m": 17.81,
+              "lon": 77.40612678,
+              "lat": 18.45889186,
+              "terrain_elevation_m": -2520.444,
+              "sightline_elevation_m": -2519.723,
+              "clearance_m": 0.721
+            },
+            {
+              "fraction": 0.85,
+              "distance_m": 18.02,
+              "lon": 77.40612953,
+              "lat": 18.45889431,
+              "terrain_elevation_m": -2520.418,
+              "sightline_elevation_m": -2519.704,
+              "clearance_m": 0.713
+            },
+            {
+              "fraction": 0.86,
+              "distance_m": 18.23,
+              "lon": 77.40613228,
+              "lat": 18.45889675,
+              "terrain_elevation_m": -2520.397,
+              "sightline_elevation_m": -2519.686,
+              "clearance_m": 0.711
+            },
+            {
+              "fraction": 0.87,
+              "distance_m": 18.44,
+              "lon": 77.40613503,
+              "lat": 18.4588992,
+              "terrain_elevation_m": -2520.403,
+              "sightline_elevation_m": -2519.668,
+              "clearance_m": 0.735
+            },
+            {
+              "fraction": 0.88,
+              "distance_m": 18.65,
+              "lon": 77.40613778,
+              "lat": 18.45890165,
+              "terrain_elevation_m": -2520.406,
+              "sightline_elevation_m": -2519.65,
+              "clearance_m": 0.756
+            },
+            {
+              "fraction": 0.89,
+              "distance_m": 18.86,
+              "lon": 77.40614053,
+              "lat": 18.45890409,
+              "terrain_elevation_m": -2520.407,
+              "sightline_elevation_m": -2519.632,
+              "clearance_m": 0.776
+            },
+            {
+              "fraction": 0.9,
+              "distance_m": 19.08,
+              "lon": 77.40614328,
+              "lat": 18.45890654,
+              "terrain_elevation_m": -2520.41,
+              "sightline_elevation_m": -2519.613,
+              "clearance_m": 0.796
+            },
+            {
+              "fraction": 0.91,
+              "distance_m": 19.29,
+              "lon": 77.40614603,
+              "lat": 18.45890898,
+              "terrain_elevation_m": -2520.409,
+              "sightline_elevation_m": -2519.595,
+              "clearance_m": 0.814
+            },
+            {
+              "fraction": 0.92,
+              "distance_m": 19.5,
+              "lon": 77.40614878,
+              "lat": 18.45891143,
+              "terrain_elevation_m": -2520.405,
+              "sightline_elevation_m": -2519.577,
+              "clearance_m": 0.828
+            },
+            {
+              "fraction": 0.93,
+              "distance_m": 19.71,
+              "lon": 77.40615153,
+              "lat": 18.45891388,
+              "terrain_elevation_m": -2520.402,
+              "sightline_elevation_m": -2519.559,
+              "clearance_m": 0.843
+            },
+            {
+              "fraction": 0.94,
+              "distance_m": 19.92,
+              "lon": 77.40615428,
+              "lat": 18.45891632,
+              "terrain_elevation_m": -2520.409,
+              "sightline_elevation_m": -2519.541,
+              "clearance_m": 0.869
+            },
+            {
+              "fraction": 0.95,
+              "distance_m": 20.14,
+              "lon": 77.40615703,
+              "lat": 18.45891877,
+              "terrain_elevation_m": -2520.417,
+              "sightline_elevation_m": -2519.522,
+              "clearance_m": 0.894
+            },
+            {
+              "fraction": 0.96,
+              "distance_m": 20.35,
+              "lon": 77.40615978,
+              "lat": 18.45892122,
+              "terrain_elevation_m": -2520.425,
+              "sightline_elevation_m": -2519.504,
+              "clearance_m": 0.92
+            },
+            {
+              "fraction": 0.97,
+              "distance_m": 20.56,
+              "lon": 77.40616253,
+              "lat": 18.45892366,
+              "terrain_elevation_m": -2520.43,
+              "sightline_elevation_m": -2519.486,
+              "clearance_m": 0.944
+            },
+            {
+              "fraction": 0.98,
+              "distance_m": 20.77,
+              "lon": 77.40616528,
+              "lat": 18.45892611,
+              "terrain_elevation_m": -2520.434,
+              "sightline_elevation_m": -2519.468,
+              "clearance_m": 0.966
+            },
+            {
+              "fraction": 0.99,
+              "distance_m": 20.98,
+              "lon": 77.40616803,
+              "lat": 18.45892855,
+              "terrain_elevation_m": -2520.436,
+              "sightline_elevation_m": -2519.45,
+              "clearance_m": 0.986
+            },
+            {
+              "fraction": 1.0,
+              "distance_m": 21.2,
+              "lon": 77.40617078,
+              "lat": 18.458931,
+              "terrain_elevation_m": -2520.431,
+              "sightline_elevation_m": -2519.431,
+              "clearance_m": 1.0
+            }
+          ]
+        }
+      }
+    },
+    "option_a_terminus": {
+      "standpoint_id": "standpoint-option-a-terminus",
+      "label": "Option A outbound terminus (waypoint 26_1222, 21.77 m SW)",
+      "description": "End-of-outbound traverse vertex for Option A, offset 21.77 m southwest from Skinner Ridge.",
+      "coordinates": [
+        77.40592495,
+        18.45864728
+      ],
+      "ground_elevation_m": -2523.176,
+      "eye_height_m": 1.5,
+      "eye_elevation_m": -2521.676,
+      "distance_to_target_m": 21.77,
+      "viewing_azimuth_deg": 39.42,
+      "evaluations": {
+        "height_0_0m": {
+          "target_height_m": 0.0,
+          "target_elevation_m": -2520.431,
+          "status": "obstructed",
+          "is_obstructed": true,
+          "min_clearance_m": -0.072,
+          "obstruction_m": 0.072,
+          "critical_point": {
+            "fraction": 0.88,
+            "distance_from_observer_m": 19.16,
+            "distance_from_target_m": 2.61,
+            "coordinates": [
+              77.40614128,
+              18.45889695
+            ],
+            "terrain_elevation_m": -2520.509,
+            "sightline_elevation_m": -2520.581
+          },
+          "profile": [
+            {
+              "fraction": 0.0,
+              "distance_m": 0.0,
+              "lon": 77.40592495,
+              "lat": 18.45864728,
+              "terrain_elevation_m": -2523.176,
+              "sightline_elevation_m": -2521.676,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.01,
+              "distance_m": 0.22,
+              "lon": 77.40592741,
+              "lat": 18.45865012,
+              "terrain_elevation_m": -2523.159,
+              "sightline_elevation_m": -2521.663,
+              "clearance_m": 1.496
+            },
+            {
+              "fraction": 0.02,
+              "distance_m": 0.44,
+              "lon": 77.40592987,
+              "lat": 18.45865295,
+              "terrain_elevation_m": -2523.143,
+              "sightline_elevation_m": -2521.651,
+              "clearance_m": 1.492
+            },
+            {
+              "fraction": 0.03,
+              "distance_m": 0.65,
+              "lon": 77.40593232,
+              "lat": 18.45865579,
+              "terrain_elevation_m": -2523.128,
+              "sightline_elevation_m": -2521.638,
+              "clearance_m": 1.489
+            },
+            {
+              "fraction": 0.04,
+              "distance_m": 0.87,
+              "lon": 77.40593478,
+              "lat": 18.45865863,
+              "terrain_elevation_m": -2523.113,
+              "sightline_elevation_m": -2521.626,
+              "clearance_m": 1.487
+            },
+            {
+              "fraction": 0.05,
+              "distance_m": 1.09,
+              "lon": 77.40593724,
+              "lat": 18.45866147,
+              "terrain_elevation_m": -2523.098,
+              "sightline_elevation_m": -2521.613,
+              "clearance_m": 1.484
+            },
+            {
+              "fraction": 0.06,
+              "distance_m": 1.31,
+              "lon": 77.4059397,
+              "lat": 18.4586643,
+              "terrain_elevation_m": -2523.08,
+              "sightline_elevation_m": -2521.601,
+              "clearance_m": 1.479
+            },
+            {
+              "fraction": 0.07,
+              "distance_m": 1.52,
+              "lon": 77.40594216,
+              "lat": 18.45866714,
+              "terrain_elevation_m": -2523.063,
+              "sightline_elevation_m": -2521.589,
+              "clearance_m": 1.474
+            },
+            {
+              "fraction": 0.08,
+              "distance_m": 1.74,
+              "lon": 77.40594462,
+              "lat": 18.45866998,
+              "terrain_elevation_m": -2523.046,
+              "sightline_elevation_m": -2521.576,
+              "clearance_m": 1.47
+            },
+            {
+              "fraction": 0.09,
+              "distance_m": 1.96,
+              "lon": 77.40594707,
+              "lat": 18.45867281,
+              "terrain_elevation_m": -2523.03,
+              "sightline_elevation_m": -2521.564,
+              "clearance_m": 1.466
+            },
+            {
+              "fraction": 0.1,
+              "distance_m": 2.18,
+              "lon": 77.40594953,
+              "lat": 18.45867565,
+              "terrain_elevation_m": -2523.014,
+              "sightline_elevation_m": -2521.551,
+              "clearance_m": 1.463
+            },
+            {
+              "fraction": 0.11,
+              "distance_m": 2.39,
+              "lon": 77.40595199,
+              "lat": 18.45867849,
+              "terrain_elevation_m": -2522.996,
+              "sightline_elevation_m": -2521.539,
+              "clearance_m": 1.458
+            },
+            {
+              "fraction": 0.12,
+              "distance_m": 2.61,
+              "lon": 77.40595445,
+              "lat": 18.45868133,
+              "terrain_elevation_m": -2522.977,
+              "sightline_elevation_m": -2521.526,
+              "clearance_m": 1.45
+            },
+            {
+              "fraction": 0.13,
+              "distance_m": 2.83,
+              "lon": 77.40595691,
+              "lat": 18.45868416,
+              "terrain_elevation_m": -2522.957,
+              "sightline_elevation_m": -2521.514,
+              "clearance_m": 1.443
+            },
+            {
+              "fraction": 0.14,
+              "distance_m": 3.05,
+              "lon": 77.40595937,
+              "lat": 18.458687,
+              "terrain_elevation_m": -2522.938,
+              "sightline_elevation_m": -2521.501,
+              "clearance_m": 1.437
+            },
+            {
+              "fraction": 0.15,
+              "distance_m": 3.27,
+              "lon": 77.40596182,
+              "lat": 18.45868984,
+              "terrain_elevation_m": -2522.92,
+              "sightline_elevation_m": -2521.489,
+              "clearance_m": 1.431
+            },
+            {
+              "fraction": 0.16,
+              "distance_m": 3.48,
+              "lon": 77.40596428,
+              "lat": 18.45869268,
+              "terrain_elevation_m": -2522.902,
+              "sightline_elevation_m": -2521.477,
+              "clearance_m": 1.425
+            },
+            {
+              "fraction": 0.17,
+              "distance_m": 3.7,
+              "lon": 77.40596674,
+              "lat": 18.45869551,
+              "terrain_elevation_m": -2522.884,
+              "sightline_elevation_m": -2521.464,
+              "clearance_m": 1.42
+            },
+            {
+              "fraction": 0.18,
+              "distance_m": 3.92,
+              "lon": 77.4059692,
+              "lat": 18.45869835,
+              "terrain_elevation_m": -2522.865,
+              "sightline_elevation_m": -2521.452,
+              "clearance_m": 1.414
+            },
+            {
+              "fraction": 0.19,
+              "distance_m": 4.14,
+              "lon": 77.40597166,
+              "lat": 18.45870119,
+              "terrain_elevation_m": -2522.847,
+              "sightline_elevation_m": -2521.439,
+              "clearance_m": 1.408
+            },
+            {
+              "fraction": 0.2,
+              "distance_m": 4.35,
+              "lon": 77.40597412,
+              "lat": 18.45870402,
+              "terrain_elevation_m": -2522.828,
+              "sightline_elevation_m": -2521.427,
+              "clearance_m": 1.401
+            },
+            {
+              "fraction": 0.21,
+              "distance_m": 4.57,
+              "lon": 77.40597657,
+              "lat": 18.45870686,
+              "terrain_elevation_m": -2522.81,
+              "sightline_elevation_m": -2521.414,
+              "clearance_m": 1.395
+            },
+            {
+              "fraction": 0.22,
+              "distance_m": 4.79,
+              "lon": 77.40597903,
+              "lat": 18.4587097,
+              "terrain_elevation_m": -2522.792,
+              "sightline_elevation_m": -2521.402,
+              "clearance_m": 1.39
+            },
+            {
+              "fraction": 0.23,
+              "distance_m": 5.01,
+              "lon": 77.40598149,
+              "lat": 18.45871254,
+              "terrain_elevation_m": -2522.774,
+              "sightline_elevation_m": -2521.389,
+              "clearance_m": 1.385
+            },
+            {
+              "fraction": 0.24,
+              "distance_m": 5.22,
+              "lon": 77.40598395,
+              "lat": 18.45871537,
+              "terrain_elevation_m": -2522.756,
+              "sightline_elevation_m": -2521.377,
+              "clearance_m": 1.379
+            },
+            {
+              "fraction": 0.25,
+              "distance_m": 5.44,
+              "lon": 77.40598641,
+              "lat": 18.45871821,
+              "terrain_elevation_m": -2522.739,
+              "sightline_elevation_m": -2521.365,
+              "clearance_m": 1.374
+            },
+            {
+              "fraction": 0.26,
+              "distance_m": 5.66,
+              "lon": 77.40598887,
+              "lat": 18.45872105,
+              "terrain_elevation_m": -2522.721,
+              "sightline_elevation_m": -2521.352,
+              "clearance_m": 1.369
+            },
+            {
+              "fraction": 0.27,
+              "distance_m": 5.88,
+              "lon": 77.40599132,
+              "lat": 18.45872388,
+              "terrain_elevation_m": -2522.704,
+              "sightline_elevation_m": -2521.34,
+              "clearance_m": 1.364
+            },
+            {
+              "fraction": 0.28,
+              "distance_m": 6.1,
+              "lon": 77.40599378,
+              "lat": 18.45872672,
+              "terrain_elevation_m": -2522.687,
+              "sightline_elevation_m": -2521.327,
+              "clearance_m": 1.36
+            },
+            {
+              "fraction": 0.29,
+              "distance_m": 6.31,
+              "lon": 77.40599624,
+              "lat": 18.45872956,
+              "terrain_elevation_m": -2522.671,
+              "sightline_elevation_m": -2521.315,
+              "clearance_m": 1.356
+            },
+            {
+              "fraction": 0.3,
+              "distance_m": 6.53,
+              "lon": 77.4059987,
+              "lat": 18.4587324,
+              "terrain_elevation_m": -2522.654,
+              "sightline_elevation_m": -2521.302,
+              "clearance_m": 1.352
+            },
+            {
+              "fraction": 0.31,
+              "distance_m": 6.75,
+              "lon": 77.40600116,
+              "lat": 18.45873523,
+              "terrain_elevation_m": -2522.637,
+              "sightline_elevation_m": -2521.29,
+              "clearance_m": 1.347
+            },
+            {
+              "fraction": 0.32,
+              "distance_m": 6.97,
+              "lon": 77.40600362,
+              "lat": 18.45873807,
+              "terrain_elevation_m": -2522.62,
+              "sightline_elevation_m": -2521.277,
+              "clearance_m": 1.343
+            },
+            {
+              "fraction": 0.33,
+              "distance_m": 7.18,
+              "lon": 77.40600607,
+              "lat": 18.45874091,
+              "terrain_elevation_m": -2522.603,
+              "sightline_elevation_m": -2521.265,
+              "clearance_m": 1.338
+            },
+            {
+              "fraction": 0.34,
+              "distance_m": 7.4,
+              "lon": 77.40600853,
+              "lat": 18.45874374,
+              "terrain_elevation_m": -2522.586,
+              "sightline_elevation_m": -2521.253,
+              "clearance_m": 1.333
+            },
+            {
+              "fraction": 0.35,
+              "distance_m": 7.62,
+              "lon": 77.40601099,
+              "lat": 18.45874658,
+              "terrain_elevation_m": -2522.569,
+              "sightline_elevation_m": -2521.24,
+              "clearance_m": 1.329
+            },
+            {
+              "fraction": 0.36,
+              "distance_m": 7.84,
+              "lon": 77.40601345,
+              "lat": 18.45874942,
+              "terrain_elevation_m": -2522.553,
+              "sightline_elevation_m": -2521.228,
+              "clearance_m": 1.325
+            },
+            {
+              "fraction": 0.37,
+              "distance_m": 8.05,
+              "lon": 77.40601591,
+              "lat": 18.45875226,
+              "terrain_elevation_m": -2522.537,
+              "sightline_elevation_m": -2521.215,
+              "clearance_m": 1.321
+            },
+            {
+              "fraction": 0.38,
+              "distance_m": 8.27,
+              "lon": 77.40601837,
+              "lat": 18.45875509,
+              "terrain_elevation_m": -2522.52,
+              "sightline_elevation_m": -2521.203,
+              "clearance_m": 1.317
+            },
+            {
+              "fraction": 0.39,
+              "distance_m": 8.49,
+              "lon": 77.40602082,
+              "lat": 18.45875793,
+              "terrain_elevation_m": -2522.504,
+              "sightline_elevation_m": -2521.19,
+              "clearance_m": 1.314
+            },
+            {
+              "fraction": 0.4,
+              "distance_m": 8.71,
+              "lon": 77.40602328,
+              "lat": 18.45876077,
+              "terrain_elevation_m": -2522.487,
+              "sightline_elevation_m": -2521.178,
+              "clearance_m": 1.309
+            },
+            {
+              "fraction": 0.41,
+              "distance_m": 8.93,
+              "lon": 77.40602574,
+              "lat": 18.45876361,
+              "terrain_elevation_m": -2522.471,
+              "sightline_elevation_m": -2521.166,
+              "clearance_m": 1.306
+            },
+            {
+              "fraction": 0.42,
+              "distance_m": 9.14,
+              "lon": 77.4060282,
+              "lat": 18.45876644,
+              "terrain_elevation_m": -2522.456,
+              "sightline_elevation_m": -2521.153,
+              "clearance_m": 1.303
+            },
+            {
+              "fraction": 0.43,
+              "distance_m": 9.36,
+              "lon": 77.40603066,
+              "lat": 18.45876928,
+              "terrain_elevation_m": -2522.441,
+              "sightline_elevation_m": -2521.141,
+              "clearance_m": 1.301
+            },
+            {
+              "fraction": 0.44,
+              "distance_m": 9.58,
+              "lon": 77.40603312,
+              "lat": 18.45877212,
+              "terrain_elevation_m": -2522.426,
+              "sightline_elevation_m": -2521.128,
+              "clearance_m": 1.298
+            },
+            {
+              "fraction": 0.45,
+              "distance_m": 9.8,
+              "lon": 77.40603557,
+              "lat": 18.45877495,
+              "terrain_elevation_m": -2522.411,
+              "sightline_elevation_m": -2521.116,
+              "clearance_m": 1.295
+            },
+            {
+              "fraction": 0.46,
+              "distance_m": 10.01,
+              "lon": 77.40603803,
+              "lat": 18.45877779,
+              "terrain_elevation_m": -2522.396,
+              "sightline_elevation_m": -2521.103,
+              "clearance_m": 1.293
+            },
+            {
+              "fraction": 0.47,
+              "distance_m": 10.23,
+              "lon": 77.40604049,
+              "lat": 18.45878063,
+              "terrain_elevation_m": -2522.382,
+              "sightline_elevation_m": -2521.091,
+              "clearance_m": 1.291
+            },
+            {
+              "fraction": 0.48,
+              "distance_m": 10.45,
+              "lon": 77.40604295,
+              "lat": 18.45878347,
+              "terrain_elevation_m": -2522.368,
+              "sightline_elevation_m": -2521.078,
+              "clearance_m": 1.29
+            },
+            {
+              "fraction": 0.49,
+              "distance_m": 10.67,
+              "lon": 77.40604541,
+              "lat": 18.4587863,
+              "terrain_elevation_m": -2522.355,
+              "sightline_elevation_m": -2521.066,
+              "clearance_m": 1.289
+            },
+            {
+              "fraction": 0.5,
+              "distance_m": 10.88,
+              "lon": 77.40604787,
+              "lat": 18.45878914,
+              "terrain_elevation_m": -2522.342,
+              "sightline_elevation_m": -2521.054,
+              "clearance_m": 1.289
+            },
+            {
+              "fraction": 0.51,
+              "distance_m": 11.1,
+              "lon": 77.40605032,
+              "lat": 18.45879198,
+              "terrain_elevation_m": -2522.33,
+              "sightline_elevation_m": -2521.041,
+              "clearance_m": 1.289
+            },
+            {
+              "fraction": 0.52,
+              "distance_m": 11.32,
+              "lon": 77.40605278,
+              "lat": 18.45879481,
+              "terrain_elevation_m": -2522.318,
+              "sightline_elevation_m": -2521.029,
+              "clearance_m": 1.289
+            },
+            {
+              "fraction": 0.53,
+              "distance_m": 11.54,
+              "lon": 77.40605524,
+              "lat": 18.45879765,
+              "terrain_elevation_m": -2522.307,
+              "sightline_elevation_m": -2521.016,
+              "clearance_m": 1.29
+            },
+            {
+              "fraction": 0.54,
+              "distance_m": 11.75,
+              "lon": 77.4060577,
+              "lat": 18.45880049,
+              "terrain_elevation_m": -2522.295,
+              "sightline_elevation_m": -2521.004,
+              "clearance_m": 1.292
+            },
+            {
+              "fraction": 0.55,
+              "distance_m": 11.97,
+              "lon": 77.40606016,
+              "lat": 18.45880333,
+              "terrain_elevation_m": -2522.284,
+              "sightline_elevation_m": -2520.991,
+              "clearance_m": 1.293
+            },
+            {
+              "fraction": 0.56,
+              "distance_m": 12.19,
+              "lon": 77.40606261,
+              "lat": 18.45880616,
+              "terrain_elevation_m": -2522.273,
+              "sightline_elevation_m": -2520.979,
+              "clearance_m": 1.294
+            },
+            {
+              "fraction": 0.57,
+              "distance_m": 12.41,
+              "lon": 77.40606507,
+              "lat": 18.458809,
+              "terrain_elevation_m": -2522.262,
+              "sightline_elevation_m": -2520.966,
+              "clearance_m": 1.295
+            },
+            {
+              "fraction": 0.58,
+              "distance_m": 12.63,
+              "lon": 77.40606753,
+              "lat": 18.45881184,
+              "terrain_elevation_m": -2522.251,
+              "sightline_elevation_m": -2520.954,
+              "clearance_m": 1.297
+            },
+            {
+              "fraction": 0.59,
+              "distance_m": 12.84,
+              "lon": 77.40606999,
+              "lat": 18.45881467,
+              "terrain_elevation_m": -2522.235,
+              "sightline_elevation_m": -2520.942,
+              "clearance_m": 1.293
+            },
+            {
+              "fraction": 0.6,
+              "distance_m": 13.06,
+              "lon": 77.40607245,
+              "lat": 18.45881751,
+              "terrain_elevation_m": -2522.22,
+              "sightline_elevation_m": -2520.929,
+              "clearance_m": 1.291
+            },
+            {
+              "fraction": 0.61,
+              "distance_m": 13.28,
+              "lon": 77.40607491,
+              "lat": 18.45882035,
+              "terrain_elevation_m": -2522.203,
+              "sightline_elevation_m": -2520.917,
+              "clearance_m": 1.287
+            },
+            {
+              "fraction": 0.62,
+              "distance_m": 13.5,
+              "lon": 77.40607736,
+              "lat": 18.45882319,
+              "terrain_elevation_m": -2522.186,
+              "sightline_elevation_m": -2520.904,
+              "clearance_m": 1.282
+            },
+            {
+              "fraction": 0.63,
+              "distance_m": 13.71,
+              "lon": 77.40607982,
+              "lat": 18.45882602,
+              "terrain_elevation_m": -2522.169,
+              "sightline_elevation_m": -2520.892,
+              "clearance_m": 1.278
+            },
+            {
+              "fraction": 0.64,
+              "distance_m": 13.93,
+              "lon": 77.40608228,
+              "lat": 18.45882886,
+              "terrain_elevation_m": -2522.152,
+              "sightline_elevation_m": -2520.879,
+              "clearance_m": 1.273
+            },
+            {
+              "fraction": 0.65,
+              "distance_m": 14.15,
+              "lon": 77.40608474,
+              "lat": 18.4588317,
+              "terrain_elevation_m": -2522.08,
+              "sightline_elevation_m": -2520.867,
+              "clearance_m": 1.213
+            },
+            {
+              "fraction": 0.66,
+              "distance_m": 14.37,
+              "lon": 77.4060872,
+              "lat": 18.45883454,
+              "terrain_elevation_m": -2522.007,
+              "sightline_elevation_m": -2520.854,
+              "clearance_m": 1.152
+            },
+            {
+              "fraction": 0.67,
+              "distance_m": 14.58,
+              "lon": 77.40608966,
+              "lat": 18.45883737,
+              "terrain_elevation_m": -2521.932,
+              "sightline_elevation_m": -2520.842,
+              "clearance_m": 1.09
+            },
+            {
+              "fraction": 0.68,
+              "distance_m": 14.8,
+              "lon": 77.40609211,
+              "lat": 18.45884021,
+              "terrain_elevation_m": -2521.856,
+              "sightline_elevation_m": -2520.83,
+              "clearance_m": 1.026
+            },
+            {
+              "fraction": 0.69,
+              "distance_m": 15.02,
+              "lon": 77.40609457,
+              "lat": 18.45884305,
+              "terrain_elevation_m": -2521.779,
+              "sightline_elevation_m": -2520.817,
+              "clearance_m": 0.962
+            },
+            {
+              "fraction": 0.7,
+              "distance_m": 15.24,
+              "lon": 77.40609703,
+              "lat": 18.45884588,
+              "terrain_elevation_m": -2521.702,
+              "sightline_elevation_m": -2520.805,
+              "clearance_m": 0.898
+            },
+            {
+              "fraction": 0.71,
+              "distance_m": 15.46,
+              "lon": 77.40609949,
+              "lat": 18.45884872,
+              "terrain_elevation_m": -2521.614,
+              "sightline_elevation_m": -2520.792,
+              "clearance_m": 0.822
+            },
+            {
+              "fraction": 0.72,
+              "distance_m": 15.67,
+              "lon": 77.40610195,
+              "lat": 18.45885156,
+              "terrain_elevation_m": -2521.526,
+              "sightline_elevation_m": -2520.78,
+              "clearance_m": 0.746
+            },
+            {
+              "fraction": 0.73,
+              "distance_m": 15.89,
+              "lon": 77.40610441,
+              "lat": 18.4588544,
+              "terrain_elevation_m": -2521.437,
+              "sightline_elevation_m": -2520.767,
+              "clearance_m": 0.67
+            },
+            {
+              "fraction": 0.74,
+              "distance_m": 16.11,
+              "lon": 77.40610686,
+              "lat": 18.45885723,
+              "terrain_elevation_m": -2521.349,
+              "sightline_elevation_m": -2520.755,
+              "clearance_m": 0.594
+            },
+            {
+              "fraction": 0.75,
+              "distance_m": 16.33,
+              "lon": 77.40610932,
+              "lat": 18.45886007,
+              "terrain_elevation_m": -2521.263,
+              "sightline_elevation_m": -2520.742,
+              "clearance_m": 0.521
+            },
+            {
+              "fraction": 0.76,
+              "distance_m": 16.54,
+              "lon": 77.40611178,
+              "lat": 18.45886291,
+              "terrain_elevation_m": -2521.177,
+              "sightline_elevation_m": -2520.73,
+              "clearance_m": 0.447
+            },
+            {
+              "fraction": 0.77,
+              "distance_m": 16.76,
+              "lon": 77.40611424,
+              "lat": 18.45886574,
+              "terrain_elevation_m": -2521.094,
+              "sightline_elevation_m": -2520.718,
+              "clearance_m": 0.376
+            },
+            {
+              "fraction": 0.78,
+              "distance_m": 16.98,
+              "lon": 77.4061167,
+              "lat": 18.45886858,
+              "terrain_elevation_m": -2521.012,
+              "sightline_elevation_m": -2520.705,
+              "clearance_m": 0.307
+            },
+            {
+              "fraction": 0.79,
+              "distance_m": 17.2,
+              "lon": 77.40611916,
+              "lat": 18.45887142,
+              "terrain_elevation_m": -2520.933,
+              "sightline_elevation_m": -2520.693,
+              "clearance_m": 0.24
+            },
+            {
+              "fraction": 0.8,
+              "distance_m": 17.41,
+              "lon": 77.40612161,
+              "lat": 18.45887426,
+              "terrain_elevation_m": -2520.855,
+              "sightline_elevation_m": -2520.68,
+              "clearance_m": 0.175
+            },
+            {
+              "fraction": 0.81,
+              "distance_m": 17.63,
+              "lon": 77.40612407,
+              "lat": 18.45887709,
+              "terrain_elevation_m": -2520.788,
+              "sightline_elevation_m": -2520.668,
+              "clearance_m": 0.12
+            },
+            {
+              "fraction": 0.82,
+              "distance_m": 17.85,
+              "lon": 77.40612653,
+              "lat": 18.45887993,
+              "terrain_elevation_m": -2520.733,
+              "sightline_elevation_m": -2520.655,
+              "clearance_m": 0.077
+            },
+            {
+              "fraction": 0.83,
+              "distance_m": 18.07,
+              "lon": 77.40612899,
+              "lat": 18.45888277,
+              "terrain_elevation_m": -2520.691,
+              "sightline_elevation_m": -2520.643,
+              "clearance_m": 0.048
+            },
+            {
+              "fraction": 0.84,
+              "distance_m": 18.29,
+              "lon": 77.40613145,
+              "lat": 18.4588856,
+              "terrain_elevation_m": -2520.651,
+              "sightline_elevation_m": -2520.63,
+              "clearance_m": 0.02
+            },
+            {
+              "fraction": 0.85,
+              "distance_m": 18.5,
+              "lon": 77.40613391,
+              "lat": 18.45888844,
+              "terrain_elevation_m": -2520.611,
+              "sightline_elevation_m": -2520.618,
+              "clearance_m": -0.007
+            },
+            {
+              "fraction": 0.86,
+              "distance_m": 18.72,
+              "lon": 77.40613636,
+              "lat": 18.45889128,
+              "terrain_elevation_m": -2520.573,
+              "sightline_elevation_m": -2520.606,
+              "clearance_m": -0.033
+            },
+            {
+              "fraction": 0.87,
+              "distance_m": 18.94,
+              "lon": 77.40613882,
+              "lat": 18.45889412,
+              "terrain_elevation_m": -2520.535,
+              "sightline_elevation_m": -2520.593,
+              "clearance_m": -0.058
+            },
+            {
+              "fraction": 0.88,
+              "distance_m": 19.16,
+              "lon": 77.40614128,
+              "lat": 18.45889695,
+              "terrain_elevation_m": -2520.509,
+              "sightline_elevation_m": -2520.581,
+              "clearance_m": -0.072
+            },
+            {
+              "fraction": 0.89,
+              "distance_m": 19.37,
+              "lon": 77.40614374,
+              "lat": 18.45889979,
+              "terrain_elevation_m": -2520.506,
+              "sightline_elevation_m": -2520.568,
+              "clearance_m": -0.062
+            },
+            {
+              "fraction": 0.9,
+              "distance_m": 19.59,
+              "lon": 77.4061462,
+              "lat": 18.45890263,
+              "terrain_elevation_m": -2520.5,
+              "sightline_elevation_m": -2520.556,
+              "clearance_m": -0.056
+            },
+            {
+              "fraction": 0.91,
+              "distance_m": 19.81,
+              "lon": 77.40614866,
+              "lat": 18.45890547,
+              "terrain_elevation_m": -2520.491,
+              "sightline_elevation_m": -2520.543,
+              "clearance_m": -0.053
+            },
+            {
+              "fraction": 0.92,
+              "distance_m": 20.03,
+              "lon": 77.40615111,
+              "lat": 18.4589083,
+              "terrain_elevation_m": -2520.478,
+              "sightline_elevation_m": -2520.531,
+              "clearance_m": -0.053
+            },
+            {
+              "fraction": 0.93,
+              "distance_m": 20.24,
+              "lon": 77.40615357,
+              "lat": 18.45891114,
+              "terrain_elevation_m": -2520.463,
+              "sightline_elevation_m": -2520.518,
+              "clearance_m": -0.056
+            },
+            {
+              "fraction": 0.94,
+              "distance_m": 20.46,
+              "lon": 77.40615603,
+              "lat": 18.45891398,
+              "terrain_elevation_m": -2520.449,
+              "sightline_elevation_m": -2520.506,
+              "clearance_m": -0.057
+            },
+            {
+              "fraction": 0.95,
+              "distance_m": 20.68,
+              "lon": 77.40615849,
+              "lat": 18.45891681,
+              "terrain_elevation_m": -2520.452,
+              "sightline_elevation_m": -2520.494,
+              "clearance_m": -0.042
+            },
+            {
+              "fraction": 0.96,
+              "distance_m": 20.9,
+              "lon": 77.40616095,
+              "lat": 18.45891965,
+              "terrain_elevation_m": -2520.453,
+              "sightline_elevation_m": -2520.481,
+              "clearance_m": -0.028
+            },
+            {
+              "fraction": 0.97,
+              "distance_m": 21.12,
+              "lon": 77.40616341,
+              "lat": 18.45892249,
+              "terrain_elevation_m": -2520.452,
+              "sightline_elevation_m": -2520.469,
+              "clearance_m": -0.017
+            },
+            {
+              "fraction": 0.98,
+              "distance_m": 21.33,
+              "lon": 77.40616586,
+              "lat": 18.45892533,
+              "terrain_elevation_m": -2520.448,
+              "sightline_elevation_m": -2520.456,
+              "clearance_m": -0.008
+            },
+            {
+              "fraction": 0.99,
+              "distance_m": 21.55,
+              "lon": 77.40616832,
+              "lat": 18.45892816,
+              "terrain_elevation_m": -2520.443,
+              "sightline_elevation_m": -2520.444,
+              "clearance_m": -0.001
+            },
+            {
+              "fraction": 1.0,
+              "distance_m": 21.77,
+              "lon": 77.40617078,
+              "lat": 18.458931,
+              "terrain_elevation_m": -2520.431,
+              "sightline_elevation_m": -2520.431,
+              "clearance_m": 0.0
+            }
+          ]
+        },
+        "height_0_5m": {
+          "target_height_m": 0.5,
+          "target_elevation_m": -2519.931,
+          "status": "clear",
+          "is_obstructed": false,
+          "min_clearance_m": 0.368,
+          "obstruction_m": 0.0,
+          "critical_point": {
+            "fraction": 0.88,
+            "distance_from_observer_m": 19.16,
+            "distance_from_target_m": 2.61,
+            "coordinates": [
+              77.40614128,
+              18.45889695
+            ],
+            "terrain_elevation_m": -2520.509,
+            "sightline_elevation_m": -2520.141
+          },
+          "profile": [
+            {
+              "fraction": 0.0,
+              "distance_m": 0.0,
+              "lon": 77.40592495,
+              "lat": 18.45864728,
+              "terrain_elevation_m": -2523.176,
+              "sightline_elevation_m": -2521.676,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.01,
+              "distance_m": 0.22,
+              "lon": 77.40592741,
+              "lat": 18.45865012,
+              "terrain_elevation_m": -2523.159,
+              "sightline_elevation_m": -2521.658,
+              "clearance_m": 1.501
+            },
+            {
+              "fraction": 0.02,
+              "distance_m": 0.44,
+              "lon": 77.40592987,
+              "lat": 18.45865295,
+              "terrain_elevation_m": -2523.143,
+              "sightline_elevation_m": -2521.641,
+              "clearance_m": 1.502
+            },
+            {
+              "fraction": 0.03,
+              "distance_m": 0.65,
+              "lon": 77.40593232,
+              "lat": 18.45865579,
+              "terrain_elevation_m": -2523.128,
+              "sightline_elevation_m": -2521.623,
+              "clearance_m": 1.504
+            },
+            {
+              "fraction": 0.04,
+              "distance_m": 0.87,
+              "lon": 77.40593478,
+              "lat": 18.45865863,
+              "terrain_elevation_m": -2523.113,
+              "sightline_elevation_m": -2521.606,
+              "clearance_m": 1.507
+            },
+            {
+              "fraction": 0.05,
+              "distance_m": 1.09,
+              "lon": 77.40593724,
+              "lat": 18.45866147,
+              "terrain_elevation_m": -2523.098,
+              "sightline_elevation_m": -2521.588,
+              "clearance_m": 1.509
+            },
+            {
+              "fraction": 0.06,
+              "distance_m": 1.31,
+              "lon": 77.4059397,
+              "lat": 18.4586643,
+              "terrain_elevation_m": -2523.08,
+              "sightline_elevation_m": -2521.571,
+              "clearance_m": 1.509
+            },
+            {
+              "fraction": 0.07,
+              "distance_m": 1.52,
+              "lon": 77.40594216,
+              "lat": 18.45866714,
+              "terrain_elevation_m": -2523.063,
+              "sightline_elevation_m": -2521.554,
+              "clearance_m": 1.509
+            },
+            {
+              "fraction": 0.08,
+              "distance_m": 1.74,
+              "lon": 77.40594462,
+              "lat": 18.45866998,
+              "terrain_elevation_m": -2523.046,
+              "sightline_elevation_m": -2521.536,
+              "clearance_m": 1.51
+            },
+            {
+              "fraction": 0.09,
+              "distance_m": 1.96,
+              "lon": 77.40594707,
+              "lat": 18.45867281,
+              "terrain_elevation_m": -2523.03,
+              "sightline_elevation_m": -2521.519,
+              "clearance_m": 1.511
+            },
+            {
+              "fraction": 0.1,
+              "distance_m": 2.18,
+              "lon": 77.40594953,
+              "lat": 18.45867565,
+              "terrain_elevation_m": -2523.014,
+              "sightline_elevation_m": -2521.501,
+              "clearance_m": 1.513
+            },
+            {
+              "fraction": 0.11,
+              "distance_m": 2.39,
+              "lon": 77.40595199,
+              "lat": 18.45867849,
+              "terrain_elevation_m": -2522.996,
+              "sightline_elevation_m": -2521.484,
+              "clearance_m": 1.513
+            },
+            {
+              "fraction": 0.12,
+              "distance_m": 2.61,
+              "lon": 77.40595445,
+              "lat": 18.45868133,
+              "terrain_elevation_m": -2522.977,
+              "sightline_elevation_m": -2521.466,
+              "clearance_m": 1.51
+            },
+            {
+              "fraction": 0.13,
+              "distance_m": 2.83,
+              "lon": 77.40595691,
+              "lat": 18.45868416,
+              "terrain_elevation_m": -2522.957,
+              "sightline_elevation_m": -2521.449,
+              "clearance_m": 1.508
+            },
+            {
+              "fraction": 0.14,
+              "distance_m": 3.05,
+              "lon": 77.40595937,
+              "lat": 18.458687,
+              "terrain_elevation_m": -2522.938,
+              "sightline_elevation_m": -2521.431,
+              "clearance_m": 1.507
+            },
+            {
+              "fraction": 0.15,
+              "distance_m": 3.27,
+              "lon": 77.40596182,
+              "lat": 18.45868984,
+              "terrain_elevation_m": -2522.92,
+              "sightline_elevation_m": -2521.414,
+              "clearance_m": 1.506
+            },
+            {
+              "fraction": 0.16,
+              "distance_m": 3.48,
+              "lon": 77.40596428,
+              "lat": 18.45869268,
+              "terrain_elevation_m": -2522.902,
+              "sightline_elevation_m": -2521.397,
+              "clearance_m": 1.505
+            },
+            {
+              "fraction": 0.17,
+              "distance_m": 3.7,
+              "lon": 77.40596674,
+              "lat": 18.45869551,
+              "terrain_elevation_m": -2522.884,
+              "sightline_elevation_m": -2521.379,
+              "clearance_m": 1.505
+            },
+            {
+              "fraction": 0.18,
+              "distance_m": 3.92,
+              "lon": 77.4059692,
+              "lat": 18.45869835,
+              "terrain_elevation_m": -2522.865,
+              "sightline_elevation_m": -2521.362,
+              "clearance_m": 1.504
+            },
+            {
+              "fraction": 0.19,
+              "distance_m": 4.14,
+              "lon": 77.40597166,
+              "lat": 18.45870119,
+              "terrain_elevation_m": -2522.847,
+              "sightline_elevation_m": -2521.344,
+              "clearance_m": 1.503
+            },
+            {
+              "fraction": 0.2,
+              "distance_m": 4.35,
+              "lon": 77.40597412,
+              "lat": 18.45870402,
+              "terrain_elevation_m": -2522.828,
+              "sightline_elevation_m": -2521.327,
+              "clearance_m": 1.501
+            },
+            {
+              "fraction": 0.21,
+              "distance_m": 4.57,
+              "lon": 77.40597657,
+              "lat": 18.45870686,
+              "terrain_elevation_m": -2522.81,
+              "sightline_elevation_m": -2521.309,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.22,
+              "distance_m": 4.79,
+              "lon": 77.40597903,
+              "lat": 18.4587097,
+              "terrain_elevation_m": -2522.792,
+              "sightline_elevation_m": -2521.292,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.23,
+              "distance_m": 5.01,
+              "lon": 77.40598149,
+              "lat": 18.45871254,
+              "terrain_elevation_m": -2522.774,
+              "sightline_elevation_m": -2521.274,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.24,
+              "distance_m": 5.22,
+              "lon": 77.40598395,
+              "lat": 18.45871537,
+              "terrain_elevation_m": -2522.756,
+              "sightline_elevation_m": -2521.257,
+              "clearance_m": 1.499
+            },
+            {
+              "fraction": 0.25,
+              "distance_m": 5.44,
+              "lon": 77.40598641,
+              "lat": 18.45871821,
+              "terrain_elevation_m": -2522.739,
+              "sightline_elevation_m": -2521.24,
+              "clearance_m": 1.499
+            },
+            {
+              "fraction": 0.26,
+              "distance_m": 5.66,
+              "lon": 77.40598887,
+              "lat": 18.45872105,
+              "terrain_elevation_m": -2522.721,
+              "sightline_elevation_m": -2521.222,
+              "clearance_m": 1.499
+            },
+            {
+              "fraction": 0.27,
+              "distance_m": 5.88,
+              "lon": 77.40599132,
+              "lat": 18.45872388,
+              "terrain_elevation_m": -2522.704,
+              "sightline_elevation_m": -2521.205,
+              "clearance_m": 1.499
+            },
+            {
+              "fraction": 0.28,
+              "distance_m": 6.1,
+              "lon": 77.40599378,
+              "lat": 18.45872672,
+              "terrain_elevation_m": -2522.687,
+              "sightline_elevation_m": -2521.187,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.29,
+              "distance_m": 6.31,
+              "lon": 77.40599624,
+              "lat": 18.45872956,
+              "terrain_elevation_m": -2522.671,
+              "sightline_elevation_m": -2521.17,
+              "clearance_m": 1.501
+            },
+            {
+              "fraction": 0.3,
+              "distance_m": 6.53,
+              "lon": 77.4059987,
+              "lat": 18.4587324,
+              "terrain_elevation_m": -2522.654,
+              "sightline_elevation_m": -2521.152,
+              "clearance_m": 1.502
+            },
+            {
+              "fraction": 0.31,
+              "distance_m": 6.75,
+              "lon": 77.40600116,
+              "lat": 18.45873523,
+              "terrain_elevation_m": -2522.637,
+              "sightline_elevation_m": -2521.135,
+              "clearance_m": 1.502
+            },
+            {
+              "fraction": 0.32,
+              "distance_m": 6.97,
+              "lon": 77.40600362,
+              "lat": 18.45873807,
+              "terrain_elevation_m": -2522.62,
+              "sightline_elevation_m": -2521.117,
+              "clearance_m": 1.503
+            },
+            {
+              "fraction": 0.33,
+              "distance_m": 7.18,
+              "lon": 77.40600607,
+              "lat": 18.45874091,
+              "terrain_elevation_m": -2522.603,
+              "sightline_elevation_m": -2521.1,
+              "clearance_m": 1.503
+            },
+            {
+              "fraction": 0.34,
+              "distance_m": 7.4,
+              "lon": 77.40600853,
+              "lat": 18.45874374,
+              "terrain_elevation_m": -2522.586,
+              "sightline_elevation_m": -2521.083,
+              "clearance_m": 1.503
+            },
+            {
+              "fraction": 0.35,
+              "distance_m": 7.62,
+              "lon": 77.40601099,
+              "lat": 18.45874658,
+              "terrain_elevation_m": -2522.569,
+              "sightline_elevation_m": -2521.065,
+              "clearance_m": 1.504
+            },
+            {
+              "fraction": 0.36,
+              "distance_m": 7.84,
+              "lon": 77.40601345,
+              "lat": 18.45874942,
+              "terrain_elevation_m": -2522.553,
+              "sightline_elevation_m": -2521.048,
+              "clearance_m": 1.505
+            },
+            {
+              "fraction": 0.37,
+              "distance_m": 8.05,
+              "lon": 77.40601591,
+              "lat": 18.45875226,
+              "terrain_elevation_m": -2522.537,
+              "sightline_elevation_m": -2521.03,
+              "clearance_m": 1.506
+            },
+            {
+              "fraction": 0.38,
+              "distance_m": 8.27,
+              "lon": 77.40601837,
+              "lat": 18.45875509,
+              "terrain_elevation_m": -2522.52,
+              "sightline_elevation_m": -2521.013,
+              "clearance_m": 1.507
+            },
+            {
+              "fraction": 0.39,
+              "distance_m": 8.49,
+              "lon": 77.40602082,
+              "lat": 18.45875793,
+              "terrain_elevation_m": -2522.504,
+              "sightline_elevation_m": -2520.995,
+              "clearance_m": 1.509
+            },
+            {
+              "fraction": 0.4,
+              "distance_m": 8.71,
+              "lon": 77.40602328,
+              "lat": 18.45876077,
+              "terrain_elevation_m": -2522.487,
+              "sightline_elevation_m": -2520.978,
+              "clearance_m": 1.509
+            },
+            {
+              "fraction": 0.41,
+              "distance_m": 8.93,
+              "lon": 77.40602574,
+              "lat": 18.45876361,
+              "terrain_elevation_m": -2522.471,
+              "sightline_elevation_m": -2520.961,
+              "clearance_m": 1.511
+            },
+            {
+              "fraction": 0.42,
+              "distance_m": 9.14,
+              "lon": 77.4060282,
+              "lat": 18.45876644,
+              "terrain_elevation_m": -2522.456,
+              "sightline_elevation_m": -2520.943,
+              "clearance_m": 1.513
+            },
+            {
+              "fraction": 0.43,
+              "distance_m": 9.36,
+              "lon": 77.40603066,
+              "lat": 18.45876928,
+              "terrain_elevation_m": -2522.441,
+              "sightline_elevation_m": -2520.926,
+              "clearance_m": 1.516
+            },
+            {
+              "fraction": 0.44,
+              "distance_m": 9.58,
+              "lon": 77.40603312,
+              "lat": 18.45877212,
+              "terrain_elevation_m": -2522.426,
+              "sightline_elevation_m": -2520.908,
+              "clearance_m": 1.518
+            },
+            {
+              "fraction": 0.45,
+              "distance_m": 9.8,
+              "lon": 77.40603557,
+              "lat": 18.45877495,
+              "terrain_elevation_m": -2522.411,
+              "sightline_elevation_m": -2520.891,
+              "clearance_m": 1.52
+            },
+            {
+              "fraction": 0.46,
+              "distance_m": 10.01,
+              "lon": 77.40603803,
+              "lat": 18.45877779,
+              "terrain_elevation_m": -2522.396,
+              "sightline_elevation_m": -2520.873,
+              "clearance_m": 1.523
+            },
+            {
+              "fraction": 0.47,
+              "distance_m": 10.23,
+              "lon": 77.40604049,
+              "lat": 18.45878063,
+              "terrain_elevation_m": -2522.382,
+              "sightline_elevation_m": -2520.856,
+              "clearance_m": 1.526
+            },
+            {
+              "fraction": 0.48,
+              "distance_m": 10.45,
+              "lon": 77.40604295,
+              "lat": 18.45878347,
+              "terrain_elevation_m": -2522.368,
+              "sightline_elevation_m": -2520.838,
+              "clearance_m": 1.53
+            },
+            {
+              "fraction": 0.49,
+              "distance_m": 10.67,
+              "lon": 77.40604541,
+              "lat": 18.4587863,
+              "terrain_elevation_m": -2522.355,
+              "sightline_elevation_m": -2520.821,
+              "clearance_m": 1.534
+            },
+            {
+              "fraction": 0.5,
+              "distance_m": 10.88,
+              "lon": 77.40604787,
+              "lat": 18.45878914,
+              "terrain_elevation_m": -2522.342,
+              "sightline_elevation_m": -2520.804,
+              "clearance_m": 1.539
+            },
+            {
+              "fraction": 0.51,
+              "distance_m": 11.1,
+              "lon": 77.40605032,
+              "lat": 18.45879198,
+              "terrain_elevation_m": -2522.33,
+              "sightline_elevation_m": -2520.786,
+              "clearance_m": 1.544
+            },
+            {
+              "fraction": 0.52,
+              "distance_m": 11.32,
+              "lon": 77.40605278,
+              "lat": 18.45879481,
+              "terrain_elevation_m": -2522.318,
+              "sightline_elevation_m": -2520.769,
+              "clearance_m": 1.549
+            },
+            {
+              "fraction": 0.53,
+              "distance_m": 11.54,
+              "lon": 77.40605524,
+              "lat": 18.45879765,
+              "terrain_elevation_m": -2522.307,
+              "sightline_elevation_m": -2520.751,
+              "clearance_m": 1.555
+            },
+            {
+              "fraction": 0.54,
+              "distance_m": 11.75,
+              "lon": 77.4060577,
+              "lat": 18.45880049,
+              "terrain_elevation_m": -2522.295,
+              "sightline_elevation_m": -2520.734,
+              "clearance_m": 1.562
+            },
+            {
+              "fraction": 0.55,
+              "distance_m": 11.97,
+              "lon": 77.40606016,
+              "lat": 18.45880333,
+              "terrain_elevation_m": -2522.284,
+              "sightline_elevation_m": -2520.716,
+              "clearance_m": 1.568
+            },
+            {
+              "fraction": 0.56,
+              "distance_m": 12.19,
+              "lon": 77.40606261,
+              "lat": 18.45880616,
+              "terrain_elevation_m": -2522.273,
+              "sightline_elevation_m": -2520.699,
+              "clearance_m": 1.574
+            },
+            {
+              "fraction": 0.57,
+              "distance_m": 12.41,
+              "lon": 77.40606507,
+              "lat": 18.458809,
+              "terrain_elevation_m": -2522.262,
+              "sightline_elevation_m": -2520.681,
+              "clearance_m": 1.58
+            },
+            {
+              "fraction": 0.58,
+              "distance_m": 12.63,
+              "lon": 77.40606753,
+              "lat": 18.45881184,
+              "terrain_elevation_m": -2522.251,
+              "sightline_elevation_m": -2520.664,
+              "clearance_m": 1.587
+            },
+            {
+              "fraction": 0.59,
+              "distance_m": 12.84,
+              "lon": 77.40606999,
+              "lat": 18.45881467,
+              "terrain_elevation_m": -2522.235,
+              "sightline_elevation_m": -2520.647,
+              "clearance_m": 1.588
+            },
+            {
+              "fraction": 0.6,
+              "distance_m": 13.06,
+              "lon": 77.40607245,
+              "lat": 18.45881751,
+              "terrain_elevation_m": -2522.22,
+              "sightline_elevation_m": -2520.629,
+              "clearance_m": 1.591
+            },
+            {
+              "fraction": 0.61,
+              "distance_m": 13.28,
+              "lon": 77.40607491,
+              "lat": 18.45882035,
+              "terrain_elevation_m": -2522.203,
+              "sightline_elevation_m": -2520.612,
+              "clearance_m": 1.592
+            },
+            {
+              "fraction": 0.62,
+              "distance_m": 13.5,
+              "lon": 77.40607736,
+              "lat": 18.45882319,
+              "terrain_elevation_m": -2522.186,
+              "sightline_elevation_m": -2520.594,
+              "clearance_m": 1.592
+            },
+            {
+              "fraction": 0.63,
+              "distance_m": 13.71,
+              "lon": 77.40607982,
+              "lat": 18.45882602,
+              "terrain_elevation_m": -2522.169,
+              "sightline_elevation_m": -2520.577,
+              "clearance_m": 1.593
+            },
+            {
+              "fraction": 0.64,
+              "distance_m": 13.93,
+              "lon": 77.40608228,
+              "lat": 18.45882886,
+              "terrain_elevation_m": -2522.152,
+              "sightline_elevation_m": -2520.559,
+              "clearance_m": 1.593
+            },
+            {
+              "fraction": 0.65,
+              "distance_m": 14.15,
+              "lon": 77.40608474,
+              "lat": 18.4588317,
+              "terrain_elevation_m": -2522.08,
+              "sightline_elevation_m": -2520.542,
+              "clearance_m": 1.538
+            },
+            {
+              "fraction": 0.66,
+              "distance_m": 14.37,
+              "lon": 77.4060872,
+              "lat": 18.45883454,
+              "terrain_elevation_m": -2522.007,
+              "sightline_elevation_m": -2520.524,
+              "clearance_m": 1.482
+            },
+            {
+              "fraction": 0.67,
+              "distance_m": 14.58,
+              "lon": 77.40608966,
+              "lat": 18.45883737,
+              "terrain_elevation_m": -2521.932,
+              "sightline_elevation_m": -2520.507,
+              "clearance_m": 1.425
+            },
+            {
+              "fraction": 0.68,
+              "distance_m": 14.8,
+              "lon": 77.40609211,
+              "lat": 18.45884021,
+              "terrain_elevation_m": -2521.856,
+              "sightline_elevation_m": -2520.49,
+              "clearance_m": 1.366
+            },
+            {
+              "fraction": 0.69,
+              "distance_m": 15.02,
+              "lon": 77.40609457,
+              "lat": 18.45884305,
+              "terrain_elevation_m": -2521.779,
+              "sightline_elevation_m": -2520.472,
+              "clearance_m": 1.307
+            },
+            {
+              "fraction": 0.7,
+              "distance_m": 15.24,
+              "lon": 77.40609703,
+              "lat": 18.45884588,
+              "terrain_elevation_m": -2521.702,
+              "sightline_elevation_m": -2520.455,
+              "clearance_m": 1.248
+            },
+            {
+              "fraction": 0.71,
+              "distance_m": 15.46,
+              "lon": 77.40609949,
+              "lat": 18.45884872,
+              "terrain_elevation_m": -2521.614,
+              "sightline_elevation_m": -2520.437,
+              "clearance_m": 1.177
+            },
+            {
+              "fraction": 0.72,
+              "distance_m": 15.67,
+              "lon": 77.40610195,
+              "lat": 18.45885156,
+              "terrain_elevation_m": -2521.526,
+              "sightline_elevation_m": -2520.42,
+              "clearance_m": 1.106
+            },
+            {
+              "fraction": 0.73,
+              "distance_m": 15.89,
+              "lon": 77.40610441,
+              "lat": 18.4588544,
+              "terrain_elevation_m": -2521.437,
+              "sightline_elevation_m": -2520.402,
+              "clearance_m": 1.035
+            },
+            {
+              "fraction": 0.74,
+              "distance_m": 16.11,
+              "lon": 77.40610686,
+              "lat": 18.45885723,
+              "terrain_elevation_m": -2521.349,
+              "sightline_elevation_m": -2520.385,
+              "clearance_m": 0.964
+            },
+            {
+              "fraction": 0.75,
+              "distance_m": 16.33,
+              "lon": 77.40610932,
+              "lat": 18.45886007,
+              "terrain_elevation_m": -2521.263,
+              "sightline_elevation_m": -2520.367,
+              "clearance_m": 0.896
+            },
+            {
+              "fraction": 0.76,
+              "distance_m": 16.54,
+              "lon": 77.40611178,
+              "lat": 18.45886291,
+              "terrain_elevation_m": -2521.177,
+              "sightline_elevation_m": -2520.35,
+              "clearance_m": 0.827
+            },
+            {
+              "fraction": 0.77,
+              "distance_m": 16.76,
+              "lon": 77.40611424,
+              "lat": 18.45886574,
+              "terrain_elevation_m": -2521.094,
+              "sightline_elevation_m": -2520.333,
+              "clearance_m": 0.761
+            },
+            {
+              "fraction": 0.78,
+              "distance_m": 16.98,
+              "lon": 77.4061167,
+              "lat": 18.45886858,
+              "terrain_elevation_m": -2521.012,
+              "sightline_elevation_m": -2520.315,
+              "clearance_m": 0.697
+            },
+            {
+              "fraction": 0.79,
+              "distance_m": 17.2,
+              "lon": 77.40611916,
+              "lat": 18.45887142,
+              "terrain_elevation_m": -2520.933,
+              "sightline_elevation_m": -2520.298,
+              "clearance_m": 0.635
+            },
+            {
+              "fraction": 0.8,
+              "distance_m": 17.41,
+              "lon": 77.40612161,
+              "lat": 18.45887426,
+              "terrain_elevation_m": -2520.855,
+              "sightline_elevation_m": -2520.28,
+              "clearance_m": 0.575
+            },
+            {
+              "fraction": 0.81,
+              "distance_m": 17.63,
+              "lon": 77.40612407,
+              "lat": 18.45887709,
+              "terrain_elevation_m": -2520.788,
+              "sightline_elevation_m": -2520.263,
+              "clearance_m": 0.525
+            },
+            {
+              "fraction": 0.82,
+              "distance_m": 17.85,
+              "lon": 77.40612653,
+              "lat": 18.45887993,
+              "terrain_elevation_m": -2520.733,
+              "sightline_elevation_m": -2520.245,
+              "clearance_m": 0.487
+            },
+            {
+              "fraction": 0.83,
+              "distance_m": 18.07,
+              "lon": 77.40612899,
+              "lat": 18.45888277,
+              "terrain_elevation_m": -2520.691,
+              "sightline_elevation_m": -2520.228,
+              "clearance_m": 0.463
+            },
+            {
+              "fraction": 0.84,
+              "distance_m": 18.29,
+              "lon": 77.40613145,
+              "lat": 18.4588856,
+              "terrain_elevation_m": -2520.651,
+              "sightline_elevation_m": -2520.21,
+              "clearance_m": 0.44
+            },
+            {
+              "fraction": 0.85,
+              "distance_m": 18.5,
+              "lon": 77.40613391,
+              "lat": 18.45888844,
+              "terrain_elevation_m": -2520.611,
+              "sightline_elevation_m": -2520.193,
+              "clearance_m": 0.418
+            },
+            {
+              "fraction": 0.86,
+              "distance_m": 18.72,
+              "lon": 77.40613636,
+              "lat": 18.45889128,
+              "terrain_elevation_m": -2520.573,
+              "sightline_elevation_m": -2520.176,
+              "clearance_m": 0.397
+            },
+            {
+              "fraction": 0.87,
+              "distance_m": 18.94,
+              "lon": 77.40613882,
+              "lat": 18.45889412,
+              "terrain_elevation_m": -2520.535,
+              "sightline_elevation_m": -2520.158,
+              "clearance_m": 0.377
+            },
+            {
+              "fraction": 0.88,
+              "distance_m": 19.16,
+              "lon": 77.40614128,
+              "lat": 18.45889695,
+              "terrain_elevation_m": -2520.509,
+              "sightline_elevation_m": -2520.141,
+              "clearance_m": 0.368
+            },
+            {
+              "fraction": 0.89,
+              "distance_m": 19.37,
+              "lon": 77.40614374,
+              "lat": 18.45889979,
+              "terrain_elevation_m": -2520.506,
+              "sightline_elevation_m": -2520.123,
+              "clearance_m": 0.383
+            },
+            {
+              "fraction": 0.9,
+              "distance_m": 19.59,
+              "lon": 77.4061462,
+              "lat": 18.45890263,
+              "terrain_elevation_m": -2520.5,
+              "sightline_elevation_m": -2520.106,
+              "clearance_m": 0.394
+            },
+            {
+              "fraction": 0.91,
+              "distance_m": 19.81,
+              "lon": 77.40614866,
+              "lat": 18.45890547,
+              "terrain_elevation_m": -2520.491,
+              "sightline_elevation_m": -2520.088,
+              "clearance_m": 0.402
+            },
+            {
+              "fraction": 0.92,
+              "distance_m": 20.03,
+              "lon": 77.40615111,
+              "lat": 18.4589083,
+              "terrain_elevation_m": -2520.478,
+              "sightline_elevation_m": -2520.071,
+              "clearance_m": 0.407
+            },
+            {
+              "fraction": 0.93,
+              "distance_m": 20.24,
+              "lon": 77.40615357,
+              "lat": 18.45891114,
+              "terrain_elevation_m": -2520.463,
+              "sightline_elevation_m": -2520.053,
+              "clearance_m": 0.409
+            },
+            {
+              "fraction": 0.94,
+              "distance_m": 20.46,
+              "lon": 77.40615603,
+              "lat": 18.45891398,
+              "terrain_elevation_m": -2520.449,
+              "sightline_elevation_m": -2520.036,
+              "clearance_m": 0.413
+            },
+            {
+              "fraction": 0.95,
+              "distance_m": 20.68,
+              "lon": 77.40615849,
+              "lat": 18.45891681,
+              "terrain_elevation_m": -2520.452,
+              "sightline_elevation_m": -2520.019,
+              "clearance_m": 0.433
+            },
+            {
+              "fraction": 0.96,
+              "distance_m": 20.9,
+              "lon": 77.40616095,
+              "lat": 18.45891965,
+              "terrain_elevation_m": -2520.453,
+              "sightline_elevation_m": -2520.001,
+              "clearance_m": 0.452
+            },
+            {
+              "fraction": 0.97,
+              "distance_m": 21.12,
+              "lon": 77.40616341,
+              "lat": 18.45892249,
+              "terrain_elevation_m": -2520.452,
+              "sightline_elevation_m": -2519.984,
+              "clearance_m": 0.468
+            },
+            {
+              "fraction": 0.98,
+              "distance_m": 21.33,
+              "lon": 77.40616586,
+              "lat": 18.45892533,
+              "terrain_elevation_m": -2520.448,
+              "sightline_elevation_m": -2519.966,
+              "clearance_m": 0.482
+            },
+            {
+              "fraction": 0.99,
+              "distance_m": 21.55,
+              "lon": 77.40616832,
+              "lat": 18.45892816,
+              "terrain_elevation_m": -2520.443,
+              "sightline_elevation_m": -2519.949,
+              "clearance_m": 0.494
+            },
+            {
+              "fraction": 1.0,
+              "distance_m": 21.77,
+              "lon": 77.40617078,
+              "lat": 18.458931,
+              "terrain_elevation_m": -2520.431,
+              "sightline_elevation_m": -2519.931,
+              "clearance_m": 0.5
+            }
+          ]
+        },
+        "height_1_0m": {
+          "target_height_m": 1.0,
+          "target_elevation_m": -2519.431,
+          "status": "clear",
+          "is_obstructed": false,
+          "min_clearance_m": 0.808,
+          "obstruction_m": 0.0,
+          "critical_point": {
+            "fraction": 0.88,
+            "distance_from_observer_m": 19.16,
+            "distance_from_target_m": 2.61,
+            "coordinates": [
+              77.40614128,
+              18.45889695
+            ],
+            "terrain_elevation_m": -2520.509,
+            "sightline_elevation_m": -2519.701
+          },
+          "profile": [
+            {
+              "fraction": 0.0,
+              "distance_m": 0.0,
+              "lon": 77.40592495,
+              "lat": 18.45864728,
+              "terrain_elevation_m": -2523.176,
+              "sightline_elevation_m": -2521.676,
+              "clearance_m": 1.5
+            },
+            {
+              "fraction": 0.01,
+              "distance_m": 0.22,
+              "lon": 77.40592741,
+              "lat": 18.45865012,
+              "terrain_elevation_m": -2523.159,
+              "sightline_elevation_m": -2521.653,
+              "clearance_m": 1.506
+            },
+            {
+              "fraction": 0.02,
+              "distance_m": 0.44,
+              "lon": 77.40592987,
+              "lat": 18.45865295,
+              "terrain_elevation_m": -2523.143,
+              "sightline_elevation_m": -2521.631,
+              "clearance_m": 1.512
+            },
+            {
+              "fraction": 0.03,
+              "distance_m": 0.65,
+              "lon": 77.40593232,
+              "lat": 18.45865579,
+              "terrain_elevation_m": -2523.128,
+              "sightline_elevation_m": -2521.608,
+              "clearance_m": 1.519
+            },
+            {
+              "fraction": 0.04,
+              "distance_m": 0.87,
+              "lon": 77.40593478,
+              "lat": 18.45865863,
+              "terrain_elevation_m": -2523.113,
+              "sightline_elevation_m": -2521.586,
+              "clearance_m": 1.527
+            },
+            {
+              "fraction": 0.05,
+              "distance_m": 1.09,
+              "lon": 77.40593724,
+              "lat": 18.45866147,
+              "terrain_elevation_m": -2523.098,
+              "sightline_elevation_m": -2521.563,
+              "clearance_m": 1.534
+            },
+            {
+              "fraction": 0.06,
+              "distance_m": 1.31,
+              "lon": 77.4059397,
+              "lat": 18.4586643,
+              "terrain_elevation_m": -2523.08,
+              "sightline_elevation_m": -2521.541,
+              "clearance_m": 1.539
+            },
+            {
+              "fraction": 0.07,
+              "distance_m": 1.52,
+              "lon": 77.40594216,
+              "lat": 18.45866714,
+              "terrain_elevation_m": -2523.063,
+              "sightline_elevation_m": -2521.519,
+              "clearance_m": 1.544
+            },
+            {
+              "fraction": 0.08,
+              "distance_m": 1.74,
+              "lon": 77.40594462,
+              "lat": 18.45866998,
+              "terrain_elevation_m": -2523.046,
+              "sightline_elevation_m": -2521.496,
+              "clearance_m": 1.55
+            },
+            {
+              "fraction": 0.09,
+              "distance_m": 1.96,
+              "lon": 77.40594707,
+              "lat": 18.45867281,
+              "terrain_elevation_m": -2523.03,
+              "sightline_elevation_m": -2521.474,
+              "clearance_m": 1.556
+            },
+            {
+              "fraction": 0.1,
+              "distance_m": 2.18,
+              "lon": 77.40594953,
+              "lat": 18.45867565,
+              "terrain_elevation_m": -2523.014,
+              "sightline_elevation_m": -2521.451,
+              "clearance_m": 1.563
+            },
+            {
+              "fraction": 0.11,
+              "distance_m": 2.39,
+              "lon": 77.40595199,
+              "lat": 18.45867849,
+              "terrain_elevation_m": -2522.996,
+              "sightline_elevation_m": -2521.429,
+              "clearance_m": 1.568
+            },
+            {
+              "fraction": 0.12,
+              "distance_m": 2.61,
+              "lon": 77.40595445,
+              "lat": 18.45868133,
+              "terrain_elevation_m": -2522.977,
+              "sightline_elevation_m": -2521.406,
+              "clearance_m": 1.57
+            },
+            {
+              "fraction": 0.13,
+              "distance_m": 2.83,
+              "lon": 77.40595691,
+              "lat": 18.45868416,
+              "terrain_elevation_m": -2522.957,
+              "sightline_elevation_m": -2521.384,
+              "clearance_m": 1.573
+            },
+            {
+              "fraction": 0.14,
+              "distance_m": 3.05,
+              "lon": 77.40595937,
+              "lat": 18.458687,
+              "terrain_elevation_m": -2522.938,
+              "sightline_elevation_m": -2521.361,
+              "clearance_m": 1.577
+            },
+            {
+              "fraction": 0.15,
+              "distance_m": 3.27,
+              "lon": 77.40596182,
+              "lat": 18.45868984,
+              "terrain_elevation_m": -2522.92,
+              "sightline_elevation_m": -2521.339,
+              "clearance_m": 1.581
+            },
+            {
+              "fraction": 0.16,
+              "distance_m": 3.48,
+              "lon": 77.40596428,
+              "lat": 18.45869268,
+              "terrain_elevation_m": -2522.902,
+              "sightline_elevation_m": -2521.317,
+              "clearance_m": 1.585
+            },
+            {
+              "fraction": 0.17,
+              "distance_m": 3.7,
+              "lon": 77.40596674,
+              "lat": 18.45869551,
+              "terrain_elevation_m": -2522.884,
+              "sightline_elevation_m": -2521.294,
+              "clearance_m": 1.59
+            },
+            {
+              "fraction": 0.18,
+              "distance_m": 3.92,
+              "lon": 77.4059692,
+              "lat": 18.45869835,
+              "terrain_elevation_m": -2522.865,
+              "sightline_elevation_m": -2521.272,
+              "clearance_m": 1.594
+            },
+            {
+              "fraction": 0.19,
+              "distance_m": 4.14,
+              "lon": 77.40597166,
+              "lat": 18.45870119,
+              "terrain_elevation_m": -2522.847,
+              "sightline_elevation_m": -2521.249,
+              "clearance_m": 1.598
+            },
+            {
+              "fraction": 0.2,
+              "distance_m": 4.35,
+              "lon": 77.40597412,
+              "lat": 18.45870402,
+              "terrain_elevation_m": -2522.828,
+              "sightline_elevation_m": -2521.227,
+              "clearance_m": 1.601
+            },
+            {
+              "fraction": 0.21,
+              "distance_m": 4.57,
+              "lon": 77.40597657,
+              "lat": 18.45870686,
+              "terrain_elevation_m": -2522.81,
+              "sightline_elevation_m": -2521.204,
+              "clearance_m": 1.605
+            },
+            {
+              "fraction": 0.22,
+              "distance_m": 4.79,
+              "lon": 77.40597903,
+              "lat": 18.4587097,
+              "terrain_elevation_m": -2522.792,
+              "sightline_elevation_m": -2521.182,
+              "clearance_m": 1.61
+            },
+            {
+              "fraction": 0.23,
+              "distance_m": 5.01,
+              "lon": 77.40598149,
+              "lat": 18.45871254,
+              "terrain_elevation_m": -2522.774,
+              "sightline_elevation_m": -2521.159,
+              "clearance_m": 1.615
+            },
+            {
+              "fraction": 0.24,
+              "distance_m": 5.22,
+              "lon": 77.40598395,
+              "lat": 18.45871537,
+              "terrain_elevation_m": -2522.756,
+              "sightline_elevation_m": -2521.137,
+              "clearance_m": 1.619
+            },
+            {
+              "fraction": 0.25,
+              "distance_m": 5.44,
+              "lon": 77.40598641,
+              "lat": 18.45871821,
+              "terrain_elevation_m": -2522.739,
+              "sightline_elevation_m": -2521.115,
+              "clearance_m": 1.624
+            },
+            {
+              "fraction": 0.26,
+              "distance_m": 5.66,
+              "lon": 77.40598887,
+              "lat": 18.45872105,
+              "terrain_elevation_m": -2522.721,
+              "sightline_elevation_m": -2521.092,
+              "clearance_m": 1.629
+            },
+            {
+              "fraction": 0.27,
+              "distance_m": 5.88,
+              "lon": 77.40599132,
+              "lat": 18.45872388,
+              "terrain_elevation_m": -2522.704,
+              "sightline_elevation_m": -2521.07,
+              "clearance_m": 1.634
+            },
+            {
+              "fraction": 0.28,
+              "distance_m": 6.1,
+              "lon": 77.40599378,
+              "lat": 18.45872672,
+              "terrain_elevation_m": -2522.687,
+              "sightline_elevation_m": -2521.047,
+              "clearance_m": 1.64
+            },
+            {
+              "fraction": 0.29,
+              "distance_m": 6.31,
+              "lon": 77.40599624,
+              "lat": 18.45872956,
+              "terrain_elevation_m": -2522.671,
+              "sightline_elevation_m": -2521.025,
+              "clearance_m": 1.646
+            },
+            {
+              "fraction": 0.3,
+              "distance_m": 6.53,
+              "lon": 77.4059987,
+              "lat": 18.4587324,
+              "terrain_elevation_m": -2522.654,
+              "sightline_elevation_m": -2521.002,
+              "clearance_m": 1.652
+            },
+            {
+              "fraction": 0.31,
+              "distance_m": 6.75,
+              "lon": 77.40600116,
+              "lat": 18.45873523,
+              "terrain_elevation_m": -2522.637,
+              "sightline_elevation_m": -2520.98,
+              "clearance_m": 1.657
+            },
+            {
+              "fraction": 0.32,
+              "distance_m": 6.97,
+              "lon": 77.40600362,
+              "lat": 18.45873807,
+              "terrain_elevation_m": -2522.62,
+              "sightline_elevation_m": -2520.957,
+              "clearance_m": 1.663
+            },
+            {
+              "fraction": 0.33,
+              "distance_m": 7.18,
+              "lon": 77.40600607,
+              "lat": 18.45874091,
+              "terrain_elevation_m": -2522.603,
+              "sightline_elevation_m": -2520.935,
+              "clearance_m": 1.668
+            },
+            {
+              "fraction": 0.34,
+              "distance_m": 7.4,
+              "lon": 77.40600853,
+              "lat": 18.45874374,
+              "terrain_elevation_m": -2522.586,
+              "sightline_elevation_m": -2520.913,
+              "clearance_m": 1.673
+            },
+            {
+              "fraction": 0.35,
+              "distance_m": 7.62,
+              "lon": 77.40601099,
+              "lat": 18.45874658,
+              "terrain_elevation_m": -2522.569,
+              "sightline_elevation_m": -2520.89,
+              "clearance_m": 1.679
+            },
+            {
+              "fraction": 0.36,
+              "distance_m": 7.84,
+              "lon": 77.40601345,
+              "lat": 18.45874942,
+              "terrain_elevation_m": -2522.553,
+              "sightline_elevation_m": -2520.868,
+              "clearance_m": 1.685
+            },
+            {
+              "fraction": 0.37,
+              "distance_m": 8.05,
+              "lon": 77.40601591,
+              "lat": 18.45875226,
+              "terrain_elevation_m": -2522.537,
+              "sightline_elevation_m": -2520.845,
+              "clearance_m": 1.691
+            },
+            {
+              "fraction": 0.38,
+              "distance_m": 8.27,
+              "lon": 77.40601837,
+              "lat": 18.45875509,
+              "terrain_elevation_m": -2522.52,
+              "sightline_elevation_m": -2520.823,
+              "clearance_m": 1.697
+            },
+            {
+              "fraction": 0.39,
+              "distance_m": 8.49,
+              "lon": 77.40602082,
+              "lat": 18.45875793,
+              "terrain_elevation_m": -2522.504,
+              "sightline_elevation_m": -2520.8,
+              "clearance_m": 1.704
+            },
+            {
+              "fraction": 0.4,
+              "distance_m": 8.71,
+              "lon": 77.40602328,
+              "lat": 18.45876077,
+              "terrain_elevation_m": -2522.487,
+              "sightline_elevation_m": -2520.778,
+              "clearance_m": 1.709
+            },
+            {
+              "fraction": 0.41,
+              "distance_m": 8.93,
+              "lon": 77.40602574,
+              "lat": 18.45876361,
+              "terrain_elevation_m": -2522.471,
+              "sightline_elevation_m": -2520.756,
+              "clearance_m": 1.716
+            },
+            {
+              "fraction": 0.42,
+              "distance_m": 9.14,
+              "lon": 77.4060282,
+              "lat": 18.45876644,
+              "terrain_elevation_m": -2522.456,
+              "sightline_elevation_m": -2520.733,
+              "clearance_m": 1.723
+            },
+            {
+              "fraction": 0.43,
+              "distance_m": 9.36,
+              "lon": 77.40603066,
+              "lat": 18.45876928,
+              "terrain_elevation_m": -2522.441,
+              "sightline_elevation_m": -2520.711,
+              "clearance_m": 1.731
+            },
+            {
+              "fraction": 0.44,
+              "distance_m": 9.58,
+              "lon": 77.40603312,
+              "lat": 18.45877212,
+              "terrain_elevation_m": -2522.426,
+              "sightline_elevation_m": -2520.688,
+              "clearance_m": 1.738
+            },
+            {
+              "fraction": 0.45,
+              "distance_m": 9.8,
+              "lon": 77.40603557,
+              "lat": 18.45877495,
+              "terrain_elevation_m": -2522.411,
+              "sightline_elevation_m": -2520.666,
+              "clearance_m": 1.745
+            },
+            {
+              "fraction": 0.46,
+              "distance_m": 10.01,
+              "lon": 77.40603803,
+              "lat": 18.45877779,
+              "terrain_elevation_m": -2522.396,
+              "sightline_elevation_m": -2520.643,
+              "clearance_m": 1.753
+            },
+            {
+              "fraction": 0.47,
+              "distance_m": 10.23,
+              "lon": 77.40604049,
+              "lat": 18.45878063,
+              "terrain_elevation_m": -2522.382,
+              "sightline_elevation_m": -2520.621,
+              "clearance_m": 1.761
+            },
+            {
+              "fraction": 0.48,
+              "distance_m": 10.45,
+              "lon": 77.40604295,
+              "lat": 18.45878347,
+              "terrain_elevation_m": -2522.368,
+              "sightline_elevation_m": -2520.598,
+              "clearance_m": 1.77
+            },
+            {
+              "fraction": 0.49,
+              "distance_m": 10.67,
+              "lon": 77.40604541,
+              "lat": 18.4587863,
+              "terrain_elevation_m": -2522.355,
+              "sightline_elevation_m": -2520.576,
+              "clearance_m": 1.779
+            },
+            {
+              "fraction": 0.5,
+              "distance_m": 10.88,
+              "lon": 77.40604787,
+              "lat": 18.45878914,
+              "terrain_elevation_m": -2522.342,
+              "sightline_elevation_m": -2520.554,
+              "clearance_m": 1.789
+            },
+            {
+              "fraction": 0.51,
+              "distance_m": 11.1,
+              "lon": 77.40605032,
+              "lat": 18.45879198,
+              "terrain_elevation_m": -2522.33,
+              "sightline_elevation_m": -2520.531,
+              "clearance_m": 1.799
+            },
+            {
+              "fraction": 0.52,
+              "distance_m": 11.32,
+              "lon": 77.40605278,
+              "lat": 18.45879481,
+              "terrain_elevation_m": -2522.318,
+              "sightline_elevation_m": -2520.509,
+              "clearance_m": 1.809
+            },
+            {
+              "fraction": 0.53,
+              "distance_m": 11.54,
+              "lon": 77.40605524,
+              "lat": 18.45879765,
+              "terrain_elevation_m": -2522.307,
+              "sightline_elevation_m": -2520.486,
+              "clearance_m": 1.82
+            },
+            {
+              "fraction": 0.54,
+              "distance_m": 11.75,
+              "lon": 77.4060577,
+              "lat": 18.45880049,
+              "terrain_elevation_m": -2522.295,
+              "sightline_elevation_m": -2520.464,
+              "clearance_m": 1.832
+            },
+            {
+              "fraction": 0.55,
+              "distance_m": 11.97,
+              "lon": 77.40606016,
+              "lat": 18.45880333,
+              "terrain_elevation_m": -2522.284,
+              "sightline_elevation_m": -2520.441,
+              "clearance_m": 1.843
+            },
+            {
+              "fraction": 0.56,
+              "distance_m": 12.19,
+              "lon": 77.40606261,
+              "lat": 18.45880616,
+              "terrain_elevation_m": -2522.273,
+              "sightline_elevation_m": -2520.419,
+              "clearance_m": 1.854
+            },
+            {
+              "fraction": 0.57,
+              "distance_m": 12.41,
+              "lon": 77.40606507,
+              "lat": 18.458809,
+              "terrain_elevation_m": -2522.262,
+              "sightline_elevation_m": -2520.396,
+              "clearance_m": 1.865
+            },
+            {
+              "fraction": 0.58,
+              "distance_m": 12.63,
+              "lon": 77.40606753,
+              "lat": 18.45881184,
+              "terrain_elevation_m": -2522.251,
+              "sightline_elevation_m": -2520.374,
+              "clearance_m": 1.877
+            },
+            {
+              "fraction": 0.59,
+              "distance_m": 12.84,
+              "lon": 77.40606999,
+              "lat": 18.45881467,
+              "terrain_elevation_m": -2522.235,
+              "sightline_elevation_m": -2520.352,
+              "clearance_m": 1.883
+            },
+            {
+              "fraction": 0.6,
+              "distance_m": 13.06,
+              "lon": 77.40607245,
+              "lat": 18.45881751,
+              "terrain_elevation_m": -2522.22,
+              "sightline_elevation_m": -2520.329,
+              "clearance_m": 1.891
+            },
+            {
+              "fraction": 0.61,
+              "distance_m": 13.28,
+              "lon": 77.40607491,
+              "lat": 18.45882035,
+              "terrain_elevation_m": -2522.203,
+              "sightline_elevation_m": -2520.307,
+              "clearance_m": 1.897
+            },
+            {
+              "fraction": 0.62,
+              "distance_m": 13.5,
+              "lon": 77.40607736,
+              "lat": 18.45882319,
+              "terrain_elevation_m": -2522.186,
+              "sightline_elevation_m": -2520.284,
+              "clearance_m": 1.902
+            },
+            {
+              "fraction": 0.63,
+              "distance_m": 13.71,
+              "lon": 77.40607982,
+              "lat": 18.45882602,
+              "terrain_elevation_m": -2522.169,
+              "sightline_elevation_m": -2520.262,
+              "clearance_m": 1.908
+            },
+            {
+              "fraction": 0.64,
+              "distance_m": 13.93,
+              "lon": 77.40608228,
+              "lat": 18.45882886,
+              "terrain_elevation_m": -2522.152,
+              "sightline_elevation_m": -2520.239,
+              "clearance_m": 1.913
+            },
+            {
+              "fraction": 0.65,
+              "distance_m": 14.15,
+              "lon": 77.40608474,
+              "lat": 18.4588317,
+              "terrain_elevation_m": -2522.08,
+              "sightline_elevation_m": -2520.217,
+              "clearance_m": 1.863
+            },
+            {
+              "fraction": 0.66,
+              "distance_m": 14.37,
+              "lon": 77.4060872,
+              "lat": 18.45883454,
+              "terrain_elevation_m": -2522.007,
+              "sightline_elevation_m": -2520.194,
+              "clearance_m": 1.812
+            },
+            {
+              "fraction": 0.67,
+              "distance_m": 14.58,
+              "lon": 77.40608966,
+              "lat": 18.45883737,
+              "terrain_elevation_m": -2521.932,
+              "sightline_elevation_m": -2520.172,
+              "clearance_m": 1.76
+            },
+            {
+              "fraction": 0.68,
+              "distance_m": 14.8,
+              "lon": 77.40609211,
+              "lat": 18.45884021,
+              "terrain_elevation_m": -2521.856,
+              "sightline_elevation_m": -2520.15,
+              "clearance_m": 1.706
+            },
+            {
+              "fraction": 0.69,
+              "distance_m": 15.02,
+              "lon": 77.40609457,
+              "lat": 18.45884305,
+              "terrain_elevation_m": -2521.779,
+              "sightline_elevation_m": -2520.127,
+              "clearance_m": 1.652
+            },
+            {
+              "fraction": 0.7,
+              "distance_m": 15.24,
+              "lon": 77.40609703,
+              "lat": 18.45884588,
+              "terrain_elevation_m": -2521.702,
+              "sightline_elevation_m": -2520.105,
+              "clearance_m": 1.598
+            },
+            {
+              "fraction": 0.71,
+              "distance_m": 15.46,
+              "lon": 77.40609949,
+              "lat": 18.45884872,
+              "terrain_elevation_m": -2521.614,
+              "sightline_elevation_m": -2520.082,
+              "clearance_m": 1.532
+            },
+            {
+              "fraction": 0.72,
+              "distance_m": 15.67,
+              "lon": 77.40610195,
+              "lat": 18.45885156,
+              "terrain_elevation_m": -2521.526,
+              "sightline_elevation_m": -2520.06,
+              "clearance_m": 1.466
+            },
+            {
+              "fraction": 0.73,
+              "distance_m": 15.89,
+              "lon": 77.40610441,
+              "lat": 18.4588544,
+              "terrain_elevation_m": -2521.437,
+              "sightline_elevation_m": -2520.037,
+              "clearance_m": 1.4
+            },
+            {
+              "fraction": 0.74,
+              "distance_m": 16.11,
+              "lon": 77.40610686,
+              "lat": 18.45885723,
+              "terrain_elevation_m": -2521.349,
+              "sightline_elevation_m": -2520.015,
+              "clearance_m": 1.334
+            },
+            {
+              "fraction": 0.75,
+              "distance_m": 16.33,
+              "lon": 77.40610932,
+              "lat": 18.45886007,
+              "terrain_elevation_m": -2521.263,
+              "sightline_elevation_m": -2519.992,
+              "clearance_m": 1.271
+            },
+            {
+              "fraction": 0.76,
+              "distance_m": 16.54,
+              "lon": 77.40611178,
+              "lat": 18.45886291,
+              "terrain_elevation_m": -2521.177,
+              "sightline_elevation_m": -2519.97,
+              "clearance_m": 1.207
+            },
+            {
+              "fraction": 0.77,
+              "distance_m": 16.76,
+              "lon": 77.40611424,
+              "lat": 18.45886574,
+              "terrain_elevation_m": -2521.094,
+              "sightline_elevation_m": -2519.948,
+              "clearance_m": 1.146
+            },
+            {
+              "fraction": 0.78,
+              "distance_m": 16.98,
+              "lon": 77.4061167,
+              "lat": 18.45886858,
+              "terrain_elevation_m": -2521.012,
+              "sightline_elevation_m": -2519.925,
+              "clearance_m": 1.087
+            },
+            {
+              "fraction": 0.79,
+              "distance_m": 17.2,
+              "lon": 77.40611916,
+              "lat": 18.45887142,
+              "terrain_elevation_m": -2520.933,
+              "sightline_elevation_m": -2519.903,
+              "clearance_m": 1.03
+            },
+            {
+              "fraction": 0.8,
+              "distance_m": 17.41,
+              "lon": 77.40612161,
+              "lat": 18.45887426,
+              "terrain_elevation_m": -2520.855,
+              "sightline_elevation_m": -2519.88,
+              "clearance_m": 0.975
+            },
+            {
+              "fraction": 0.81,
+              "distance_m": 17.63,
+              "lon": 77.40612407,
+              "lat": 18.45887709,
+              "terrain_elevation_m": -2520.788,
+              "sightline_elevation_m": -2519.858,
+              "clearance_m": 0.93
+            },
+            {
+              "fraction": 0.82,
+              "distance_m": 17.85,
+              "lon": 77.40612653,
+              "lat": 18.45887993,
+              "terrain_elevation_m": -2520.733,
+              "sightline_elevation_m": -2519.835,
+              "clearance_m": 0.897
+            },
+            {
+              "fraction": 0.83,
+              "distance_m": 18.07,
+              "lon": 77.40612899,
+              "lat": 18.45888277,
+              "terrain_elevation_m": -2520.691,
+              "sightline_elevation_m": -2519.813,
+              "clearance_m": 0.878
+            },
+            {
+              "fraction": 0.84,
+              "distance_m": 18.29,
+              "lon": 77.40613145,
+              "lat": 18.4588856,
+              "terrain_elevation_m": -2520.651,
+              "sightline_elevation_m": -2519.79,
+              "clearance_m": 0.86
+            },
+            {
+              "fraction": 0.85,
+              "distance_m": 18.5,
+              "lon": 77.40613391,
+              "lat": 18.45888844,
+              "terrain_elevation_m": -2520.611,
+              "sightline_elevation_m": -2519.768,
+              "clearance_m": 0.843
+            },
+            {
+              "fraction": 0.86,
+              "distance_m": 18.72,
+              "lon": 77.40613636,
+              "lat": 18.45889128,
+              "terrain_elevation_m": -2520.573,
+              "sightline_elevation_m": -2519.746,
+              "clearance_m": 0.827
+            },
+            {
+              "fraction": 0.87,
+              "distance_m": 18.94,
+              "lon": 77.40613882,
+              "lat": 18.45889412,
+              "terrain_elevation_m": -2520.535,
+              "sightline_elevation_m": -2519.723,
+              "clearance_m": 0.812
+            },
+            {
+              "fraction": 0.88,
+              "distance_m": 19.16,
+              "lon": 77.40614128,
+              "lat": 18.45889695,
+              "terrain_elevation_m": -2520.509,
+              "sightline_elevation_m": -2519.701,
+              "clearance_m": 0.808
+            },
+            {
+              "fraction": 0.89,
+              "distance_m": 19.37,
+              "lon": 77.40614374,
+              "lat": 18.45889979,
+              "terrain_elevation_m": -2520.506,
+              "sightline_elevation_m": -2519.678,
+              "clearance_m": 0.828
+            },
+            {
+              "fraction": 0.9,
+              "distance_m": 19.59,
+              "lon": 77.4061462,
+              "lat": 18.45890263,
+              "terrain_elevation_m": -2520.5,
+              "sightline_elevation_m": -2519.656,
+              "clearance_m": 0.844
+            },
+            {
+              "fraction": 0.91,
+              "distance_m": 19.81,
+              "lon": 77.40614866,
+              "lat": 18.45890547,
+              "terrain_elevation_m": -2520.491,
+              "sightline_elevation_m": -2519.633,
+              "clearance_m": 0.857
+            },
+            {
+              "fraction": 0.92,
+              "distance_m": 20.03,
+              "lon": 77.40615111,
+              "lat": 18.4589083,
+              "terrain_elevation_m": -2520.478,
+              "sightline_elevation_m": -2519.611,
+              "clearance_m": 0.867
+            },
+            {
+              "fraction": 0.93,
+              "distance_m": 20.24,
+              "lon": 77.40615357,
+              "lat": 18.45891114,
+              "terrain_elevation_m": -2520.463,
+              "sightline_elevation_m": -2519.588,
+              "clearance_m": 0.874
+            },
+            {
+              "fraction": 0.94,
+              "distance_m": 20.46,
+              "lon": 77.40615603,
+              "lat": 18.45891398,
+              "terrain_elevation_m": -2520.449,
+              "sightline_elevation_m": -2519.566,
+              "clearance_m": 0.883
+            },
+            {
+              "fraction": 0.95,
+              "distance_m": 20.68,
+              "lon": 77.40615849,
+              "lat": 18.45891681,
+              "terrain_elevation_m": -2520.452,
+              "sightline_elevation_m": -2519.544,
+              "clearance_m": 0.908
+            },
+            {
+              "fraction": 0.96,
+              "distance_m": 20.9,
+              "lon": 77.40616095,
+              "lat": 18.45891965,
+              "terrain_elevation_m": -2520.453,
+              "sightline_elevation_m": -2519.521,
+              "clearance_m": 0.932
+            },
+            {
+              "fraction": 0.97,
+              "distance_m": 21.12,
+              "lon": 77.40616341,
+              "lat": 18.45892249,
+              "terrain_elevation_m": -2520.452,
+              "sightline_elevation_m": -2519.499,
+              "clearance_m": 0.953
+            },
+            {
+              "fraction": 0.98,
+              "distance_m": 21.33,
+              "lon": 77.40616586,
+              "lat": 18.45892533,
+              "terrain_elevation_m": -2520.448,
+              "sightline_elevation_m": -2519.476,
+              "clearance_m": 0.972
+            },
+            {
+              "fraction": 0.99,
+              "distance_m": 21.55,
+              "lon": 77.40616832,
+              "lat": 18.45892816,
+              "terrain_elevation_m": -2520.443,
+              "sightline_elevation_m": -2519.454,
+              "clearance_m": 0.989
+            },
+            {
+              "fraction": 1.0,
+              "distance_m": 21.77,
+              "lon": 77.40617078,
+              "lat": 18.458931,
+              "terrain_elevation_m": -2520.431,
+              "sightline_elevation_m": -2519.431,
+              "clearance_m": 1.0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "summary_table": [
+    {
+      "target_height": "0.0 m (basal contact)",
+      "illustrative_standpoint": {
+        "distance_m": 21.2,
+        "status": "obstructed",
+        "clearance_m": -0.149,
+        "obstruction_m": 0.149
+      },
+      "option_a_terminus": {
+        "distance_m": 21.77,
+        "status": "obstructed",
+        "clearance_m": -0.072,
+        "obstruction_m": 0.072
+      }
+    },
+    {
+      "target_height": "+0.5 m (mid-block face)",
+      "illustrative_standpoint": {
+        "distance_m": 21.2,
+        "status": "clear",
+        "clearance_m": 0.281,
+        "obstruction_m": 0.0
+      },
+      "option_a_terminus": {
+        "distance_m": 21.77,
+        "status": "clear",
+        "clearance_m": 0.368,
+        "obstruction_m": 0.0
+      }
+    },
+    {
+      "target_height": "+1.0 m (block top)",
+      "illustrative_standpoint": {
+        "distance_m": 21.2,
+        "status": "clear",
+        "clearance_m": 0.711,
+        "obstruction_m": 0.0
+      },
+      "option_a_terminus": {
+        "distance_m": 21.77,
+        "status": "clear",
+        "clearance_m": 0.808,
+        "obstruction_m": 0.0
+      }
+    }
+  ],
+  "conclusion": "Ground-level contact (height 0.0 m, basal contact) is obscured by topography from the Option A standoff viewpoint (~21-22 m southwest), resulting in ~0.07 m to ~0.15 m of obstruction along the intervening terrain crest (~18-19 m from the observer). Conversely, raised features (+0.5 m and +1.0 m) clear the crest with ~0.28 m to ~0.37 m of clearance at +0.5 m, and ~0.71 m to ~0.81 m clearance at +1.0 m. Consequently, an astronaut observing from Option A can view upper bedding layers and alternating protruding/recessive facies, but cannot determine basal contact continuity. The contact observation outcome from Option A must remain 'unresolved', and resolving origin requires direct physical inspection via route Option B."
+}
