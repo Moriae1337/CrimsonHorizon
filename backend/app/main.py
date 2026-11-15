@@ -1,8 +1,9 @@
 import logging
 import math
+from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Query, Response
+from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
@@ -17,6 +18,7 @@ from app.scenario import (
 )
 from app.sites import (
     SITE_DIRS,
+    TRAVERSES_PATH,
     load_grid,
     load_site,
     site_summaries,
@@ -139,6 +141,27 @@ def scenario_slope(scenario_id: str, response: Response) -> dict[str, Any]:
     return data
 
 
+# Site data changes when packages are rebuilt, so browsers revalidate it (ETag from
+# the files' size and mtime) instead of keeping a copy for a day.
+REVALIDATE = "public, no-cache"
+
+
+def _etag(*paths: Path) -> str:
+    parts = []
+    for path in paths:
+        stat = path.stat()
+        parts.append(f"{stat.st_mtime_ns:x}-{stat.st_size:x}")
+    return '"' + ".".join(parts) + '"'
+
+
+def _not_modified(request: Request, etag: str) -> Response | None:
+    if request.headers.get("if-none-match") == etag:
+        return Response(
+            status_code=304, headers={"ETag": etag, "Cache-Control": REVALIDATE}
+        )
+    return None
+
+
 def _site_or_404(site_id: str) -> None:
     if site_id not in SITE_DIRS:
         raise HTTPException(status_code=404, detail="Site not found")
@@ -170,16 +193,22 @@ def sites() -> dict[str, Any]:
         raise HTTPException(status_code=503, detail="Sites unavailable") from None
 
 
-@app.get("/sites/{site_id}/terrain")
-def site_terrain(site_id: str, response: Response) -> dict[str, Any]:
+@app.get("/sites/{site_id}/terrain", response_model=None)
+def site_terrain(
+    site_id: str, request: Request, response: Response
+) -> dict[str, Any] | Response:
     """Return the encoded elevation grid and metadata for one site."""
     _site_or_404(site_id)
     try:
+        etag = _etag(SITE_DIRS[site_id] / "terrain.json")
+        if cached := _not_modified(request, etag):
+            return cached
         doc = load_site(site_id)
     except (OSError, ValueError):
         logger.exception("Terrain for %r is unavailable", site_id)
         raise HTTPException(status_code=503, detail="Terrain unavailable") from None
-    response.headers["Cache-Control"] = "public, max-age=86400"
+    response.headers["Cache-Control"] = REVALIDATE
+    response.headers["ETag"] = etag
     return doc
 
 
@@ -200,16 +229,23 @@ def site_texture(site_id: str) -> FileResponse:
     )
 
 
-@app.get("/sites/{site_id}/traverse")
-def site_traverse_endpoint(site_id: str, response: Response) -> dict[str, Any]:
+@app.get("/sites/{site_id}/traverse", response_model=None)
+def site_traverse_endpoint(
+    site_id: str, request: Request, response: Response
+) -> dict[str, Any] | Response:
     """The rover traverse and its stops inside one site window."""
     _site_or_404(site_id)
     try:
+        # The clipped traverse depends on both the traverse data and the site window.
+        etag = _etag(TRAVERSES_PATH, SITE_DIRS[site_id] / "terrain.json")
+        if cached := _not_modified(request, etag):
+            return cached
         doc = site_traverse(site_id)
     except (OSError, ValueError, KeyError):
         logger.exception("Traverse for %r is unavailable", site_id)
         raise HTTPException(status_code=503, detail="Traverse unavailable") from None
-    response.headers["Cache-Control"] = "public, max-age=86400"
+    response.headers["Cache-Control"] = REVALIDATE
+    response.headers["ETag"] = etag
     return doc
 
 

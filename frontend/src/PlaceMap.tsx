@@ -16,7 +16,7 @@ import {
   MARS_RADIUS_M,
   MARS_WORLD_EXTENT,
 } from './marsCatalog'
-import { createWmtsLayer, getOrCreateMarsProjection } from './marsTiles'
+import { createWmtsLayer, getOrCreateMarsProjection, placeExtent } from './marsTiles'
 
 const DARK = '#212121'
 const LIGHT = '#EBEBEB'
@@ -94,14 +94,18 @@ export function PlaceMap({
         constrainResolution: false,
       }),
     })
-    // Frame the feature with some margin; small features get at least a 10 km view.
-    const halfKm = Math.max(radiusKm * 1.35, 5)
-    const dLat = halfKm / KM_PER_DEG
-    const dLon = dLat / cosLat
-    map.getView().fit([lon - dLon, lat - dLat, lon + dLon, lat + dLat], {
-      size: [host.clientWidth || 300, host.clientHeight || 180],
+    const extent = placeExtent(lon, lat, diameterKm)
+    map.getView().fit(extent, { size: [host.clientWidth || 300, host.clientHeight || 180] })
+    // The card can still be settling its width when the map is created: follow it.
+    const resize = new ResizeObserver(() => {
+      map.updateSize()
+      map.getView().fit(extent)
     })
-    return () => map.setTarget(undefined)
+    resize.observe(host)
+    return () => {
+      resize.disconnect()
+      map.setTarget(undefined)
+    }
   }, [lon, lat, diameterKm, isCrater])
 
   return (

@@ -6,6 +6,7 @@ import {
   decodeTerrain,
   fetchRoutePlan,
   fetchTerrainPackage,
+  clipTraverse,
   fetchTraverse,
   insertStop,
   roverWaypoints,
@@ -90,7 +91,11 @@ export function useRoutePlanner(active: boolean) {
       })
     return () => controller.abort()
   }, [siteId, traverses, active])
-  const traverse = traverses[siteId] ?? null
+  const rawTraverse = traverses[siteId] ?? null
+  const traverse = useMemo(
+    () => (rawTraverse && pkg ? clipTraverse(rawTraverse, pkg.bounds_m) : null),
+    [rawTraverse, pkg],
+  )
 
   // Plan whenever both ends exist and inputs change (debounced).
   const key = planKey(siteId, draft, maxGrade)

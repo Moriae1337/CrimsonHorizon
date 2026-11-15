@@ -446,3 +446,26 @@ export function insertStop(
   }
   return [...waypoints.slice(0, best), p, ...waypoints.slice(best)]
 }
+
+/**
+ * The traverse limited to a package's window: runs split where the line leaves it and
+ * stops outside dropped. The API already clips to the window; this keeps the drawing
+ * inside the terrain even if a cached package and a newer traverse disagree.
+ */
+export function clipTraverse(t: RoverTraverse, b: TerrainPackage['bounds_m']): RoverTraverse {
+  const inside = ([x, y]: [number, number]) =>
+    x >= b.left && x <= b.right && y >= b.bottom && y <= b.top
+  const lines: [number, number][][] = []
+  for (const run of t.lines) {
+    let cur: [number, number][] = []
+    for (const p of run) {
+      if (inside(p)) cur.push(p)
+      else {
+        if (cur.length > 1) lines.push(cur)
+        cur = []
+      }
+    }
+    if (cur.length > 1) lines.push(cur)
+  }
+  return { ...t, lines, stops: t.stops.filter((s) => inside([s.x, s.y])) }
+}
