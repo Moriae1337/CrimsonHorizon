@@ -1,0 +1,146 @@
+{
+  "input_id": "dtm-primary",
+  "source_file": "data/hawksbill_gap/derived/dtm_primary_window.tif",
+  "created_at": "2026-11-14T11:12:41Z",
+  "source": {
+    "crs_proj4": "+proj=eqc +lat_ts=0 +lat_0=0 +lon_0=0 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs=True",
+    "transform": [
+      1.0,
+      0.0,
+      4587980.0,
+      0.0,
+      -1.0,
+      1094389.0
+    ],
+    "shape": [
+      474,
+      474
+    ]
+  },
+  "local": {
+    "crs_proj4": "+proj=aeqd +lat_0=18.459 +lon_0=77.406 +x_0=0 +y_0=0 +R=3396190 +units=m +no_defs=True",
+    "crs_wkt": "PROJCS[\"unknown\",GEOGCS[\"unknown\",DATUM[\"unknown\",SPHEROID[\"unknown\",3396190,0]],PRIMEM[\"Reference meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Azimuthal_Equidistant\"],PARAMETER[\"latitude_of_center\",18.459],PARAMETER[\"longitude_of_center\",77.406],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+    "center_lon_lat": [
+      77.406,
+      18.459
+    ],
+    "transform": [
+      1.0,
+      0.0,
+      -226.0,
+      0.0,
+      -1.0,
+      238.0
+    ],
+    "shape": [
+      475,
+      451
+    ],
+    "cell_size_m": 1.0
+  },
+  "resampling": "bilinear; NoData excluded, never filled",
+  "dtype": "float32",
+  "nodata": -3.4028226550889045e+38,
+  "vertical_units": "metre",
+  "vertical_reference": "Not stated on the product page. The file name indicates heights tied to MOLA topography relative to the Mars geoid (DeltaGeoid). Values agree with rover elev_geoid in the scope's check; confirm in #35.",
+  "cells": 214225,
+  "valid_cells": 213300,
+  "nodata_cells": 925,
+  "nodata_note": "NoData cells are grid corners outside the source crop.",
+  "elevation_m": {
+    "min": -2545.205,
+    "max": -2468.597,
+    "mean": -2513.147
+  },
+  "data_sha256": "14a790b3a1ed36575002e59b261d36cbaa04a5801652ea57f2a34d8d5ed61504",
+  "output_file": "data/hawksbill_gap/derived/dtm_local.tif",
+  "control_samples": [
+    {
+      "id": "extent-center",
+      "lon": 77.406,
+      "lat": 18.459,
+      "local_xy_m": [
+        0.0,
+        0.0
+      ],
+      "proj_vs_formula_m": 0.0,
+      "cell": [
+        238,
+        226
+      ],
+      "round_trip_same_cell": true,
+      "local_value_m": -2517.716,
+      "source_value_m": -2517.714,
+      "local_minus_source_m": -0.0015
+    },
+    {
+      "id": "25_446",
+      "lon": 77.40633801,
+      "lat": 18.45744513,
+      "rover_elev_geoid_m": -2535.580322,
+      "local_xy_m": [
+        19.005,
+        -92.164
+      ],
+      "proj_vs_formula_m": 0.0,
+      "cell": [
+        330,
+        245
+      ],
+      "round_trip_same_cell": true,
+      "local_value_m": -2535.69,
+      "source_value_m": -2535.69,
+      "local_minus_source_m": -0.0005,
+      "rover_minus_local_m": 0.11
+    },
+    {
+      "id": "26_1004",
+      "lon": 77.40616768,
+      "lat": 18.45889532,
+      "rover_elev_geoid_m": -2520.852539,
+      "local_xy_m": [
+        9.428,
+        -6.205
+      ],
+      "proj_vs_formula_m": 0.0,
+      "cell": [
+        244,
+        235
+      ],
+      "round_trip_same_cell": true,
+      "local_value_m": -2521.024,
+      "source_value_m": -2521.023,
+      "local_minus_source_m": -0.0009,
+      "rover_minus_local_m": 0.171
+    },
+    {
+      "id": "26_1222",
+      "lon": 77.40592495,
+      "lat": 18.45864728,
+      "rover_elev_geoid_m": -2523.167969,
+      "local_xy_m": [
+        -4.22,
+        -20.907
+      ],
+      "proj_vs_formula_m": 0.0,
+      "cell": [
+        258,
+        221
+      ],
+      "round_trip_same_cell": true,
+      "local_value_m": -2523.109,
+      "source_value_m": -2523.108,
+      "local_minus_source_m": -0.0004,
+      "rover_minus_local_m": -0.059
+    }
+  ],
+  "mask_check": {
+    "row_off": 230,
+    "col_off": 230,
+    "size": 12,
+    "cells_checked": 100,
+    "filled_cells": 0,
+    "zero_cells": 0
+  },
+  "findings": []
+}
