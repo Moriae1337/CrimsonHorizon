@@ -52,7 +52,7 @@
         "dtype": "float32",
         "nodata": -3.4028226550889045e38,
         "vertical_units": "metre",
-        "vertical_reference": "Not stated on the product page. The file name indicates heights tied to MOLA topography relative to the Mars geoid (DeltaGeoid). Values agree with rover elev_geoid in the scope's check; confirm in #35."
+        "vertical_reference": "Not stated on the product page. The file name indicates heights tied to MOLA topography relative to the Mars geoid (DeltaGeoid). Agrees with rover elev_geoid (areoid-referenced) to a median of -0.01 m over 25 localizations."
       },
       "window": {
         "col_off": 10614,
