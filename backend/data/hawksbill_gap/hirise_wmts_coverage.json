@@ -1,0 +1,322 @@
+{
+  "checked_at": "2026-11-14T12:22:10Z",
+  "layer": "JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first_dd",
+  "tile_url": "https://trek.nasa.gov/tiles/Mars/EQ/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first_dd/1.0.0/default/default028mm/{z}/{y}/{x}.png",
+  "request_origin": "http://localhost:5173",
+  "capabilities": {
+    "url": "https://trek.nasa.gov/tiles/Mars/EQ/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first_dd/1.0.0/WMTSCapabilities.xml",
+    "format": "image/png",
+    "tile_matrix_set": "default028mm",
+    "supported_crs": "urn:ogc:def:crs:EPSG::104905",
+    "bounds_lonlat": [77.2229331, 18.3067994, 77.583964, 18.669315],
+    "tile_matrices": 18,
+    "max_zoom": 17,
+    "max_zoom_scale_denominator": 2130.3378013463953,
+    "top_left_corner": [-180.0, 90.0],
+    "tile_size": 256,
+    "max_zoom_matrix": [262144, 131072]
+  },
+  "scenario_extent": {
+    "lon_min": 77.402,
+    "lon_max": 77.41,
+    "lat_min": 18.455,
+    "lat_max": 18.463
+  },
+  "zooms": [
+    {
+      "zoom": 8,
+      "tiles_requested": 1,
+      "tiles_ok": 1,
+      "min_tile_valid_pct": 13.7,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    },
+    {
+      "zoom": 9,
+      "tiles_requested": 1,
+      "tiles_ok": 1,
+      "min_tile_valid_pct": 50.53,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    },
+    {
+      "zoom": 10,
+      "tiles_requested": 2,
+      "tiles_ok": 2,
+      "min_tile_valid_pct": 72.57,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    },
+    {
+      "zoom": 11,
+      "tiles_requested": 2,
+      "tiles_ok": 2,
+      "min_tile_valid_pct": 100.0,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    },
+    {
+      "zoom": 12,
+      "tiles_requested": 2,
+      "tiles_ok": 2,
+      "min_tile_valid_pct": 100.0,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    },
+    {
+      "zoom": 13,
+      "tiles_requested": 4,
+      "tiles_ok": 4,
+      "min_tile_valid_pct": 100.0,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    },
+    {
+      "zoom": 14,
+      "tiles_requested": 4,
+      "tiles_ok": 4,
+      "min_tile_valid_pct": 100.0,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    },
+    {
+      "zoom": 15,
+      "tiles_requested": 9,
+      "tiles_ok": 9,
+      "min_tile_valid_pct": 100.0,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    },
+    {
+      "zoom": 16,
+      "tiles_requested": 16,
+      "tiles_ok": 16,
+      "min_tile_valid_pct": 100.0,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    },
+    {
+      "zoom": 17,
+      "tiles_requested": 49,
+      "tiles_ok": 49,
+      "min_tile_valid_pct": 100.0,
+      "failures": [],
+      "coverage": {
+        "start": {
+          "points": 1,
+          "valid": 1
+        },
+        "skinner-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "wildcat-ridge": {
+          "points": 1,
+          "valid": 1
+        },
+        "route-A": {
+          "points": 109,
+          "valid": 109
+        },
+        "route-B": {
+          "points": 167,
+          "valid": 167
+        }
+      }
+    }
+  ],
+  "beyond_max_zoom": {
+    "zoom": 18,
+    "status": 404
+  },
+  "findings": []
+}
