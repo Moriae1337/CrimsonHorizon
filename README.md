@@ -1,18 +1,18 @@
 # CrimsonHorizon
 
-A web application for the NASA Space Apps Challenge 2026,
-**"Interplanetary Survival Guide: Martian Map"**. The goal is to help mission
-planners prepare Mars surface exploration routes using NASA geospatial data.
+A web app for planning astronaut walks on real Martian terrain.
 
-## Stack
+Pick a start, an end and up to 8 stops in Jezero or Gusev crater, and the app
+compares the shortest route with a gentler one that avoids steep and rough
+ground. You see each route's distance, climb, steepest point and walking time
+on a 2D map, in 3D and on a globe of Mars. All data comes from real, cited NASA
+and USGS sources, and the app shows where that data is uncertain instead of
+calling any route "safe".
 
-- **Frontend:** React, TypeScript, Vite, Tailwind CSS; npm.
-- **Backend:** Python 3.12+, FastAPI, Uvicorn; uv.
-- **Testing and CI:** pytest, Node.js test runner, Oxlint, GitHub Actions.
-- **Hosting target:** Cloudflare Pages + Render Free.
+![Route planner on the Perseverance traverse in Jezero crater](docs/screenshots/route-planner.jpg)
 
-## Explore Mars
+![3D HiRISE terrain of Hawksbill Gap with Perseverance's path](docs/screenshots/3d-site.jpg)
 
-- **2D map:** Browse Mars imagery and landmarks, or open the prepared Hawksbill Gap scenario to compare two excursions in Jezero crater.
-- **Route planner:** Place a start, an endpoint, and optional stops in Columbia Hills or Hawksbill Gap. Compare the shortest and lower-risk paths, inspect elevation, and export the routes as GeoJSON.
-- **3D site and globe:** Review the same planned route on HiRISE terrain, play back a traverse, or find named features on the Mars globe.
+![Mars globe with named features and rover landing sites](docs/screenshots/globe.jpg)
+
+![2D map of Jezero crater with the rover traverse](docs/screenshots/map.jpg)
