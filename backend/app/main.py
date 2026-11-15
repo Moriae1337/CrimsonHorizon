@@ -1,9 +1,10 @@
 from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_cors_origins
+from app.scenario import SCENARIO_PATHS, load_scenario
 from app.terrain import get_jezero_landmarks, get_map_catalog
 
 app = FastAPI(title="CrimsonHorizon API")
@@ -36,3 +37,11 @@ def terrain_layers() -> dict[str, Any]:
 def terrain_landmarks() -> dict[str, Any]:
     """Return verified Jezero Crater reference points as GeoJSON."""
     return get_jezero_landmarks()
+
+
+@app.get("/scenarios/{scenario_id}")
+def scenario(scenario_id: str) -> dict[str, Any]:
+    """Return a prepared field scenario."""
+    if scenario_id not in SCENARIO_PATHS:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+    return load_scenario(scenario_id)
