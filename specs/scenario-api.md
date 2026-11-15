@@ -12,7 +12,9 @@ unchanged. Tracking issue: CH26-031 (#49).
   `backend/data/` with no upstream request at runtime.
 - `404`: unknown `scenario_id`, with FastAPI's default `{"detail": "..."}` body.
 - `503`: the committed file is missing, unreadable, invalid JSON, or has an
-  unsupported MAJOR; body `{"detail": "Scenario temporarily unavailable"}`.
+  unsupported MAJOR, or fails the contract checks in `backend/app/scenario_schema.py`
+  (required fields, `[lon, lat]` tuples, units, unique IDs, cross-references);
+  body `{"detail": "Scenario temporarily unavailable"}`. Unknown extra fields are allowed.
 
 ## Versioning
 
