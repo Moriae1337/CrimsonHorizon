@@ -1,5 +1,8 @@
 """Verified NASA/USGS Mars dataset metadata and Jezero Crater reference landmarks."""
 
+import json
+from functools import cache
+from pathlib import Path
 from typing import Any, Literal, TypedDict
 
 MARS_IAU_RADIUS_M = 3_396_190.0
@@ -185,3 +188,17 @@ def get_jezero_landmarks() -> dict[str, Any]:
             },
         ],
     }
+
+
+NOMENCLATURE_PATH = (
+    Path(__file__).resolve().parents[1] / "data" / "iau_mars_nomenclature.json"
+)
+
+
+@cache
+def get_nomenclature() -> dict[str, Any]:
+    """IAU-named features built by prep.iau_nomenclature (USGS Gazetteer)."""
+    doc: dict[str, Any] = json.loads(NOMENCLATURE_PATH.read_text(encoding="utf-8"))
+    if doc.get("version") != 1 or not isinstance(doc.get("features"), list):
+        raise ValueError("unsupported nomenclature document")
+    return doc
