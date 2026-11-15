@@ -1,0 +1,21 @@
+# Render Blueprint for the CrimsonHorizon backend (Free plan).
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Python version comes from backend/.python-version.
+# Dependencies are installed with uv from backend/uv.lock.
+services:
+  - type: web
+    name: crimson-horizon-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: uv sync --frozen --no-dev
+    startCommand: uv run --no-sync uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # Comma-separated list of allowed frontend origins, e.g.
+      # https://crimson-horizon.pages.dev,http://localhost:5173
+      # Set the value in the Render dashboard when the Blueprint is first applied.
+      - key: CORS_ORIGINS
+        sync: false
