@@ -51,3 +51,37 @@ def test_cors_origins_rejects_wildcard(monkeypatch, origins):
 def test_cors_origins_can_disable_cross_origin_access(monkeypatch):
     monkeypatch.setenv("CORS_ORIGINS", " , ")
     assert get_cors_origins() == []
+
+
+def test_terrain_layers_returns_cited_mars_catalog():
+    response = client.get("/terrain/layers")
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["crs"] == "IAU2000:104905"
+    assert payload["radius_m"] == 3_396_190.0
+    assert len(payload["layers"]) == 4
+    layer_ids = {layer["id"] for layer in payload["layers"]}
+    assert {
+        "mola-color-hillshade",
+        "viking-mdim21",
+        "jezero-ctx-ortho",
+        "jezero-hirise-ortho",
+    } == layer_ids
+    for layer in payload["layers"]:
+        assert layer["tile_url"].startswith("https://trek.nasa.gov/tiles/Mars/EQ/")
+        assert layer["attribution"]
+
+
+def test_terrain_landmarks_returns_valid_jezero_geojson():
+    response = client.get("/terrain/landmarks")
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["type"] == "FeatureCollection"
+    assert len(payload["features"]) >= 3
+    for feature in payload["features"]:
+        assert feature["type"] == "Feature"
+        assert feature["geometry"]["type"] == "Point"
+        lon, lat = feature["geometry"]["coordinates"]
+        assert 77.0 <= lon <= 78.0
+        assert 18.0 <= lat <= 19.0
+        assert feature["properties"]["source"]
