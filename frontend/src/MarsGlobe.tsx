@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { DEFAULT_MAP_CATALOG } from './marsCatalog.ts'
 import { CRATERS, CRATER_IDS, craterByIauName, type CraterInfo } from './craters.ts'
 import { SITE_LABELS } from './plannerText.ts'
+import { PlaceMap } from './PlaceMap.tsx'
 import { fetchNomenclature, type IauFeature, type SiteId } from './sites.ts'
 import { useTranslation } from './i18n/useTranslation.ts'
 
@@ -462,6 +463,15 @@ export function MarsGlobe({ onOpenSite, onOpenPlanner, onOpenMap }: MarsGlobePro
               {selected.lat.toFixed(2)}°, {selected.lon.toFixed(2)}°E
             </dd>
           </dl>
+          <div className="mt-2">
+            <PlaceMap
+              key={`${selected.name}-${selected.lon}`}
+              lon={selected.lon}
+              lat={selected.lat}
+              diameterKm={selected.diameter_km}
+              isCrater={selected.category === 'crater'}
+            />
+          </div>
           {crater && (
             <div className="mt-2 flex flex-col gap-2 text-text-secondary">
               <p>{crater.summary[lang]}</p>

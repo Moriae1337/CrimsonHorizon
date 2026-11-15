@@ -161,5 +161,9 @@ Jezero, Gale, Gusev, Endeavour and Eberswalde. Built by
   relief). IAU labels are filtered by
   camera distance with greedy overlap removal and feature search. Jezero and Gusev
   have markers; clicking one (or the IAU label) opens a card with the crater summary
-  and, for each of its two sites, "Plan routes (2D)" and "Open in 3D".
+  and, for each of its two sites, "Plan routes (2D)" and "Open in 3D". Every opened
+  place also gets a small map (`PlaceMap.tsx`): Viking colour under the global CTX
+  mosaic (`GLOBAL_CTX_LAYER`, to about 10 m/px), framed on the IAU size, with the
+  crater rim drawn as a circle of the IAU diameter. Tile helpers shared with the 2D
+  map live in `marsTiles.ts`.
 - Both views are lazy-loaded so the 2D map bundle does not include three.js.

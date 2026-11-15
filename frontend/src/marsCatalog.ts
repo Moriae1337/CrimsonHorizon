@@ -7,6 +7,8 @@ export interface MapLayer {
   resolution_m: number
   tile_url: string
   format: 'image/jpeg' | 'image/png'
+  /** Tile edge in pixels (Mars Trek layers use 256; the global CTX mosaic uses 512). */
+  tile_size?: number
   min_zoom: number
   max_zoom: number
   extent: [number, number, number, number]
@@ -120,6 +122,28 @@ export const DEFAULT_MAP_CATALOG: MapCatalog = {
   ],
 }
 
+/**
+ * Global CTX mosaic (Caltech Murray Lab, Global CTX Mosaic of Mars v01, ~5 m/px source),
+ * listed by NASA Mars Trek as `CTX_beta01_uncontrolled_5m_Caltech`, whose WMTS
+ * capabilities point the tiles at Esri's OnMars CTX service: 512 px tiles, 2 × 1 at
+ * level 0, levels 0–11 (about 10 m/px at level 11). Used for the globe's place maps.
+ */
+export const GLOBAL_CTX_LAYER: MapLayer = {
+  id: 'ctx-global-murray-lab',
+  name: 'CTX Global Mosaic (Murray Lab, beta01)',
+  scope: 'global',
+  resolution_m: 5.0,
+  tile_url: 'https://astro.arcgis.com/arcgis/rest/services/OnMars/CTX/MapServer/tile/{z}/{y}/{x}',
+  format: 'image/png',
+  tile_size: 512,
+  min_zoom: 0,
+  max_zoom: 11,
+  extent: [-180, -90, 180, 90],
+  attribution: 'CTX: NASA / JPL / MSSS, Caltech Murray Lab Global CTX Mosaic (via NASA Mars Trek)',
+  source_url:
+    'https://trek.nasa.gov/tiles/Mars/EQ/CTX_beta01_uncontrolled_5m_Caltech/1.0.0/WMTSCapabilities.xml',
+}
+
 export const DEFAULT_LANDMARKS: MarsLandmarksGeoJson = {
   type: 'FeatureCollection',
   features: [
@@ -190,8 +214,8 @@ export function getMarsPointResolution(resolution: number, coordinate: readonly 
 }
 
 /** Build equirectangular WMTS resolutions for a 2x1 root grid (`z=0` spans 180° vertically across 256 px). */
-export function buildMarsResolutions(maxZoom: number): number[] {
-  return Array.from({ length: maxZoom + 1 }, (_, z) => 180 / (256 * 2 ** z))
+export function buildMarsResolutions(maxZoom: number, tileSize = 256): number[] {
+  return Array.from({ length: maxZoom + 1 }, (_, z) => 180 / (tileSize * 2 ** z))
 }
 
 /** Format planetocentric longitude/latitude with explicit N/S and E/W hemispheres. */

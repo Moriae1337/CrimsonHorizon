@@ -12,12 +12,10 @@ import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
 import ImageStatic from 'ol/source/ImageStatic'
 import VectorLayer from 'ol/layer/Vector'
-import { addProjection, get as getProjection } from 'ol/proj'
 import Projection from 'ol/proj/Projection'
 import VectorSource from 'ol/source/Vector'
 import XYZ from 'ol/source/XYZ'
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
-import WMTSTileGrid from 'ol/tilegrid/WMTS'
 import { useEffect, useRef, useState } from 'react'
 import type { Scenario } from './scenario'
 import {
@@ -42,15 +40,12 @@ import {
   trackStyle,
 } from './scenarioLayers'
 import {
-  MARS_EQUATORIAL_METERS_PER_DEGREE,
   MARS_MAX_VIEW_ZOOM,
   MARS_WORLD_EXTENT,
-  buildMarsResolutions,
-  getMarsPointResolution,
   type MapCatalog,
-  type MapLayer,
   type MarsLandmarksGeoJson,
 } from './marsCatalog'
+import { createWmtsLayer, getOrCreateMarsProjection } from './marsTiles'
 
 export type ViewFocus =
   | { center: [number, number]; zoom: number; nonce: number }
@@ -184,55 +179,6 @@ interface MarsMapProps {
   onCursorMove: (coords: [number, number] | null) => void
   onZoomChange: (zoom: number) => void
   planner?: PlannerOverlay | null
-}
-
-function getOrCreateMarsProjection(crs: string, radiusM: number): Projection {
-  const existing = getProjection(crs)
-  if (existing) return existing
-
-  const metersPerUnit = radiusM > 0 ? (Math.PI * radiusM) / 180 : MARS_EQUATORIAL_METERS_PER_DEGREE
-  const projection = new Projection({
-    code: crs,
-    units: 'degrees',
-    extent: MARS_WORLD_EXTENT,
-    global: true,
-    metersPerUnit,
-    getPointResolution: getMarsPointResolution,
-  })
-  addProjection(projection)
-  return projection
-}
-
-function createWmtsLayer(layer: MapLayer, projection: Projection, zIndex: number): TileLayer<XYZ> {
-  const resolutions = buildMarsResolutions(layer.max_zoom)
-  const matrixIds = resolutions.map((_, idx) => String(idx))
-  const tileGrid = new WMTSTileGrid({
-    origin: [-180, 90],
-    extent: MARS_WORLD_EXTENT,
-    resolutions,
-    matrixIds,
-    tileSize: 256,
-  })
-
-  const minZoom = layer.scope === 'local' ? 8 : layer.scope === 'regional' ? 4 : undefined
-
-  return new TileLayer({
-    extent: layer.extent,
-    minZoom,
-    // No layer maxZoom: past the source's last level OpenLayers upscales its tiles,
-    // which the Hawksbill Gap view (up to MARS_MAX_VIEW_ZOOM) relies on. A layer
-    // maxZoom would hide the imagery and leave a black map there.
-    zIndex,
-    properties: { layerId: layer.id, scope: layer.scope },
-    source: new XYZ({
-      projection,
-      tileGrid,
-      url: layer.tile_url,
-      attributions: layer.attribution,
-      crossOrigin: 'anonymous',
-      wrapX: layer.scope === 'global',
-    }),
-  })
 }
 
 export function MarsMap({
