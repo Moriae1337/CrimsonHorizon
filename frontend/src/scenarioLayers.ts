@@ -1,8 +1,14 @@
-import Feature, { type FeatureLike } from 'ol/Feature'
-import LineString from 'ol/geom/LineString'
-import Point from 'ol/geom/Point'
-import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
-import { formatSols, type RouteOption, type Scenario } from './scenario'
+// Explicit module files (not the `ol/style` index) so Node's test runner can load them.
+import Feature, { type FeatureLike } from 'ol/Feature.js'
+import LineString from 'ol/geom/LineString.js'
+import Point from 'ol/geom/Point.js'
+import CircleStyle from 'ol/style/Circle.js'
+import Fill from 'ol/style/Fill.js'
+import RegularShape from 'ol/style/RegularShape.js'
+import Stroke from 'ol/style/Stroke.js'
+import Style from 'ol/style/Style.js'
+import Text from 'ol/style/Text.js'
+import { formatSols, type RouteOption, type Scenario, type ScenarioStop } from './scenario.ts'
 
 // Route options: color plus a width/layer cue. The first option is drawn narrow on top,
 // later options wider underneath, so a shared approach shows both lines side by side.
@@ -235,6 +241,114 @@ export function trackStyle(feature: FeatureLike, resolution: number): Style[] {
     }),
   ]
   return resolution <= LABEL_MAX_RESOLUTION ? styles : styles.slice(0, 1)
+}
+
+// Science stops: a diamond (not a circle like Start and the Jezero landmarks), a color no
+// route option uses, and an always-boxed text label, so shape and words carry the meaning.
+export const STOP_COLOR = '#e879f9'
+const STOP_LABEL_MAX_RESOLUTION = 4.5e-5
+
+export interface LabelPlacement {
+  side: 'left' | 'right'
+  vertical: 'up' | 'down' | 'level'
+}
+
+/** Map label for a science stop, e.g. "Skinner Ridge — sample site". */
+export function stopLabel(stop: Pick<ScenarioStop, 'name' | 'kind'>): string {
+  return stop.kind === 'sample-location' ? `${stop.name} — sample site` : stop.name
+}
+
+/** Lists cores with their sols, e.g. "Swift Run (sol 490), Skyland (sol 495)". */
+export function formatSamples(samples: ScenarioStop['samples']): string {
+  return samples.map((s) => `${s.name} (sol ${s.sol})`).join(', ')
+}
+
+/** One-line hover text: label, cores with sols, and the stop summary. */
+export function stopTooltip(stop: ScenarioStop): string {
+  const parts = [stopLabel(stop)]
+  if (stop.samples.length > 0) parts.push(`Cores: ${formatSamples(stop.samples)}`)
+  if (stop.summary) parts.push(stop.summary)
+  return parts.join('. ')
+}
+
+/**
+ * Places each stop's label on the side facing away from the other stops (west stops left,
+ * east stops right; north stops raised, south stops lowered), so labels of stops a few
+ * meters apart, and the route notes between them, do not overlap. A lone stop is labeled
+ * level on the right.
+ */
+export function stopLabelPlacement(stops: readonly ScenarioStop[], stopId: string): LabelPlacement {
+  const stop = stops.find((s) => s.id === stopId)
+  if (!stop || stops.length < 2) return { side: 'right', vertical: 'level' }
+  const mean = (axis: 0 | 1) =>
+    stops.reduce((sum, s) => sum + s.coordinates[axis], 0) / stops.length
+  return {
+    side: stop.coordinates[0] < mean(0) ? 'left' : 'right',
+    vertical: stop.coordinates[1] > mean(1) ? 'up' : 'down',
+  }
+}
+
+export function stopFeatureId(stopId: string): string {
+  return `stop-${stopId}`
+}
+
+/** Builds one point feature per science stop at the stop's payload coordinates. */
+export function buildStopFeatures(scenario: Scenario): Feature[] {
+  return scenario.stops.map((stop) => {
+    const feature = new Feature({ geometry: new Point(stop.coordinates.slice(0, 2)) })
+    feature.setId(stopFeatureId(stop.id))
+    feature.setProperties({
+      role: 'stop',
+      stopId: stop.id,
+      label: stopLabel(stop),
+      labelPlacement: stopLabelPlacement(scenario.stops, stop.id),
+      tooltip: stopTooltip(stop),
+    })
+    return feature
+  })
+}
+
+export function stopStyle(selectedStopId: () => string | null) {
+  return (feature: FeatureLike, resolution: number): Style[] => {
+    const selected = feature.get('stopId') === selectedStopId()
+    const placement: LabelPlacement = feature.get('labelPlacement') ?? {
+      side: 'right',
+      vertical: 'level',
+    }
+    const left = placement.side === 'left'
+    const radius = selected ? 11 : 9
+    const marker = new Style({
+      zIndex: selected ? 210 : 200,
+      image: new RegularShape({
+        points: 4,
+        radius,
+        angle: 0,
+        fill: new Fill({ color: STOP_COLOR }),
+        stroke: new Stroke({ color: selected ? '#f8fafc' : CASING, width: selected ? 3 : 2.5 }),
+      }),
+    })
+    // Inner dot: the drill-hole cue, readable without color.
+    const hole = new Style({
+      zIndex: selected ? 211 : 201,
+      image: new CircleStyle({ radius: 2.5, fill: new Fill({ color: '#020617' }) }),
+    })
+    if (resolution > STOP_LABEL_MAX_RESOLUTION) return [marker, hole]
+    const label = new Style({
+      zIndex: selected ? 212 : 202,
+      text: new Text({
+        text: String(feature.get('label') ?? ''),
+        font: LABEL_FONT,
+        textAlign: left ? 'right' : 'left',
+        offsetX: left ? -(radius + 4) : radius + 4,
+        offsetY: { up: -(radius + 4), down: radius + 4, level: 0 }[placement.vertical],
+        fill: new Fill({ color: '#020617' }),
+        backgroundFill: new Fill({ color: STOP_COLOR }),
+        backgroundStroke: new Stroke({ color: selected ? '#f8fafc' : CASING, width: 1.5 }),
+        padding: [2, 5, 1, 5],
+      }),
+    })
+    return [marker, hole, label]
+  }
 }
 
 export function extentOf(scenario: Scenario): [number, number, number, number] {

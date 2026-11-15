@@ -26,6 +26,8 @@ function App() {
   // Off by default: every drive in the track is already part of a route option, so
   // showing it at first doubles each line. It is an opt-in provenance view by sol.
   const [showRoverTrack, setShowRoverTrack] = useState(false)
+  // Kept separate from the landmark selection: picking a stop never clears a landmark.
+  const [selectedStopId, setSelectedStopId] = useState<string | null>(null)
 
   const globalLayers = useMemo(
     () => catalog.layers.filter((layer) => layer.scope === 'global'),
@@ -151,8 +153,14 @@ function App() {
             error={scenarioState.error}
             canRetry={scenarioState.canRetry}
             showRoverTrack={showRoverTrack}
+            selectedStopId={selectedStopId}
             onRetry={scenarioState.retry}
             onToggleRoverTrack={() => setShowRoverTrack((on) => !on)}
+            onSelectStop={(id) => {
+              const stop = scenario?.stops.find((s) => s.id === id)
+              setSelectedStopId(id)
+              if (stop) jumpTo([stop.coordinates[0], stop.coordinates[1]], 18)
+            }}
           />
 
           <section>
@@ -254,7 +262,9 @@ function App() {
             focusTarget={focusTarget}
             scenario={scenario}
             showRoverTrack={showRoverTrack}
+            selectedStopId={selectedStopId}
             onSelectLandmark={setSelectedLandmarkId}
+            onSelectStop={setSelectedStopId}
             onCursorMove={setCursorCoords}
             onZoomChange={setZoom}
           />

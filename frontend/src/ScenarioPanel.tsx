@@ -1,5 +1,14 @@
+import { formatMarsCoordinate } from './marsCatalog'
 import { formatMeters, formatSols, type Scenario, type ScenarioStatus } from './scenario'
-import { CONNECTOR_DASH, TRACK_DASH, TRACK_STYLE, optionStyle } from './scenarioLayers'
+import {
+  CONNECTOR_DASH,
+  STOP_COLOR,
+  TRACK_DASH,
+  TRACK_STYLE,
+  formatSamples,
+  optionStyle,
+  stopLabel,
+} from './scenarioLayers'
 
 interface ScenarioPanelProps {
   status: ScenarioStatus
@@ -7,8 +16,10 @@ interface ScenarioPanelProps {
   error: string | null
   canRetry: boolean
   showRoverTrack: boolean
+  selectedStopId: string | null
   onRetry: () => void
   onToggleRoverTrack: () => void
+  onSelectStop: (id: string) => void
 }
 
 const STATUS_TEXT: Record<ScenarioStatus, string> = {
@@ -16,6 +27,20 @@ const STATUS_TEXT: Record<ScenarioStatus, string> = {
   ready: 'Scenario loaded.',
   unavailable: 'Scenario unavailable. The base map still works.',
   unsupported: 'Scenario version not supported. The base map still works.',
+}
+
+function StopSwatch() {
+  return (
+    <svg width="36" height="18" viewBox="0 0 36 18" aria-hidden="true" className="shrink-0">
+      <polygon
+        points="18,1 26,9 18,17 10,9"
+        fill={STOP_COLOR}
+        stroke="rgba(2, 6, 23, 0.85)"
+        strokeWidth="2"
+      />
+      <circle cx="18" cy="9" r="2.2" fill="#020617" />
+    </svg>
+  )
 }
 
 function LineSwatch({
@@ -54,8 +79,10 @@ export function ScenarioPanel({
   error,
   canRetry,
   showRoverTrack,
+  selectedStopId,
   onRetry,
   onToggleRoverTrack,
+  onSelectStop,
 }: ScenarioPanelProps) {
   const failed = status === 'unavailable' || status === 'unsupported'
   const connectorOption = scenario?.route_options.find((o) => o.proposed_m > 0)
@@ -95,6 +122,55 @@ export function ScenarioPanel({
 
       {scenario && (
         <>
+          <h3 className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+            Science stops
+          </h3>
+          <ul className="mt-1.5 space-y-1.5 text-xs">
+            {scenario.stops.map((stop) => {
+              const selected = stop.id === selectedStopId
+              return (
+                <li key={stop.id}>
+                  <button
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => onSelectStop(stop.id)}
+                    className={`flex w-full items-start gap-2 rounded-lg border px-2 py-1.5 text-left transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400 ${
+                      selected
+                        ? 'border-fuchsia-400/70 bg-fuchsia-400/10'
+                        : 'border-slate-800 bg-slate-950/50 hover:border-slate-700'
+                    }`}
+                  >
+                    <StopSwatch />
+                    <span>
+                      <span className="font-semibold text-slate-100">{stopLabel(stop)}</span>
+                      {stop.samples.length > 0 && (
+                        <span className="block text-slate-400">
+                          Cores: {formatSamples(stop.samples)}
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                  {selected && (
+                    <div className="mt-1 rounded-lg border border-slate-800 bg-slate-950/70 px-2.5 py-2 text-slate-300">
+                      {stop.summary && <p>{stop.summary}</p>}
+                      <p className="mt-1 font-mono text-[11px] text-slate-400">
+                        {formatMarsCoordinate(stop.coordinates[0], stop.coordinates[1])}
+                      </p>
+                      <p className="mt-1 text-[11px] text-slate-500">
+                        Pin marks the drill site, not where the rover or crew stood
+                        {stop.nearest_rmc && ` (rover parked at localization ${stop.nearest_rmc})`}.
+                        Source:{' '}
+                        {stop.source_ids
+                          .map((id) => scenario.sources.find((s) => s.id === id)?.title ?? id)
+                          .join('; ')}
+                      </p>
+                    </div>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+
           <h3 className="mt-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
             Route options (round trip)
           </h3>

@@ -13,7 +13,14 @@ import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
 import WMTSTileGrid from 'ol/tilegrid/WMTS'
 import { useEffect, useRef } from 'react'
 import type { Scenario } from './scenario'
-import { buildRouteFeatures, buildTrackFeatures, routeStyle, trackStyle } from './scenarioLayers'
+import {
+  buildRouteFeatures,
+  buildStopFeatures,
+  buildTrackFeatures,
+  routeStyle,
+  stopStyle,
+  trackStyle,
+} from './scenarioLayers'
 import {
   MARS_EQUATORIAL_METERS_PER_DEGREE,
   MARS_MAX_VIEW_ZOOM,
@@ -38,7 +45,9 @@ interface MarsMapProps {
   focusTarget: ViewFocus | null
   scenario: Scenario | null
   showRoverTrack: boolean
+  selectedStopId: string | null
   onSelectLandmark: (id: string | null) => void
+  onSelectStop: (id: string | null) => void
   onCursorMove: (coords: [number, number] | null) => void
   onZoomChange: (zoom: number) => void
 }
@@ -98,7 +107,9 @@ export function MarsMap({
   focusTarget,
   scenario,
   showRoverTrack,
+  selectedStopId,
   onSelectLandmark,
+  onSelectStop,
   onCursorMove,
   onZoomChange,
 }: MarsMapProps) {
@@ -110,13 +121,15 @@ export function MarsMap({
   const projectionRef = useRef<Projection | null>(null)
   const routeLayerRef = useRef<VectorLayer<VectorSource> | null>(null)
   const trackLayerRef = useRef<VectorLayer<VectorSource> | null>(null)
+  const stopLayerRef = useRef<VectorLayer<VectorSource> | null>(null)
+  const selectedStopIdRef = useRef<string | null>(selectedStopId)
   const tooltipRef = useRef<HTMLDivElement | null>(null)
   const selectedIdRef = useRef<string | null>(selectedLandmarkId)
-  const callbacksRef = useRef({ onSelectLandmark, onCursorMove, onZoomChange })
+  const callbacksRef = useRef({ onSelectLandmark, onSelectStop, onCursorMove, onZoomChange })
 
   useEffect(() => {
-    callbacksRef.current = { onSelectLandmark, onCursorMove, onZoomChange }
-  }, [onSelectLandmark, onCursorMove, onZoomChange])
+    callbacksRef.current = { onSelectLandmark, onSelectStop, onCursorMove, onZoomChange }
+  }, [onSelectLandmark, onSelectStop, onCursorMove, onZoomChange])
 
   useEffect(() => {
     const container = containerRef.current
@@ -176,7 +189,14 @@ export function MarsMap({
       style: trackStyle,
       properties: { layerId: 'scenario-rover-track' },
     })
-    olLayers.push(routeLayer, trackLayer)
+    // Science stops sit above every line and the Start point so they are always clickable.
+    const stopLayer = new VectorLayer({
+      source: new VectorSource(),
+      zIndex: 13,
+      style: stopStyle(() => selectedStopIdRef.current),
+      properties: { layerId: 'scenario-stops' },
+    })
+    olLayers.push(routeLayer, trackLayer, stopLayer)
 
     const map = new OlMap({
       target: container,
@@ -201,7 +221,7 @@ export function MarsMap({
       callbacksRef.current.onCursorMove([lon, lat])
       const hasLandmark = map.hasFeatureAtPixel(event.pixel, {
         hitTolerance: 6,
-        layerFilter: (layer) => layer === vectorLayer,
+        layerFilter: (layer) => layer === vectorLayer || layer === stopLayer,
       })
       container.style.cursor = hasLandmark ? 'pointer' : ''
 
@@ -210,7 +230,11 @@ export function MarsMap({
       const hint = map.forEachFeatureAtPixel(
         event.pixel,
         (feature) => feature.get('tooltip') as string | undefined,
-        { hitTolerance: 5, layerFilter: (layer) => layer === routeLayer || layer === trackLayer },
+        {
+          hitTolerance: 5,
+          layerFilter: (layer) =>
+            layer === stopLayer || layer === routeLayer || layer === trackLayer,
+        },
       )
       if (hint) {
         tooltip.textContent = hint
@@ -222,6 +246,17 @@ export function MarsMap({
     })
 
     map.on('singleclick', (event) => {
+      // A science stop takes the click first and leaves the landmark selection as it is.
+      const stop = map.forEachFeatureAtPixel(
+        event.pixel,
+        (feature) => feature.get('stopId') as string | undefined,
+        { hitTolerance: 6, layerFilter: (layer) => layer === stopLayer },
+      )
+      if (stop) {
+        callbacksRef.current.onSelectStop(stop)
+        return
+      }
+      callbacksRef.current.onSelectStop(null)
       const clicked = map.forEachFeatureAtPixel(event.pixel, (feature) => feature.getId(), {
         hitTolerance: 8,
         layerFilter: (layer) => layer === vectorLayer,
@@ -247,6 +282,7 @@ export function MarsMap({
     vectorLayerRef.current = vectorLayer
     routeLayerRef.current = routeLayer
     trackLayerRef.current = trackLayer
+    stopLayerRef.current = stopLayer
 
     return () => {
       container.style.cursor = ''
@@ -257,23 +293,32 @@ export function MarsMap({
       vectorLayerRef.current = null
       routeLayerRef.current = null
       trackLayerRef.current = null
+      stopLayerRef.current = null
     }
   }, [catalog])
 
   useEffect(() => {
     const routeLayer = routeLayerRef.current
     const trackLayer = trackLayerRef.current
+    const stopSource = stopLayerRef.current?.getSource()
     if (!routeLayer || !trackLayer) return
     const routeSource = routeLayer.getSource()
     const trackSource = trackLayer.getSource()
     routeSource?.clear()
     trackSource?.clear()
+    stopSource?.clear()
     if (tooltipRef.current) tooltipRef.current.hidden = true
     if (!scenario) return
     routeLayer.setStyle(routeStyle(scenario.route_options))
     routeSource?.addFeatures(buildRouteFeatures(scenario))
     trackSource?.addFeatures(buildTrackFeatures(scenario))
+    stopSource?.addFeatures(buildStopFeatures(scenario))
   }, [catalog, scenario])
+
+  useEffect(() => {
+    selectedStopIdRef.current = selectedStopId
+    stopLayerRef.current?.changed()
+  }, [selectedStopId])
 
   useEffect(() => {
     trackLayerRef.current?.setVisible(showRoverTrack)

@@ -20,11 +20,19 @@ export interface ScenarioStart {
   source_ids: string[]
 }
 
+export interface StopSample {
+  name: string
+  sol: number
+}
+
 export interface ScenarioStop {
   id: string
   name: string
   kind: string
   coordinates: Position
+  /** Rover localization (`RMC`) nearest to the stop, where the rover parked to sample. */
+  nearest_rmc: string | null
+  samples: StopSample[]
   summary: string | null
   source_ids: string[]
 }
@@ -309,6 +317,17 @@ export function parseScenario(data: unknown, expectedId?: string): Scenario {
       name: text(stop.name, `${path}.name`),
       kind: text(stop.kind, `${path}.kind`),
       coordinates: parsePosition(stop.coordinates, `${path}.coordinates`),
+      nearest_rmc: optionalText(stop.nearest_rmc, `${path}.nearest_rmc`),
+      samples:
+        stop.samples === undefined
+          ? []
+          : list(stop.samples, `${path}.samples`).map((value, j) => {
+              const sample = record(value, `${path}.samples[${j}]`)
+              return {
+                name: text(sample.name, `${path}.samples[${j}].name`),
+                sol: sol(sample.sol, `${path}.samples[${j}].sol`),
+              }
+            }),
       summary: optionalText(stop.summary, `${path}.summary`),
       source_ids: sourceIds(stop.source_ids, `${path}.source_ids`, known),
     }
