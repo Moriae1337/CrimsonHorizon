@@ -3,7 +3,7 @@
 Reads the committed inputs and writes data/hawksbill_gap/scenario.json in the
 v1 shape defined in specs/scenario-api.md:
 
-- manifest.json: conventions, extent, and the cited sources;
+- manifest.json: conventions, extent, cited sources, and stop evidence metadata;
 - routes.geojson (prep.routes): route options and their pieces;
 - inputs/rover_traverse.geojson: historical drives, one feature per sol;
 - inputs/rover_waypoints.geojson: the start localization;
@@ -14,21 +14,21 @@ Profiles are filled since v1.1. Since v1.2 (#46) `unknowns` holds every caution
 zone (prep.caution): DTM coverage gaps, A's proposed connector, observation
 approaches, and the steepest 2 m and 5 m segments, each with a review status.
 `obstacles` holds the mission-report obstacles with their PDS figure, and each
-route option carries `caution_review`. Only `evidence` stays pending. build()
-is pure, so tests can rebuild the document and compare it with the committed
-file.
+route option carries `caution_review`. v1.3 adds `evidence` (#50). build() is
+pure, so tests can rebuild the document and compare it with the committed file.
 """
 
 import json
 from typing import Any
 
+from app.scenario_schema import validate_scenario
 from prep import caution
-from prep.common import INPUTS_DIR, SCENARIO_DIR, load_manifest, utc_now
+from prep.common import INPUTS_DIR, SCENARIO_DIR, load_manifest, manifest_input, utc_now
 from prep.profiles import METRICS_PATH
 from prep.routes import ROUTES_PATH, START_RMC
 
 SCENARIO_PATH = SCENARIO_DIR / "scenario.json"
-SCHEMA_VERSION = "1.2"
+SCHEMA_VERSION = "1.3"
 
 TRAVERSE_SOURCE = "m20-traverse"
 WAYPOINTS_SOURCE = "m20-waypoints"
@@ -80,8 +80,6 @@ ROUTE_OPTIONS: dict[str, dict[str, Any]] = {
     },
 }
 
-PENDING_SECTIONS = ["evidence"]
-
 Point = list[float]
 
 
@@ -124,9 +122,51 @@ def sources(manifest: dict[str, Any]) -> list[dict[str, Any]]:
             "credit": item["credit"],
             "license": item["license"],
             "doi": item.get("doi"),
+            "product_id": item["product_id"],
+            "source_page": item["source_page"],
         }
         for item in manifest["inputs"]
     ]
+
+
+def evidence(manifest: dict[str, Any]) -> list[dict[str, Any]]:
+    items = []
+    for image in manifest["evidence_images"]:
+        source = manifest_input(manifest, image["source_ids"][0])
+        items.append(
+            {
+                **{key: value for key, value in image.items() if key != "file"},
+                "kind": "image",
+                "url": source["files"][image["file"]],
+                "product_id": source["product_id"],
+                "instrument": source["instrument"],
+                "credit": source["credit"],
+            }
+        )
+
+    stops_by_rmc = {stop["nearest_rmc"]: stop["id"] for stop in STOPS}
+    for source_id in ("supercam-thornton-gap", "supercam-berry-hollow"):
+        source = manifest_input(manifest, source_id)
+        product = source["verification"]
+        items.append(
+            {
+                "id": f"spectrum-{source_id}",
+                "kind": "supercam",
+                "stop_id": stops_by_rmc[product["rover_motion_counter"]],
+                "source_ids": [source_id, SAMPLES_SOURCE],
+                "sols": [product["sol"]],
+                "product_id": source["product_id"],
+                "product_version": product["version_id"],
+                "credit": source["credit"],
+                "target": product["target"],
+                "measurement_condition": product["measurement_condition"],
+                "data_url": product["data_url"],
+                "wavelength_um": product["wavelength_um"],
+                "spectral_channels": product["spectral_channels"],
+                "quality": product["quality"],
+            }
+        )
+    return items
 
 
 def start(waypoints: list[dict[str, Any]]) -> dict[str, Any]:
@@ -269,11 +309,11 @@ def build(
         "route_options": route_options(routes, metrics, zones, obstacles),
         "routes": route_features(routes),
         "rover_track": rover_track(traverse),
-        "evidence": [],
+        "evidence": evidence(manifest),
         "profiles": profiles(metrics),
         "unknowns": zones,
         "obstacles": obstacles,
-        "pending_sections": PENDING_SECTIONS,
+        "pending_sections": [],
         "sources": sources(manifest),
     }
 
@@ -293,11 +333,13 @@ def load_inputs() -> tuple[dict, dict, list, list, dict]:
 
 def main() -> None:
     scenario = build(*load_inputs(), generated_at=utc_now())
+    validate_scenario(scenario, expected_id="hawksbill-gap", name=SCENARIO_PATH.name)
     text = json.dumps(scenario, separators=(",", ":"), allow_nan=False)
     SCENARIO_PATH.write_text(text + "\n", encoding="utf-8", newline="\n")
     print(
         f"{SCENARIO_PATH.name}: {len(scenario['routes']['features'])} route pieces, "
         f"{len(scenario['rover_track']['features'])} drives, "
+        f"{len(scenario['evidence'])} evidence items, "
         f"{len(scenario['profiles'])} profiles, "
         f"{len(scenario['unknowns'])} caution zones, "
         f"{len(scenario['obstacles'])} obstacles, "

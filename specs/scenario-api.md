@@ -18,7 +18,7 @@ unchanged. Tracking issue: CH26-031 (#49).
 
 ## Versioning
 
-`schema_version` is a `"MAJOR.MINOR"` string; this document defines `"1.2"`.
+`schema_version` is a `"MAJOR.MINOR"` string; this document defines `"1.3"`.
 
 - Adding an optional field or a new pending section bumps MINOR. Clients ignore
   fields they do not know.
@@ -31,6 +31,7 @@ unchanged. Tracking issue: CH26-031 (#49).
 | `1.0`   | First contract. `evidence`, `profiles`, and `unknowns` pending.                                      |
 | `1.1`   | Fills `profiles`; defines `terrain-gap` unknowns; adds terrain metrics to route options (see below). |
 | `1.2`   | Fills `unknowns` with caution zones; adds `obstacles`, `grade_class_m`, `caution_review` (#46).      |
+| `1.3`   | Fills `evidence` with NASA images and verified SuperCam products (#50).                              |
 
 ## Conventions
 
@@ -48,7 +49,7 @@ unchanged. Tracking issue: CH26-031 (#49).
 
 ```jsonc
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "scenario_id": "hawksbill-gap",
   "title": "Hawksbill Gap",
   "generated_at": "2026-11-14T12:00:00Z",
@@ -178,7 +179,23 @@ unchanged. Tracking issue: CH26-031 (#49).
       },
     ],
   },
-  "evidence": [],
+  "evidence": [
+    {
+      "id": "img-skinner-ridge-context",
+      "kind": "image",
+      "stop_id": "skinner-ridge",
+      "role": "two-stop-context",
+      "source_ids": ["context-image-pia24924"],
+      "sols": [518],
+      "product_id": "PIA24924",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "instrument": "Mastcam-Z",
+      "url": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia24/pia24924/figures/PIA24924_figA.jpg",
+      "panel": "full; Skinner Ridge label upper right",
+      "subject": "Hawksbill Gap: Wildcat Ridge and Skinner Ridge about 20 m apart",
+      "alt": "A slope of pale rock slabs with labels for Wildcat Ridge and Skinner Ridge.",
+    },
+  ],
   "profiles": [
     {
       "id": "profile-a",
@@ -278,7 +295,7 @@ unchanged. Tracking issue: CH26-031 (#49).
       "source_ids": ["pds-initial-reports"],
     },
   ],
-  "pending_sections": ["evidence"],
+  "pending_sections": [],
   "sources": [
     {
       "id": "m20-traverse",
@@ -287,6 +304,16 @@ unchanged. Tracking issue: CH26-031 (#49).
       "credit": "NASA/JPL-Caltech",
       "license": "NASA/JPL image and data use policy",
       "doi": null,
+    },
+    {
+      "id": "context-image-pia24924",
+      "title": "2 Perseverance Sampling Locations in Jezero's Delta",
+      "url": "https://science.nasa.gov/photojournal/2-perseverance-sampling-locations-in-jezeros-delta/",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "license": "NASA/JPL image use policy",
+      "doi": null,
+      "product_id": "PIA24924",
+      "source_page": "https://science.nasa.gov/photojournal/2-perseverance-sampling-locations-in-jezeros-delta/",
     },
   ],
 }
@@ -382,14 +409,31 @@ Grade classes are 5° bins, `"0-5"`, `"5-10"`, `"10-15"`, `"15-20"`, `"20-25"`,
   gives none: place the obstacle at its stop and say so. A passes Skinner Ridge
   at its stand-off view, so both options list both obstacles.
 
-## Sections planned for later MINOR versions
+## Stop evidence (v1.3)
 
-These fields stay in `pending_sections` so clients can render a "not prepared
-yet" state. Item shapes are defined when they are filled.
+Each `evidence[]` record has a unique `id`, one `stop_id` from `stops`, a
+non-empty `source_ids` list, and the product's `sols`, `product_id`, and
+`credit`. The first source is the primary product. Later sources provide
+supporting material. Use `sources[].url` for the cited page or archive item and
+`source_page` for the publication or archive landing page. Both `product_id`
+and `source_page` are additive fields on `sources[]`.
 
-| Field      | Will hold                                                                | Tracking issues |
-| ---------- | ------------------------------------------------------------------------ | --------------- |
-| `evidence` | Images and SuperCam items, each with one `stop_id` and its `source_ids`. | #50             |
+- **`kind: "image"`** adds `role` (`two-stop-context`, `abrasion`, `cores`,
+  or `workspace`), `subject`, `alt`, `instrument`, `url` (direct image),
+  and `panel` (the relevant part of the image). Composite images can have
+  several sols, or one sol when the evidence refers to a single panel. The two
+  stops have separate entries for shared images and cite the same released
+  products. See the [NASA image selections](hawksbill-gap/source-images.md).
+- **`kind: "supercam"`** adds `product_version` (PDS label version),
+  `target`, `measurement_condition`, `data_url` (calibrated FITS),
+  `wavelength_um` (minimum and maximum), `spectral_channels`, and `quality`
+  (`saturated`, `glitch`, and `spike` channel counts and `flagged_um`
+  wavelengths). `sols` contains the observation sol. The primary source
+  URL is the XML product label. See the
+  [SuperCam verification](hawksbill-gap/supercam-products.md).
+
+The v1.3 Hawksbill Gap bundle has no pending sections. Older bundles can carry
+an empty `evidence` list and name it in `pending_sections`.
 
 ## Client rules
 
