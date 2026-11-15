@@ -157,6 +157,16 @@ Jezero, Gale, Gusev, Endeavour and Eberswalde. Built by
   with up to 8 of its stops between them (`roverWaypoints`). The 2D map draws the
   traverse and its stops; clicking a stop adds it to the route (or snaps A/B to it
   while picking). The 3D view draws the traverse with its first and last sol.
+- Mission places ("What happened here", `frontend/src/places.ts`): 11 Perseverance
+  places in Jezero and 7 Spirit places in Gusev (landing, sample sites, discoveries,
+  milestones), each with a sol, a bilingual explanation and a cited source. A place is
+  shown on a site only when the rover's traverse there has a stop whose sols include
+  it (the landing may use the first stop, as the traverse data start a few sols
+  later), at that stop's position (`placesInWindow`). Each keeps its mission-order
+  number (`placeNumber`) on every view: cards in the planner panel ("+ Stop" adds it
+  to the route), numbered markers on the 2D map (names when zoomed in, the
+  explanation on hover, click adds a stop), numbered pins in 3D (they replace the
+  first/last-sol pins) and the crater's timeline on the globe card.
 - Routing speed: A* runs on flat lists with precomputed cell weights. Grids of
   300,000 cells or more are searched coarse-to-fine: a block-averaged grid finds a
   corridor (10 coarse cells wide) and the full grid is searched only inside it,

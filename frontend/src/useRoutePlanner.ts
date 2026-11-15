@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { columbiaHillsWaypoints } from './columbiaHills.ts'
+import { craterOfSite } from './craters.ts'
+import { placesInWindow } from './places.ts'
 import {
   SITE_IDS,
   aeqdInverse,
@@ -95,6 +97,11 @@ export function useRoutePlanner(active: boolean) {
   const traverse = useMemo(
     () => (rawTraverse && pkg ? clipTraverse(rawTraverse, pkg.bounds_m) : null),
     [rawTraverse, pkg],
+  )
+  // Key mission places inside this window, at the rover's stop on their sol.
+  const places = useMemo(
+    () => (traverse ? placesInWindow(craterOfSite(siteId).id, traverse.stops) : []),
+    [traverse, siteId],
   )
 
   // Plan whenever both ends exist and inputs change (debounced).
@@ -221,6 +228,7 @@ export function useRoutePlanner(active: boolean) {
           )
       : null,
     traverse,
+    places,
     /** A and B at the rover's first and last stop here, up to 8 of its stops between. */
     followRover: () => {
       const wps = traverse ? roverWaypoints(traverse.stops, MAX_STOPS) : null

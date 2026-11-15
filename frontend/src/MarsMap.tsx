@@ -72,6 +72,8 @@ export interface PlannerOverlay {
   /** Tooltip suffix for a rover stop, e.g. "click to add as a stop". */
   roverStopTip: string
   onAddStop: (x: number, y: number) => void
+  /** Key mission places in the window (numbered in mission order) and their labels. */
+  places: Array<{ id: string; n: number; x: number; y: number; label: string; tooltip: string }>
 }
 
 const PLAN_CASING = '#212121'
@@ -101,6 +103,39 @@ function plannerStyle(selectedRouteId: () => RouteId) {
             lineCap: 'round',
           }),
         }),
+      ]
+    }
+    if (role === 'place') {
+      // Map units are degrees; show names only when zoomed in enough to read them.
+      const metresPerPx = resolution * ((Math.PI * 3_396_190) / 180)
+      return [
+        new Style({
+          zIndex: 9,
+          image: new CircleStyle({
+            radius: 8,
+            fill: new Fill({ color: PLAN_ACCENT }),
+            stroke: new Stroke({ color: PLAN_LIGHT, width: 1.5 }),
+          }),
+          text: new Text({
+            text: String(feature.get('n')),
+            font: '700 10px ui-sans-serif, system-ui, sans-serif',
+            fill: new Fill({ color: PLAN_LIGHT }),
+          }),
+        }),
+        ...(metresPerPx < 16
+          ? [
+              new Style({
+                zIndex: 9,
+                text: new Text({
+                  text: String(feature.get('label')),
+                  font: '600 11px ui-sans-serif, system-ui, sans-serif',
+                  offsetY: -17,
+                  fill: new Fill({ color: PLAN_LIGHT }),
+                  stroke: new Stroke({ color: PLAN_CASING, width: 3 }),
+                }),
+              }),
+            ]
+          : []),
       ]
     }
     if (role === 'rover-stop') {
@@ -378,7 +413,10 @@ export function MarsMap({
               ? 'grab'
               : plannerRef.current?.picking
                 ? 'crosshair'
-                : hasClickable || plannerHit === 'route' || plannerHit === 'rover-stop'
+                : hasClickable ||
+                    plannerHit === 'route' ||
+                    plannerHit === 'rover-stop' ||
+                    plannerHit === 'place'
                   ? 'pointer'
                   : ''
 
@@ -430,7 +468,10 @@ export function MarsMap({
     const roverStopAt = (pixel: number[]) =>
       map.forEachFeatureAtPixel(
         pixel,
-        (f) => (f.get('role') === 'rover-stop' ? (f.get('xy') as [number, number]) : undefined),
+        (f) =>
+          f.get('role') === 'rover-stop' || f.get('role') === 'place'
+            ? (f.get('xy') as [number, number])
+            : undefined,
         { hitTolerance: 5, layerFilter: (layer) => layer === plannerLayer },
       ) ?? null
     map.on('click', (event) => {
@@ -638,6 +679,7 @@ export function MarsMap({
   const plannerHasEnd = planner?.hasEnd ?? false
   const plannerTraverse = planner?.traverse ?? null
   const plannerStopTip = planner?.roverStopTip ?? ''
+  const plannerPlaces = planner?.places
   useEffect(() => {
     const source = plannerLayerRef.current?.getSource()
     if (!source) return
@@ -683,6 +725,15 @@ export function MarsMap({
       f.set('routeId', route.id)
       source.addFeature(f)
     }
+    for (const pl of plannerPlaces ?? []) {
+      const f = new Feature(new Point(ll(pl.x, pl.y)))
+      f.set('role', 'place')
+      f.set('xy', [pl.x, pl.y])
+      f.set('n', pl.n)
+      f.set('label', pl.label)
+      f.set('tooltip', pl.tooltip)
+      source.addFeature(f)
+    }
     const wps = plannerWaypoints ?? []
     wps.forEach(([x, y], i) => {
       const isStart = i === 0
@@ -702,6 +753,7 @@ export function MarsMap({
     plannerHasEnd,
     plannerTraverse,
     plannerStopTip,
+    plannerPlaces,
   ])
 
   const plannerSelected = planner?.selectedRouteId ?? 'lower_risk'

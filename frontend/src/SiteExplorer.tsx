@@ -59,6 +59,8 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
   // Context: the rover's traverse (every site) and, on Hawksbill Gap, the prepared
   // scenario options and stops.
   const traverse = planner.traverse
+  const places = planner.places
+  const lang = locale === 'uk' ? 'uk' : 'en'
   // When the rover's own path is a planned route, it is drawn as that route instead.
   const hasRoverRoute = routes.some((r) => r.id === 'rover')
   const { overlayLines, overlayPins } = useMemo(() => {
@@ -75,12 +77,18 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
               points: run,
             })
         })
-      const first = traverse.stops[0]
-      const last = traverse.stops[traverse.stops.length - 1]
-      if (first)
-        pins.push({ id: 'rover-first', label: `Sol ${first.sol_start}`, x: first.x, y: first.y })
-      if (last && last !== first)
-        pins.push({ id: 'rover-last', label: `Sol ${last.sol_end}`, x: last.x, y: last.y })
+      if (places.length > 0) {
+        // Key mission places, numbered as in the planner panel.
+        for (const pl of places)
+          pins.push({ id: pl.id, label: `${pl.n}. ${pl.name[lang]}`, x: pl.x, y: pl.y })
+      } else {
+        const first = traverse.stops[0]
+        const last = traverse.stops[traverse.stops.length - 1]
+        if (first)
+          pins.push({ id: 'rover-first', label: `Sol ${first.sol_start}`, x: first.x, y: first.y })
+        if (last && last !== first)
+          pins.push({ id: 'rover-last', label: `Sol ${last.sol_end}`, x: last.x, y: last.y })
+      }
     }
     if (siteId !== 'hawksbill-gap' || !scenario || !pkg)
       return { overlayLines: lines, overlayPins: pins }
@@ -99,7 +107,7 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
       pins.push({ id: s.id, label: s.name, x, y })
     }
     return { overlayLines: lines, overlayPins: pins }
-  }, [siteId, scenario, pkg, traverse, hasRoverRoute])
+  }, [siteId, scenario, pkg, traverse, hasRoverRoute, places, lang])
 
   const restart = () => setRestartNonce((n) => n + 1)
 

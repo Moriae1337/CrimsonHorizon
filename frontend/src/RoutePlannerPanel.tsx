@@ -271,6 +271,52 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
             </a>
           </div>
         )}
+        {p.places.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <h2 className={SECTION}>
+              {T.story} · {crater.rover}
+            </h2>
+            <p className="text-[11px] text-text-secondary">{T.storyHint}</p>
+            <ol className="flex flex-col gap-2">
+              {p.places.map((pl) => (
+                <li
+                  key={pl.id}
+                  className="flex gap-2 rounded-lg border border-card-border bg-input p-2"
+                >
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-text-main">
+                    {pl.n}
+                  </span>
+                  <div className="flex min-w-0 flex-1 flex-col gap-1">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="font-semibold text-text-main">{pl.name[lang]}</span>
+                      <span className="shrink-0 font-mono text-[10px] text-text-muted">
+                        {T.sol} {pl.sol}
+                      </span>
+                    </div>
+                    <p className="text-[11px] leading-snug text-text-secondary">{pl.text[lang]}</p>
+                    <div className="flex items-center gap-3 text-[11px]">
+                      <button
+                        type="button"
+                        className="font-semibold text-text-main underline-offset-2 hover:underline cursor-pointer"
+                        onClick={() => p.addStopAt(pl.x, pl.y)}
+                      >
+                        {T.addAsStop}
+                      </button>
+                      <a
+                        className="text-text-secondary underline hover:text-text-main"
+                        href={pl.source.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {T.storyMore}: {pl.source.label} ↗
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
       </section>
 
       {!p.apiUrl && (

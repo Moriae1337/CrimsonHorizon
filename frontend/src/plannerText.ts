@@ -5,6 +5,12 @@ export const PLANNER_TEXT = {
   en: {
     site: 'Site',
     crater: 'Crater',
+    story: 'What happened here',
+    storyHint:
+      'Key moments of the mission in this window, in order. Numbers match the markers on the map; “+ Stop” adds the place to your route.',
+    addAsStop: '+ Stop',
+    sol: 'Sol',
+    storyMore: 'Source',
     roverTraverse: 'Rover traverse',
     localized: 'localized traverse',
     sols: 'sols',
@@ -67,6 +73,12 @@ export const PLANNER_TEXT = {
   uk: {
     site: 'Ділянка',
     crater: 'Кратер',
+    story: 'Що тут відбувалося',
+    storyHint:
+      'Ключові моменти місії в цьому вікні, по черзі. Номери збігаються з мітками на карті; «+ Зупинка» додає місце до маршруту.',
+    addAsStop: '+ Зупинка',
+    sol: 'Сол',
+    storyMore: 'Джерело',
     roverTraverse: 'Траверс марсохода',
     localized: 'локалізований траверс',
     sols: 'соли',

@@ -381,6 +381,17 @@ function App() {
                       traverse: planner.traverse,
                       roverStopTip: PT.roverStopTip,
                       onAddStop: planner.addStopAt,
+                      places: planner.places.map((pl) => {
+                        const lang = locale === 'uk' ? 'uk' : 'en'
+                        return {
+                          id: pl.id,
+                          n: pl.n,
+                          x: pl.x,
+                          y: pl.y,
+                          label: pl.name[lang],
+                          tooltip: `${PT.sol} ${pl.sol} · ${pl.name[lang]} — ${pl.text[lang]}`,
+                        }
+                      }),
                     }
                   : null
               }
