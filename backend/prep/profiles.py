@@ -1,7 +1,9 @@
 """Route elevation profiles, ascent, grade and DTM coverage (CH26-024/025/027).
 
-Inputs: routes.geojson (prep.routes) and the 1 m local grid (prep.local_grid,
-git-ignored; rebuild it with prep.dtm_window, then prep.local_grid).
+Inputs: routes.geojson (prep.routes) and the source crop of the primary USGS
+DTM (prep.dtm_window, derived/dtm_primary_window.tif, git-ignored), which is in
+the DTM's own equirectangular projection (lat_ts = 0, lon_0 = 0, 1 m cells).
+The 1 m local grid (prep.local_grid) is only used for a cross-check.
 Output: data/hawksbill_gap/route_metrics.json.
 
 Sampling (#42)
@@ -12,9 +14,11 @@ Sampling (#42)
 - For a step s and outbound length L, the path gets n = ceil(L / s) equal
   intervals of L / n <= s meters, so samples are evenly spaced, the first is
   the start vertex and the last is the final vertex. Inside a vertex segment
-  the position is interpolated linearly in the grid's projected x/y by the
-  fraction of the segment's great-circle length.
-- Elevation is bilinear on the grid (local_grid.bilinear). If any of the four
+  the position is interpolated linearly by the fraction of the segment's
+  great-circle length; on the equirectangular crop that is linear in lon/lat,
+  so each sample sits at its true lon/lat position.
+- Elevation is one bilinear interpolation on the source crop
+  (local_grid.bilinear), with no prior resampling. If any of the four
   neighbouring cells is NoData, or the point is off the grid, the sample is
   null. Nulls break the series: nothing is interpolated across a gap and no
   gap is ever 0.
@@ -35,10 +39,10 @@ Coverage (#45)
   Runs of uncovered intervals become gap segments, cut from the outbound
   geometry as [lon, lat] LineStrings for the map.
 
-Cross-check: the same sampling on the source equirectangular crop
-(prep.dtm_window) reproduces the scope's locked table. The local grid is a
-second bilinear resampling of that crop, which smooths relief slightly, so its
-2 m grades come out lower. Both are written to the record.
+The served values reproduce the scope's locked table. The record also keeps
+local_grid_check: the same sampling on the 1 m local aeqd grid. That grid is a
+second bilinear resampling of the crop, which smooths short relief, so its
+2 m grades come out lower.
 """
 
 import itertools
@@ -312,9 +316,10 @@ METHOD = {
     "sampling": "n = ceil(L / step) equal intervals of L / n <= step meters over "
     "the outbound length L, from the start vertex to the final vertex. Distance is "
     "great-circle on the Mars sphere; within a vertex segment the position is "
-    "linear in the grid's projected x/y.",
-    "elevation": "Bilinear on the 1 m local aeqd grid. A sample whose four "
-    "neighbouring cells include NoData, or that falls off the grid, is null and "
+    "linear in lon/lat (the true sample position on the equirectangular crop).",
+    "elevation": "One bilinear interpolation on the primary DTM source crop "
+    "(equirectangular, 1 m cells), no prior resampling. A sample whose four "
+    "neighbouring cells include NoData, or that falls off the crop, is null and "
     "breaks the series; gaps are never interpolated or set to 0.",
     "profile": "Outbound samples at the nominal 5 m step followed by their mirror; "
     "return distance continues from the outbound length to the round trip.",
@@ -326,10 +331,8 @@ METHOD = {
     "coverage": "An interval between consecutive 5 m samples is covered when both "
     "samples are valid. Gaps are runs of uncovered intervals as lon/lat "
     "LineStrings.",
-    "source_crop_check": "Same sampling and metrics on the source equirectangular "
-    "crop (no second resampling). It reproduces the scope's locked table; the "
-    "local grid is smoothed slightly by its bilinear resampling, which lowers "
-    "the 2 m grades most.",
+    "local_grid_check": "Same sampling on the 1 m local aeqd grid (prep.local_grid); "
+    "a second bilinear resampling smooths short relief, lowering the 2 m grades most.",
 }
 
 
@@ -368,7 +371,7 @@ def build(
         "options": options,
     }
     if check_grid is not None:
-        record["source_crop_check"] = checks
+        record["local_grid_check"] = checks
     return record
 
 
@@ -398,25 +401,29 @@ def main() -> None:
             )
         return data, transform, nodata
 
-    data, transform, nodata = read(LOCAL_PATH, local_record)
     crop, crop_transform, crop_nodata = read(CROP_PATH, crop_record)
+    local, local_transform, local_nodata = read(LOCAL_PATH, local_record)
     center = tuple(local_record["local"]["center_lon_lat"])
-    grid = Grid(data, transform, nodata, aeqd(center, radius_m))
-    check = Grid(crop, crop_transform, crop_nodata, eqc(radius_m))
+    grid = Grid(crop, crop_transform, crop_nodata, eqc(radius_m))
+    check = Grid(local, local_transform, local_nodata, aeqd(center, radius_m))
     dtm = {
-        "file": relative(LOCAL_PATH),
-        "record": relative(LOCAL_RECORD_PATH),
-        "data_sha256": local_record["data_sha256"],
-        "crs_proj4": local_record["local"]["crs_proj4"],
-        "center_lon_lat": list(center),
-        "transform": list(transform),
-        "shape": list(data.shape),
-        "nodata": nodata,
-        "vertical_reference": local_record["vertical_reference"],
-        "source_crop": {
-            "file": relative(CROP_PATH),
-            "record": relative(CROP_RECORD_PATH),
-            "data_sha256": crop_record["data_sha256"],
+        "file": relative(CROP_PATH),
+        "record": relative(CROP_RECORD_PATH),
+        "data_sha256": crop_record["data_sha256"],
+        "source_url": crop_record["source_url"],
+        "window": crop_record["window"],
+        "crs_proj4": local_record["source"]["crs_proj4"],
+        "transform": list(crop_transform),
+        "shape": list(crop.shape),
+        "nodata": crop_nodata,
+        "vertical_reference": crop_record["vertical_reference"],
+        "local_grid": {
+            "file": relative(LOCAL_PATH),
+            "record": relative(LOCAL_RECORD_PATH),
+            "data_sha256": local_record["data_sha256"],
+            "crs_proj4": local_record["local"]["crs_proj4"],
+            "transform": list(local_transform),
+            "shape": list(local.shape),
         },
     }
     routes = json.loads(ROUTES_PATH.read_text(encoding="utf-8"))
@@ -425,14 +432,14 @@ def main() -> None:
     for option, info in result["options"].items():
         print(
             option,
-            "local:",
+            "crop:",
             info["round_trip_m"],
             info["ascent_m"],
             info["max_grade_deg"],
             f"{info['coverage']['covered_pct']}% covered,",
             len(info["gaps"]),
-            "gaps | crop:",
-            result["source_crop_check"][option],
+            "gaps | local grid:",
+            result["local_grid_check"][option],
         )
 
 
