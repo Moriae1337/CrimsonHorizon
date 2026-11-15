@@ -44,6 +44,30 @@ export interface RouteOption {
   outbound_m: number
   round_trip_m: number
   proposed_m: number
+  ascent_m?: number | null
+  max_grade_deg?: Record<string, number | null> | null
+  dtm_covered_pct?: number | null
+  open_zone_ids?: string[] | null
+}
+
+type CautionZoneKind = 'terrain-gap' | 'connector' | 'observation-approach' | 'steep-segment'
+
+export interface CautionZoneProperties {
+  option: string
+  kind: CautionZoneKind
+  from_m: number
+  to_m: number
+  length_m: number
+  review_status: string | null
+  summary: string | null
+  source_ids: string[]
+  stop_id: string | null
+  approach: 'visit' | 'stand-off' | null
+  step_m: number | null
+  closest_offset_m: number | null
+  grade_deg: number | null
+  grade_class: string | null
+  uncertainty: Record<string, unknown> | null
 }
 
 export interface LineFeature<P> {
@@ -97,6 +121,7 @@ export interface Scenario {
   route_options: RouteOption[]
   routes: FeatureCollection<RouteProperties>
   rover_track: FeatureCollection<TrackProperties>
+  caution_zones: LineFeature<CautionZoneProperties>[]
   pending_sections: string[]
   sources: ScenarioSource[]
 }
@@ -164,6 +189,10 @@ function length(value: unknown, path: string): number {
   return n
 }
 
+function optionalLength(value: unknown, path: string): number | null {
+  return value == null ? null : length(value, path)
+}
+
 function sol(value: unknown, path: string): number {
   if (!Number.isInteger(value) || (value as number) < 0) fail(`${path} must be a sol number`)
   return value as number
@@ -204,6 +233,17 @@ function sourceIds(value: unknown, path: string, known: ReadonlySet<string>): st
   })
 }
 
+function lineGeometry(value: unknown, path: string): LineFeature<unknown>['geometry'] {
+  const geometry = record(value, `${path}.geometry`)
+  if (geometry.type !== 'LineString') fail(`${path}.geometry must be a LineString`)
+  const coordinates = list(geometry.coordinates, `${path}.geometry.coordinates`)
+  if (coordinates.length < 2) fail(`${path}.geometry needs at least two positions`)
+  return {
+    type: 'LineString',
+    coordinates: coordinates.map((c, i) => parsePosition(c, `${path}.geometry.coordinates[${i}]`)),
+  }
+}
+
 function lineFeature<P>(
   value: unknown,
   path: string,
@@ -211,20 +251,10 @@ function lineFeature<P>(
 ): LineFeature<P> {
   const feature = record(value, path)
   if (feature.type !== 'Feature') fail(`${path}.type must be "Feature"`)
-  const id = kebabId(feature.id, `${path}.id`)
-  const geometry = record(feature.geometry, `${path}.geometry`)
-  if (geometry.type !== 'LineString') fail(`${path}.geometry must be a LineString`)
-  const coordinates = list(geometry.coordinates, `${path}.geometry.coordinates`)
-  if (coordinates.length < 2) fail(`${path}.geometry needs at least two positions`)
   return {
     type: 'Feature',
-    id,
-    geometry: {
-      type: 'LineString',
-      coordinates: coordinates.map((c, i) =>
-        parsePosition(c, `${path}.geometry.coordinates[${i}]`),
-      ),
-    },
+    id: kebabId(feature.id, `${path}.id`),
+    geometry: lineGeometry(feature.geometry, path),
     properties: parseProperties(record(feature.properties, `${path}.properties`), path),
   }
 }
@@ -341,6 +371,13 @@ export function parseScenario(data: unknown, expectedId?: string): Scenario {
   const routeOptions = list(root.route_options, 'route_options').map((value, i): RouteOption => {
     const path = `route_options[${i}]`
     const option = record(value, path)
+    const gradePath = `${path}.max_grade_deg`
+    const grade = option.max_grade_deg == null ? null : record(option.max_grade_deg, gradePath)
+    const coveragePath = `${path}.dtm_covered_pct`
+    const coverage = optionalLength(option.dtm_covered_pct, coveragePath)
+    if (coverage !== null && coverage > 100) fail(`${coveragePath} must not exceed 100`)
+    const reviewPath = `${path}.caution_review`
+    const review = option.caution_review == null ? null : record(option.caution_review, reviewPath)
     return {
       id: text(option.id, `${path}.id`),
       label: text(option.label, `${path}.label`),
@@ -352,6 +389,22 @@ export function parseScenario(data: unknown, expectedId?: string): Scenario {
       outbound_m: length(option.outbound_m, `${path}.outbound_m`),
       round_trip_m: length(option.round_trip_m, `${path}.round_trip_m`),
       proposed_m: length(option.proposed_m, `${path}.proposed_m`),
+      ascent_m: optionalLength(option.ascent_m, `${path}.ascent_m`),
+      max_grade_deg:
+        grade &&
+        Object.fromEntries(
+          ['2', '5', '10'].map((step) => [
+            step,
+            optionalLength(grade[step], `${gradePath}.${step}`),
+          ]),
+        ),
+      dtm_covered_pct: coverage,
+      open_zone_ids:
+        review?.open_zone_ids == null
+          ? null
+          : list(review.open_zone_ids, `${reviewPath}.open_zone_ids`).map((id, j) =>
+              kebabId(id, `${reviewPath}.open_zone_ids[${j}]`),
+            ),
     }
   })
   if (routeOptions.length === 0) fail('route_options must not be empty')
@@ -407,7 +460,54 @@ export function parseScenario(data: unknown, expectedId?: string): Scenario {
     }),
   )
 
-  for (const section of ['evidence', 'profiles', 'unknowns']) {
+  const cautionZones = list(root.unknowns, 'unknowns').flatMap(
+    (value, i): LineFeature<CautionZoneProperties>[] => {
+      const path = `unknowns[${i}]`
+      const zone = record(value, path)
+      const { kind, approach } = zone
+      if (
+        kind !== 'terrain-gap' &&
+        kind !== 'connector' &&
+        kind !== 'observation-approach' &&
+        kind !== 'steep-segment'
+      ) {
+        return []
+      }
+      const option = text(zone.option, `${path}.option`)
+      if (!optionIds.has(option)) fail(`${path}.option "${option}" is not a route option`)
+      return [
+        {
+          type: 'Feature',
+          id: kebabId(zone.id, `${path}.id`),
+          geometry: lineGeometry(zone.geometry, path),
+          properties: {
+            option,
+            kind,
+            source_ids: sourceIds(zone.source_ids, `${path}.source_ids`, known),
+            from_m: length(zone.from_m, `${path}.from_m`),
+            to_m: length(zone.to_m, `${path}.to_m`),
+            length_m: length(zone.length_m, `${path}.length_m`),
+            review_status: optionalText(zone.review_status, `${path}.review_status`),
+            summary: optionalText(zone.summary, `${path}.summary`),
+            stop_id: optionalText(zone.stop_id, `${path}.stop_id`),
+            approach: approach === 'visit' || approach === 'stand-off' ? approach : null,
+            step_m: optionalLength(zone.step_m, `${path}.step_m`),
+            closest_offset_m: optionalLength(zone.closest_offset_m, `${path}.closest_offset_m`),
+            grade_deg: optionalLength(zone.grade_deg, `${path}.grade_deg`),
+            grade_class: optionalText(zone.grade_class, `${path}.grade_class`),
+            uncertainty:
+              zone.uncertainty == null ? null : record(zone.uncertainty, `${path}.uncertainty`),
+          },
+        },
+      ]
+    },
+  )
+  uniqueIds(
+    cautionZones.map((zone) => zone.id),
+    'unknowns',
+  )
+
+  for (const section of ['evidence', 'profiles']) {
     list(root[section], section)
   }
   const pendingSections = list(root.pending_sections, 'pending_sections').map((s, i) =>
@@ -424,6 +524,7 @@ export function parseScenario(data: unknown, expectedId?: string): Scenario {
     route_options: routeOptions,
     routes,
     rover_track: roverTrack,
+    caution_zones: cautionZones,
     pending_sections: pendingSections,
     sources,
   }

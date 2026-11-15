@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { formatMarsCoordinate } from './marsCatalog'
+import { RouteComparisonPanel } from './RouteComparisonPanel'
 import { formatMeters, formatSols, type Scenario, type ScenarioStatus } from './scenario'
 import {
   CONNECTOR_DASH,
@@ -261,6 +262,8 @@ export function ScenarioPanel({
             Return legs retrace the outbound line and are not drawn twice. Lines follow Perseverance
             drives; only the dashed piece is proposed.
           </p>
+
+          <RouteComparisonPanel scenario={scenario} />
 
           <label className="mt-3 flex cursor-pointer items-start gap-2 rounded-lg border border-slate-800 bg-slate-950/50 px-2.5 py-2 text-xs hover:border-slate-700">
             <input
