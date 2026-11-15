@@ -1,6 +1,6 @@
 # Skinner Ridge science stop
 
-This record supports [issue #21](https://github.com/Moriae1337/martian-map/issues/21) and the [Hawksbill Gap crew field objective](field-objective.md).
+This record supports [issue #21](https://github.com/Moriae1337/martian-map/issues/21), [issue #22](https://github.com/Moriae1337/martian-map/issues/22) ([CH26-004]), [issue #24](https://github.com/Moriae1337/martian-map/issues/24) ([CH26-006]), and the [Hawksbill Gap crew field objective](field-objective.md). The field observation card and contact protocol are specified in the [Skinner Ridge contact observation specification](skinner-ridge-observation.md).
 
 Skinner Ridge is an exposed rock block (~1 m across) at the base of the lower Rockytop member of the Shenandoah formation, situated at the front of Jezero's western fan. Perseverance drilled two rock cores here: Swift Run and Skyland. The mission reports describe the lithology as fine-to-medium grained sandstone deposited in a deltaic or prodelta setting, with thin, laminated bedding (~1 cm thick or thinner). [PDS Initial Reports Volume 2 Release 2, Section 11][pds]
 
@@ -15,12 +15,35 @@ Coordinates, coring dates, and sealing sols come from the report headers for Swi
 
 ## Competing interpretations
 
-The origin and stratigraphic placement of the Skinner Ridge block are subject to competing interpretations:
+The origin and stratigraphic placement of the Skinner Ridge block are subject to competing interpretations in published mission literature:
 
-- **In-place lower Rockytop.** The initial mission report treats Skinner Ridge as likely in place. Its laminated bedding appears parallel to the majority of bedding on the Rockytop scarp, and the rock did not shift during abrasion or coring operations. Sandy regolith banked around the block limits direct basal visibility. [PDS Initial Reports, section 11][pds]
-- **Upper Rockytop float block.** Williams et al. (2026), in the section "Classification of Rockytop float rocks", classify Skinner Ridge as a displaced float block originating from the upper Rockytop facies. They argue that Skinner Ridge exhibits alternating protruding and recessive layering closely matching upper Rockytop (such as neighbouring Betty's Rock float) rather than the light-toned, slope-forming lower Rockytop facies, and note compositional affinities in SuperCam and PIXL spectra. [Williams et al. (2026)][williams] · [Williams et al., fig. S3][williams-supplement]
+- **In-place lower Rockytop member.** The initial mission report treats Skinner Ridge as likely in-place bedrock. Its thin, planar laminated bedding (~1 cm thick or thinner) appears parallel to the prevailing bedding on the broader Rockytop scarp, and the block exhibited complete mechanical stability without shifting or tilting during high-force abrasion and coring operations. Loose sandy regolith banked around the base of the block limited direct basal visibility. [PDS Initial Reports, section 11][pds]
+- **Upper Rockytop float block.** Williams et al. (2026), in the section "Classification of Rockytop float rocks", classify Skinner Ridge as a displaced float block originating from the upper Rockytop facies. They base their reclassification on facies and geochemistry: Skinner Ridge exhibits prominent alternating protruding and recessive weathering layers at the ~2 cm scale (illustrated in their fig. S3) closely matching Upper Rockytop bedrock and nearby float rocks like Betty's Rock, whereas the local Lower Rockytop bedrock is light-toned, thin-bedded, and recessive/slope-forming (fig. 3C). In addition, SuperCam and PIXL elemental compositions at the Thornton Gap abrasion patch show strong affinities to Betty's Rock rather than Lower Rockytop. [Williams et al. (2026)][williams] · [Williams et al., fig. S3][williams-supplement]
 
-Parallel bedding does not settle the question because a block sliding or slumping a short distance down slope can retain bedding roughly parallel to bedrock. Resolving whether the block is in place or float requires inspecting the contact between the block edge and adjacent rock. [Crew field objective](field-objective.md) · [PDS Initial Reports, section 11][pds]
+### Parallel bedding ambiguity and hypothesis distinction
+
+**Parallel bedding fits both hypotheses:**
+
+- A coherent block that slid, translated, or slumped a short distance downslope along a planar detachment or low-angle slope can readily preserve strike and dip roughly parallel to bedrock strata without undergoing rotational back-tilting.
+- Therefore, parallel bedding is concordant with both in-place Lower Rockytop bedrock and a slumped Upper Rockytop float block, and cannot discriminate between them.
+
+**Distinguishing the origin hypothesis from observed features:**
+
+- Geologists must distinguish between directly observed physical features (such as ~1 cm laminated bedding, strike/dip, alternating protruding/recessive resistance, and elemental composition) and inferred origin hypotheses (e.g. downslope gravity transport from Upper Rockytop).
+- Facies resemblance provides supporting comparative evidence, but cannot prove displacement or provenance without structural proof at the block margins.
+
+## Contact observation protocol
+
+The contact inspection is the deciding observation for resolving the origin of Skinner Ridge:
+
+1. **Deciding observation:** The crew checks whether individual sedimentary beds continue across the block edge into the adjacent Lower Rockytop outcrop at the same elevation, strike, dip, and layering.
+   - If beds trace seamlessly across the boundary: outcome is `continuous` (confirms in-place bedrock).
+   - If the basal underside rests on regolith/colluvium or beds terminate discordantly: outcome is `separated` (confirms float block).
+2. **Protocol for covered or ambiguous contacts:**
+   - If the contact boundary is covered by loose sandy regolith or shadowed, the outcome stays explicitly **`unresolved`** (defer rather than guess).
+   - The crew and science team must never infer in-place status from parallel bedding, nor infer float status from facies resemblance alone.
+   - **Banked regolith or eastern fracture is insufficient to call it detached:** Loose sandy regolith naturally banks against obstacles on Mars and does not establish a basal detachment plane. Similarly, an open fracture or overhang on the eastern flank is a common jointing/erosional feature in intact scarps and does not demonstrate detachment.
+   - Full protocol details, two-sided bedding measurements (ASUALT protocol), and mandatory five-item reporting for unresolved outcomes are specified in the [Skinner Ridge contact observation specification](skinner-ridge-observation.md).
 
 ## Map and card
 

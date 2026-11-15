@@ -21,10 +21,10 @@ the observation most likely to show whether the Skinner Ridge block is in place.
 The outcrops are about 20 m apart ([NASA PIA24924][photo]). Coordinates, sample
 IDs and sols belong to the stop records (#20, #21).
 
-| Stop                                          | What the mission reports                                                                                                                                                                                                                                                                                                    | Role in the scenario                                                                                                                                                                        |
-| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **1. Wildcat Ridge** (Hogwallow Flats member) | Hazeltop and Bearwallow cores. The report describes a horizontally layered, sulfate-bearing coarse mudstone that is "likely to be in place". Calcium-sulfate veins cut the rock. [PDS, section 14][pds]                                                                                                                     | **Reference stop.** The crew sees bedding that the report considers likely in place and records how veins relate to the beds. Veins that cut across the beds formed after deposition (#23). |
-| **2. Skinner Ridge** (Lower Rockytop member)  | Swift Run and Skyland cores. The block is about 1 m across, with beds about 1 cm thick or thinner. Its bedding "appears parallel to the majority of bedding on Rockytop", which the report takes to suggest the block is in place. Sandy regolith around the block limits visibility. [PDS, section 11, figs. 3 and 5][pds] | **Test stop.** The origin of the block is disputed (below). The contact between the block and the surrounding rock is the observation the crew is there for (#24).                          |
+| Stop                                          | What the mission reports                                                                                                                                                                                                                                                                                                    | Role in the scenario                                                                                                                                                                               |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **1. Wildcat Ridge** (Hogwallow Flats member) | Hazeltop and Bearwallow cores. The report describes a horizontally layered, sulfate-bearing coarse mudstone that is "likely to be in place". Calcium-sulfate veins cut the rock. [PDS, section 14][pds]                                                                                                                     | **Reference stop.** The crew sees bedding that the report considers likely in place and records how veins relate to the beds. Veins that cut across the beds formed after deposition (#23).        |
+| **2. Skinner Ridge** (Lower Rockytop member)  | Swift Run and Skyland cores. The block is about 1 m across, with beds about 1 cm thick or thinner. Its bedding "appears parallel to the majority of bedding on Rockytop", which the report takes to suggest the block is in place. Sandy regolith around the block limits visibility. [PDS, section 11, figs. 3 and 5][pds] | **Test stop.** The origin of the block is disputed (below). The contact between the block and the surrounding rock is the observation the crew is there for ([#24](skinner-ridge-observation.md)). |
 
 ## Competing interpretations
 
@@ -45,14 +45,14 @@ IDs and sols belong to the stop records (#20, #21).
   [Williams et al., fig. S3][williams-supplement] · [PDS, section 11][pds]
 
 The displaced-block reading was checked against the article's full-text page on
-ScienceDirect. #22 owns the full write-up of both interpretations.
+ScienceDirect. [#22](skinner-ridge.md#competing-interpretations) and the [Skinner Ridge observation specification](skinner-ridge-observation.md) own the full write-up of both interpretations.
 
 **Why parallel bedding does not settle it.** A block that slid or settled only a
 short distance can keep bedding close to parallel with the outcrop, so parallel
 bedding fits both interpretations. Williams et al. rely on what the beds look
 like, not on their attitude. A field crew can test both: whether the beds
 continue into the adjacent rock, and which Rockytop facies the block resembles.
-This framing is the team's own and is proposed for review in #22 and #24.
+This framing is the team's own and is specified in [#22](skinner-ridge.md#competing-interpretations) and [#24](skinner-ridge-observation.md).
 
 ## Discriminating observation
 
@@ -162,9 +162,7 @@ Its example must show an unresolved result.
 
 ## Follow-up tickets
 
-#20 and #21 source the stop records. #22 documents the interpretations. #23 and
-#24 specify the two observations. #26 defines the field record. #41, #43, #45,
-#46 and #48 supply the route metrics this decision uses.
+[#20](wildcat-ridge.md) and [#21](skinner-ridge.md) source the stop records. [#22](skinner-ridge.md#competing-interpretations) documents the interpretations. [#23](wildcat-ridge-observation.md) and [#24](skinner-ridge-observation.md) specify the two observations. [#26](field-observation-record.md) defines the field record. #41, #43, #45, #46 and #48 supply the route metrics this decision uses.
 
 ## Sources
 
