@@ -26,3 +26,4 @@ backend/data/hawksbill_gap/route_metrics.json
 backend/data/hawksbill_gap/scenario.json
 backend/data/hawksbill_gap/environment.json
 backend/data/hawksbill_gap/skinner_line_of_sight.json
+backend/data/hawksbill_gap/prelanding_geology.geojson
