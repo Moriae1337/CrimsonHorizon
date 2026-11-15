@@ -4,6 +4,8 @@ This record supports [issue #21](https://github.com/Moriae1337/martian-map/issue
 
 Skinner Ridge is an exposed rock block (~1 m across) at the base of the lower Rockytop member of the Shenandoah formation, situated at the front of Jezero's western fan. Perseverance drilled two rock cores here: Swift Run and Skyland. The mission reports describe the lithology as fine-to-medium grained sandstone deposited in a deltaic or prodelta setting, with thin, laminated bedding (~1 cm thick or thinner). [PDS Initial Reports Volume 2 Release 2, Section 11][pds]
 
+See the [Skinner Ridge panorama and 3D references](workspace-references.md#skinner-ridge) for views of the workspace and Thornton Gap abrasion.
+
 ## Sample records
 
 | Sample    | Public sample no. | Mission designation | Latitude (N) | Longitude (E) | Coring date in PDS | Sealing sol |

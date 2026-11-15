@@ -4,6 +4,8 @@ This record supports [issue #20](https://github.com/Moriae1337/martian-map/issue
 
 Wildcat Ridge is an exposed rock surface in the Hogwallow Flats member at the front of Jezero's western fan. Perseverance drilled two rock cores here. The mission reports describe the rock as fine-grained and sulfate-bearing, with calcium-sulfate veins cutting through it. [PDS Initial Reports, sections 14 and 15][pds]
 
+See the [Wildcat Ridge panorama and 3D references](workspace-references.md#wildcat-ridge) for views of the workspace and Berry Hollow abrasion.
+
 ## Sample records
 
 | Sample     | Public sample no. | Mission designation | Latitude (N) | Longitude (E) | Coring date in PDS | Sealing sol |
