@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { columbiaHillsWaypoints } from './columbiaHills.ts'
 import {
   SITE_IDS,
   aeqdInverse,
@@ -55,6 +56,10 @@ export function useRoutePlanner(active: boolean) {
   const draft = drafts[siteId]
   const pkg = packages[siteId] ?? null
   const grid = useMemo<TerrainGrid | null>(() => (pkg ? decodeTerrain(pkg) : null), [pkg])
+  const exampleWaypoints = useMemo(
+    () => (pkg && grid ? columbiaHillsWaypoints(pkg, grid) : null),
+    [pkg, grid],
+  )
 
   // Terrain package (cached per site).
   useEffect(() => {
@@ -173,6 +178,14 @@ export function useRoutePlanner(active: boolean) {
     removeStop: (index: number) =>
       updateDraft((d) => ({ ...d, waypoints: d.waypoints.filter((_, i) => i !== index) })),
     clear: () => updateDraft(() => EMPTY_DRAFT),
+    loadExample: exampleWaypoints
+      ? () =>
+          updateDraft((current) =>
+            current.waypoints.length > 0
+              ? current
+              : { waypoints: exampleWaypoints, hasEnd: true, pickTarget: null },
+          )
+      : null,
     maxGrade,
     setMaxGrade,
     planning: key !== null && current === null,

@@ -9,15 +9,15 @@ import { extentOf, optionExtent } from './scenarioLayers.ts'
 import { useEnvironment } from './useEnvironment.ts'
 import { useScenario } from './useScenario.ts'
 import { useTranslation } from './i18n/useTranslation.ts'
+import { RoutePlannerPanel } from './RoutePlannerPanel.tsx'
+import { textureUrl } from './sites.ts'
+import { useRoutePlanner } from './useRoutePlanner.ts'
+
 // three.js views load on demand so the 2D map stays light.
 const MarsGlobe = lazy(() => import('./MarsGlobe.tsx').then((m) => ({ default: m.MarsGlobe })))
 const SiteExplorer = lazy(() =>
   import('./SiteExplorer.tsx').then((m) => ({ default: m.SiteExplorer })),
 )
-import { RoutePlannerPanel } from './RoutePlannerPanel.tsx'
-import { SITE_LABELS } from './plannerText.ts'
-import { textureUrl } from './sites.ts'
-import { useRoutePlanner } from './useRoutePlanner.ts'
 
 type SidebarMode = 'scenario' | 'planner'
 
@@ -36,34 +36,15 @@ const VIEW_LABELS: Record<ViewMode, { en: string; uk: string }> = {
 
 const SCENARIO_ID = 'hawksbill-gap'
 
-const STATUS_CONFIG: Record<
-  BackendStatus,
-  { label: string; dot: string; text: string; badge: string }
-> = {
-  connecting: {
-    label: 'Connecting',
-    dot: 'bg-accent animate-pulse',
-    text: 'text-text-secondary',
-    badge: 'border-accent/30 bg-accent/20 text-text-main',
-  },
-  connected: {
-    label: 'Connected',
-    dot: 'bg-emerald-400',
-    text: 'text-text-main',
-    badge: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200',
-  },
-  disconnected: {
-    label: 'Disconnected',
-    dot: 'bg-accent',
-    text: 'text-text-secondary',
-    badge: 'border-accent/40 bg-accent/20 text-text-main',
-  },
+const STATUS_LABELS: Record<BackendStatus, { en: string; uk: string }> = {
+  connecting: { en: 'Connecting to API…', uk: 'З’єднання з API…' },
+  connected: { en: 'API connected', uk: 'API підключено' },
+  disconnected: { en: 'API unavailable', uk: 'API недоступне' },
 }
 
 function App() {
   const { status, error } = useBackendHealth()
   const { catalog, landmarks } = useMarsData()
-  const statusInfo = STATUS_CONFIG[status]
   const scenarioState = useScenario(SCENARIO_ID)
   const { scenario } = scenarioState
   const environmentState = useEnvironment(SCENARIO_ID)
@@ -75,7 +56,6 @@ function App() {
     viewMode === 'site3d' || (viewMode === 'map' && sidebarMode === 'planner'),
   )
   const plannerOn = viewMode === 'map' && sidebarMode === 'planner'
-  const site = SITE_LABELS[planner.siteId]
 
   const sampleSols = useMemo(
     () => new Set(scenario?.stops.flatMap((stop) => stop.samples.map((s) => s.sol)) ?? []),
@@ -144,23 +124,12 @@ function App() {
   }
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-canvas text-text-main">
-      {/* Top Header (MOMAR Style: Clean & Operational) */}
+    <div className="flex h-dvh w-full flex-col overflow-hidden bg-canvas text-text-main">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-card-border bg-card px-4 py-2 shrink-0">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex items-center rounded bg-accent/25 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-text-main">
-            EVA PLANNER
-          </span>
+        <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-base font-bold tracking-tight text-text-main sm:text-lg">
             CrimsonHorizon
           </h1>
-          <span className="hidden text-xs text-text-secondary lg:inline">
-            {viewMode === 'globe'
-              ? 'Mars · IAU nomenclature'
-              : viewMode === 'site3d' || plannerOn
-                ? `${site.name} · ${site.region}`
-                : 'Hawksbill Gap · Jezero crater'}
-          </span>
           <nav
             aria-label="View mode"
             className="ml-1 inline-flex rounded-lg border border-card-border bg-input p-0.5"
@@ -170,7 +139,13 @@ function App() {
                 key={mode}
                 type="button"
                 aria-pressed={viewMode === mode}
-                onClick={() => setViewMode(mode)}
+                onClick={() => {
+                  if (mode !== 'map') {
+                    setFocusTarget(null)
+                    setCursorCoords(null)
+                  }
+                  setViewMode(mode)
+                }}
                 className={`rounded-md px-2.5 py-1 text-xs font-semibold cursor-pointer transition-colors ${
                   viewMode === mode
                     ? 'bg-accent text-text-main'
@@ -184,13 +159,11 @@ function App() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2.5 text-xs">
-          {/* Coordinate & Zoom display */}
-          <span className="rounded-lg border border-card-border bg-input px-2.5 py-1 font-mono text-[11px] text-text-main">
-            {cursorCoords
-              ? formatMarsCoordinate(cursorCoords[0], cursorCoords[1])
-              : formatMarsCoordinate(catalog.default_center[0], catalog.default_center[1])}
-            {' · '}z{zoom.toFixed(1)}
-          </span>
+          {viewMode === 'map' && (
+            <span className="font-mono text-[11px] text-text-secondary">
+              {cursorCoords && `${formatMarsCoordinate(...cursorCoords)} · `}z{zoom.toFixed(1)}
+            </span>
+          )}
 
           {/* Language Switcher */}
           <button
@@ -199,29 +172,11 @@ function App() {
             className="rounded-lg border border-card-border bg-input px-2 py-1 text-xs font-semibold hover:border-secondary cursor-pointer"
             title="Switch Language / Змінити мову"
           >
-            {locale === 'en' ? '🇺🇦 UK' : '🇬🇧 EN'}
+            {locale === 'en' ? 'Українська' : 'English'}
           </button>
 
-          {/* Export Action */}
-          {scenario && (
-            <button
-              type="button"
-              onClick={handleExportGeoJson}
-              className="hidden sm:inline-flex rounded-lg border border-card-border bg-card-elevated px-2.5 py-1 text-xs font-medium text-text-main hover:border-secondary hover:bg-card cursor-pointer"
-            >
-              Export GeoJSON
-            </button>
-          )}
-
-          {/* API Status Pill */}
-          <div
-            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${statusInfo.badge}`}
-            role="status"
-            aria-live="polite"
-            title={error ?? undefined}
-          >
-            <span className={`h-1.5 w-1.5 rounded-full ${statusInfo.dot}`} aria-hidden="true" />
-            <span>{statusInfo.label}</span>
+          <div className="text-[11px] text-text-secondary" role="status" title={error ?? undefined}>
+            {STATUS_LABELS[status][locale]}
           </div>
         </div>
       </header>
@@ -238,12 +193,13 @@ function App() {
         {viewMode === 'globe' && (
           <div className="relative min-h-0 flex-1 bg-canvas">
             <MarsGlobe
-              layers={globalLayers}
               onOpenSite={(id) => {
                 planner.setSiteId(id)
+                setSidebarMode('planner')
                 setViewMode('site3d')
               }}
               onOpenMap={(lon, lat, z) => {
+                setSidebarMode('scenario')
                 setFocusTarget({ center: [lon, lat], zoom: z, nonce: Date.now() })
                 setViewMode('map')
               }}
@@ -252,11 +208,9 @@ function App() {
         )}
       </Suspense>
 
-      {/* Main Layout: MOMAR Sidebar + Map Canvas */}
       {viewMode === 'map' && (
         <div className="flex min-h-0 flex-1 flex-col md:flex-row">
-          {/* Sidebar Panel (MOMAR Architecture: 420px width) */}
-          <aside className="flex w-full shrink-0 flex-col overflow-hidden border-b border-card-border bg-card md:w-[420px] lg:w-[460px] md:border-r md:border-b-0 shadow-lg z-10">
+          <aside className="z-10 flex max-h-[45%] w-full shrink-0 flex-col overflow-hidden border-b border-card-border bg-card md:max-h-none md:w-[420px] md:border-r md:border-b-0 lg:w-[460px]">
             <nav
               aria-label="Sidebar mode"
               className="flex shrink-0 gap-1 border-b border-card-border bg-input p-1.5"
@@ -266,7 +220,16 @@ function App() {
                   key={mode}
                   type="button"
                   aria-pressed={sidebarMode === mode}
-                  onClick={() => setSidebarMode(mode)}
+                  onClick={() => {
+                    if (mode === sidebarMode) return
+                    setSidebarMode(mode)
+                    if (mode === 'planner') setFocusTarget(null)
+                    else if (scenario) {
+                      setFocusTarget({ extent: extentOf(scenario), nonce: Date.now() })
+                    } else {
+                      jumpTo(catalog.default_center, catalog.default_zoom)
+                    }
+                  }}
                   className={`flex-1 rounded-md px-2 py-1.5 text-xs font-semibold cursor-pointer ${
                     sidebarMode === mode
                       ? 'bg-accent text-text-main'
@@ -298,12 +261,10 @@ function App() {
                   if (stop) jumpTo([stop.coordinates[0], stop.coordinates[1]], 18)
                 }}
                 onSelectOption={(id) => {
-                  const next = id === selectedOptionId ? null : id
-                  setSelectedOptionId(next)
-                  const extent = next && scenario ? optionExtent(scenario, next) : null
+                  setSelectedOptionId(id)
+                  const extent = id && scenario ? optionExtent(scenario, id) : null
                   if (extent) setFocusTarget({ extent, nonce: Date.now() })
                 }}
-                // Layers & Navigation props
                 globalLayers={globalLayers}
                 overlayLayers={overlayLayers}
                 activeBaseLayerId={activeBaseLayerId}
@@ -322,16 +283,14 @@ function App() {
                 }}
                 onFocusJezero={() => jumpTo(catalog.default_center, catalog.default_zoom)}
                 onFocusGlobal={() => jumpTo([0, 0], 2)}
-                // Environment & Export
-                environment={environmentState.environment}
+                environmentState={environmentState}
                 sampleSols={sampleSols}
                 onExportGeoJson={handleExportGeoJson}
               />
             )}
           </aside>
 
-          {/* Map Viewport */}
-          <main className="relative min-h-72 flex-1 bg-canvas">
+          <main className="relative min-h-0 flex-1 bg-canvas">
             <MarsMap
               catalog={catalog}
               landmarks={landmarks}
@@ -339,12 +298,14 @@ function App() {
               visibleOverlayIds={visibleOverlayIds}
               selectedLandmarkId={selectedLandmarkId}
               focusTarget={focusTarget}
-              scenario={scenario}
+              scenario={plannerOn ? null : scenario}
               showRoverTrack={showRoverTrack}
               selectedStopId={selectedStopId}
               onSelectLandmark={setSelectedLandmarkId}
               selectedOptionId={selectedOptionId}
-              onSelectStop={setSelectedStopId}
+              onSelectStop={(id) => {
+                if (!plannerOn) setSelectedStopId(id)
+              }}
               onSelectOption={setSelectedOptionId}
               onCursorMove={setCursorCoords}
               onZoomChange={setZoom}

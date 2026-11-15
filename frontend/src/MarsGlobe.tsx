@@ -1,12 +1,13 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import type { MapLayer } from './marsCatalog.ts'
+import { DEFAULT_MAP_CATALOG } from './marsCatalog.ts'
 import { fetchNomenclature, type IauFeature, type SiteId } from './sites.ts'
 import { useTranslation } from './i18n/useTranslation.ts'
 
 const API_URL = import.meta.env.VITE_API_URL?.trim().replace(/\/+$/, '')
-const TEXTURE_ZOOM = 3 // Trek EQ grid: 2^(z+1) x 2^z tiles of 256 px -> 4096 x 2048
+const GLOBE_LAYERS = ['viking-mdim21', 'mola-color-hillshade'] as const
+type GlobeLayerId = (typeof GLOBE_LAYERS)[number]
 
 const CATEGORY_LABEL: Record<string, string> = {
   crater: 'Crater',
@@ -46,7 +47,7 @@ const GLOBE_SITES: GlobeSite[] = [
 
 const TEXT = {
   en: {
-    loading: 'Stitching Mars Trek tiles…',
+    textureError: 'Globe imagery unavailable.',
     labels: 'IAU names',
     drag: 'Drag to rotate · wheel to zoom',
     open3d: 'Open 3D site',
@@ -58,7 +59,7 @@ const TEXT = {
     search: 'Find a feature…',
   },
   uk: {
-    loading: 'Зшивання тайлів Mars Trek…',
+    textureError: 'Зображення глобуса недоступне.',
     labels: 'Назви IAU',
     drag: 'Тягніть — обертання · колесо — масштаб',
     open3d: 'Відкрити 3D-ділянку',
@@ -82,58 +83,12 @@ function lonLatToVec(lon: number, lat: number, r = 1): THREE.Vector3 {
   )
 }
 
-function tileUrl(layer: MapLayer, z: number, y: number, x: number): string {
-  return layer.tile_url
-    .replace('{z}', String(z))
-    .replace('{y}', String(y))
-    .replace('{x}', String(x))
-}
-
-async function stitchTexture(
-  layer: MapLayer,
-  onProgress: (f: number) => void,
-): Promise<HTMLCanvasElement> {
-  const cols = 2 ** (TEXTURE_ZOOM + 1)
-  const rows = 2 ** TEXTURE_ZOOM
-  const canvas = document.createElement('canvas')
-  canvas.width = cols * 256
-  canvas.height = rows * 256
-  const ctx = canvas.getContext('2d')!
-  ctx.fillStyle = '#171717'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
-  let done = 0
-  const jobs: Promise<void>[] = []
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      jobs.push(
-        new Promise<void>((resolve) => {
-          const img = new Image()
-          img.crossOrigin = 'anonymous'
-          img.onload = () => {
-            ctx.drawImage(img, x * 256, y * 256)
-            onProgress(++done / (rows * cols))
-            resolve()
-          }
-          img.onerror = () => {
-            onProgress(++done / (rows * cols))
-            resolve()
-          }
-          img.src = tileUrl(layer, TEXTURE_ZOOM, y, x)
-        }),
-      )
-    }
-  }
-  await Promise.all(jobs)
-  return canvas
-}
-
 export interface MarsGlobeProps {
-  layers: MapLayer[]
   onOpenSite: (id: SiteId) => void
   onOpenMap: (lon: number, lat: number, zoom: number) => void
 }
 
-export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
+export function MarsGlobe({ onOpenSite, onOpenMap }: MarsGlobeProps) {
   const { locale } = useTranslation()
   const T = TEXT[locale === 'uk' ? 'uk' : 'en']
   const hostRef = useRef<HTMLDivElement>(null)
@@ -144,8 +99,9 @@ export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
   const [features, setFeatures] = useState<IauFeature[]>([])
   const [labelError, setLabelError] = useState<string | null>(null)
   const [showLabels, setShowLabels] = useState(true)
-  const [baseId, setBaseId] = useState<'viking-mdim21' | 'mola-color-hillshade'>('viking-mdim21')
-  const [texState, setTexState] = useState<{ id: string; f: number }>({ id: '', f: 0 })
+  const [baseId, setBaseId] = useState<GlobeLayerId>('viking-mdim21')
+  const [shownBaseId, setShownBaseId] = useState<GlobeLayerId | null>(null)
+  const [failedBaseId, setFailedBaseId] = useState<GlobeLayerId | null>(null)
   const [selected, setSelected] = useState<IauFeature | null>(null)
   const [query, setQuery] = useState('')
   const showLabelsRef = useRef(showLabels)
@@ -153,10 +109,7 @@ export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
     showLabelsRef.current = showLabels
   }, [showLabels])
 
-  const baseLayer = useMemo(
-    () => layers.find((l) => l.id === baseId) ?? layers[0],
-    [layers, baseId],
-  )
+  const attribution = DEFAULT_MAP_CATALOG.layers.find(({ id }) => id === shownBaseId)?.attribution
 
   useEffect(() => {
     if (!API_URL) return
@@ -203,7 +156,7 @@ export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
 
     const globe = new THREE.Mesh(
       new THREE.SphereGeometry(1, 128, 64),
-      new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 1, metalness: 0 }),
+      new THREE.MeshStandardMaterial({ color: '#8F5A53', roughness: 1, metalness: 0 }),
     )
     globeRef.current = globe
     scene.add(globe)
@@ -322,6 +275,9 @@ export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
       cancelAnimationFrame(frame)
       observer.disconnect()
       controls.dispose()
+      globe.material.map?.dispose()
+      globe.material.dispose()
+      globe.geometry.dispose()
       renderer.dispose()
       host.removeChild(renderer.domElement)
       globeRef.current = null
@@ -330,34 +286,41 @@ export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
     }
   }, [])
 
-  // Stitch the selected base layer into an equirectangular texture.
   useEffect(() => {
-    if (!baseLayer) return
     let cancelled = false
-    const id = baseLayer.id
-    stitchTexture(baseLayer, (f) => !cancelled && setTexState({ id, f })).then((canvas) => {
-      const globe = globeRef.current
-      if (cancelled || !globe) return
-      const tex = new THREE.CanvasTexture(canvas)
-      tex.colorSpace = THREE.SRGBColorSpace
-      tex.anisotropy = rendererRef.current?.capabilities.getMaxAnisotropy() ?? 1
-      const mat = globe.material as THREE.MeshStandardMaterial
-      mat.map?.dispose()
-      mat.map = tex
-      mat.needsUpdate = true
-    })
+    new THREE.TextureLoader().load(
+      `${import.meta.env.BASE_URL}globe/${baseId}.webp`,
+      (texture) => {
+        const globe = globeRef.current
+        if (cancelled || !globe) {
+          texture.dispose()
+          return
+        }
+        texture.colorSpace = THREE.SRGBColorSpace
+        texture.anisotropy = rendererRef.current?.capabilities.getMaxAnisotropy() ?? 1
+        const material = globe.material as THREE.MeshStandardMaterial
+        material.map?.dispose()
+        material.map = texture
+        material.color.set('#ffffff')
+        material.needsUpdate = true
+        setShownBaseId(baseId)
+        setFailedBaseId(null)
+      },
+      undefined,
+      () => {
+        if (!cancelled) setFailedBaseId(baseId)
+      },
+    )
     return () => {
       cancelled = true
     }
-  }, [baseLayer])
+  }, [baseId])
 
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase()
     if (q.length < 2) return []
     return features.filter((f) => f.name.toLowerCase().includes(q)).slice(0, 6)
   }, [features, query])
-
-  const texProgress = texState.id === baseLayer?.id ? texState.f : 0
 
   const pick = (f: IauFeature) => {
     setSelected(f)
@@ -409,7 +372,7 @@ export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
       {/* Controls */}
       <div className="absolute left-3 top-3 flex w-64 flex-col gap-2 rounded-lg border border-card-border bg-card/90 p-2.5 text-xs">
         <div className="flex gap-1.5">
-          {(['viking-mdim21', 'mola-color-hillshade'] as const).map((id) => (
+          {GLOBE_LAYERS.map((id) => (
             <button
               key={id}
               type="button"
@@ -430,7 +393,7 @@ export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
             type="checkbox"
             checked={showLabels}
             onChange={(e) => setShowLabels(e.target.checked)}
-            className="accent-[#8F5A53]"
+            className="accent-accent"
           />
           {T.labels}{' '}
           {features.length > 0 && <span className="text-text-muted">({features.length})</span>}
@@ -460,9 +423,9 @@ export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
             </ul>
           )}
         </div>
-        {texProgress < 1 && (
-          <p className="text-text-secondary">
-            {T.loading} {(texProgress * 100).toFixed(0)}%
+        {failedBaseId === baseId && (
+          <p className="text-text-secondary" role="status">
+            {T.textureError}
           </p>
         )}
         {(API_URL ? labelError : T.noLabels) && (
@@ -525,7 +488,8 @@ export function MarsGlobe({ layers, onOpenSite, onOpenMap }: MarsGlobeProps) {
       <div className="pointer-events-none absolute bottom-3 left-3 flex flex-col gap-0.5 rounded-lg border border-card-border bg-card/90 px-2.5 py-1.5 text-[10px] text-text-secondary">
         <span>{T.drag}</span>
         <span>
-          {baseLayer?.attribution} · {T.source}
+          {attribution && `${attribution} · `}
+          {T.source}
         </span>
       </div>
     </div>

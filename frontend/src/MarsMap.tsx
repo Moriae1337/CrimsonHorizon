@@ -670,8 +670,8 @@ export function MarsMap({
     <div className="relative h-full w-full">
       <div
         ref={containerRef}
-        className="h-full w-full bg-[#171717]"
-        aria-label="Interactive Mars surface map centered on Jezero Crater"
+        className="h-full w-full bg-canvas"
+        aria-label="Interactive Mars surface map"
         onMouseLeave={() => {
           onCursorMove(null)
           if (tooltipRef.current) tooltipRef.current.hidden = true

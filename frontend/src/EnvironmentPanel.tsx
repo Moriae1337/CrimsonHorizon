@@ -16,18 +16,18 @@ interface EnvironmentPanelProps {
   sampleSols: ReadonlySet<number>
 }
 
-const CARD = 'rounded-xl border border-[#333333] bg-[#1A1A1A] p-3.5 text-xs'
+const CARD = 'rounded-xl border border-card-border bg-input p-3.5 text-xs'
 const BADGE =
-  'inline-flex items-center rounded-md border border-[#8F5A53]/40 bg-[#8F5A53]/20 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#EBEBEB]'
+  'inline-flex items-center rounded-md border border-accent/40 bg-accent/20 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-main'
 
 function range(stats: ParameterStats | null, digits = 0) {
-  if (!stats) return <span className="text-[#737373]">no data</span>
+  if (!stats) return <span className="text-text-secondary">no data</span>
   return `${stats.min.toFixed(digits)}–${stats.max.toFixed(digits)}`
 }
 
 function SourceLinks({ ids, sources }: { ids: string[]; sources: EnvironmentSource[] }) {
   return (
-    <ul className="mt-2 space-y-1 text-[11px] text-[#737373]">
+    <ul className="mt-2 space-y-1 text-[11px] text-text-secondary">
       {ids.map((id) => {
         const source = sources.find((s) => s.id === id)
         if (!source) return null
@@ -37,7 +37,7 @@ function SourceLinks({ ids, sources }: { ids: string[]; sources: EnvironmentSour
               href={source.url}
               target="_blank"
               rel="noreferrer"
-              className="underline decoration-[#8F5A53] underline-offset-2 hover:text-[#EBEBEB] focus-visible:outline-1 focus-visible:outline-[#8F5A53]"
+              className="underline decoration-accent underline-offset-2 hover:text-text-main focus-visible:outline-1 focus-visible:outline-accent"
             >
               {source.title}
             </a>
@@ -67,23 +67,23 @@ function WeatherCard({
     <section className={CARD} aria-labelledby="meda-weather-title">
       <div className="flex flex-wrap items-center gap-2">
         <span className={BADGE}>Archival</span>
-        <h3 id="meda-weather-title" className="font-semibold text-[#EBEBEB]">
+        <h3 id="meda-weather-title" className="font-semibold text-text-main">
           MEDA weather, Jezero
         </h3>
       </div>
-      <p className="mt-1 leading-relaxed text-[#A3A3A3]">
+      <p className="mt-1 leading-relaxed text-text-secondary">
         Recorded by Perseverance in {weather.place}, sols {weather.sol_range[0]}–
         {weather.sol_range[1]} ({formatUtcDate(first)} to {formatUtcDate(last)} UTC). Historical
         record, not a forecast for a crew walk.
       </p>
 
-      <div className="mt-2 max-h-64 overflow-y-auto rounded-lg border border-[#333333]">
+      <div className="mt-2 max-h-64 overflow-y-auto rounded-lg border border-card-border">
         <table className="w-full whitespace-nowrap text-left font-mono text-[11px]">
           <caption className="sr-only">
             Daily range of surface pressure and air temperature per sol, with LMST hours of the sol
             covered by pressure samples
           </caption>
-          <thead className="sticky top-0 bg-[#212121] text-[#A3A3A3]">
+          <thead className="sticky top-0 bg-card text-text-secondary">
             <tr>
               <th scope="col" className="px-1 py-1 align-bottom font-medium whitespace-normal">
                 Sol
@@ -112,12 +112,12 @@ function WeatherCard({
               return (
                 <tr
                   key={s.sol}
-                  className={`border-t border-[#333333] ${sampled ? 'bg-[#8F5A53]/15 text-[#EBEBEB]' : 'text-[#A3A3A3]'}`}
+                  className={`border-t border-card-border ${sampled ? 'bg-accent/15 text-text-main' : 'text-text-secondary'}`}
                 >
                   <th scope="row" className="px-1 py-0.5 font-normal">
                     {s.sol}
                     {sampled && (
-                      <span className="text-[#8F5A53]" title="Sample collected this sol">
+                      <span className="text-accent" title="Sample collected this sol">
                         {' '}
                         ◆
                       </span>
@@ -136,19 +136,19 @@ function WeatherCard({
         </table>
       </div>
 
-      <dl className="mt-2 space-y-1 text-[11px] text-[#A3A3A3]">
+      <dl className="mt-2 space-y-1 text-[11px] text-text-secondary">
         <div>
-          <dt className="inline text-[#EBEBEB]">Sols without pressure: </dt>
+          <dt className="inline text-text-main">Sols without pressure: </dt>
           <dd className="inline">{missingP || 'none'}</dd>
         </div>
         <div>
-          <dt className="inline text-[#EBEBEB]">Sols without air temperature: </dt>
+          <dt className="inline text-text-main">Sols without air temperature: </dt>
           <dd className="inline">{missingT || 'none'}</dd>
         </div>
       </dl>
 
-      <details className="mt-2 text-[11px] text-[#A3A3A3]">
-        <summary className="cursor-pointer text-[#EBEBEB] focus-visible:outline-1 focus-visible:outline-[#8F5A53]">
+      <details className="mt-2 text-[11px] text-text-secondary">
+        <summary className="cursor-pointer text-text-main focus-visible:outline-1 focus-visible:outline-accent">
           Missing intervals within each sol (LMST)
         </summary>
         <ul className="mt-1 space-y-0.5 font-mono">
@@ -167,7 +167,7 @@ function WeatherCard({
         <p className="mt-1">Pressure gaps shown. {weather.method}</p>
       </details>
 
-      <p className="mt-2 text-[11px] text-[#737373]">
+      <p className="mt-2 text-[11px] text-text-secondary">
         {weather.parameters.map((p) => `${p.label} (${p.unit}, ${p.processing_level})`).join('; ')}.
       </p>
       <SourceLinks ids={weather.source_ids} sources={sources} />
@@ -184,12 +184,12 @@ function RadiationCard({ environment }: { environment: EnvironmentContext }) {
         <span className={BADGE}>Archival</span>
         <span className={BADGE}>Gale, not Jezero</span>
       </div>
-      <h3 id="rad-gale-title" className="mt-1.5 font-semibold text-[#EBEBEB]">
+      <h3 id="rad-gale-title" className="mt-1.5 font-semibold text-text-main">
         Radiation context: Curiosity RAD at {radiation.place.name}
       </h3>
-      <dl className="mt-1.5 space-y-1 text-[#A3A3A3]">
+      <dl className="mt-1.5 space-y-1 text-text-secondary">
         <div>
-          <dt className="inline text-[#EBEBEB]">Place: </dt>
+          <dt className="inline text-text-main">Place: </dt>
           <dd className="inline">
             {radiation.place.name} ({radiation.place.mission}),{' '}
             <span className="font-mono">{formatMarsCoordinate(lon, lat)}</span>
@@ -198,26 +198,26 @@ function RadiationCard({ environment }: { environment: EnvironmentContext }) {
           </dd>
         </div>
         <div>
-          <dt className="inline text-[#EBEBEB]">Window: </dt>
+          <dt className="inline text-text-main">Window: </dt>
           <dd className="inline">
             {radiation.window.utc_start} to {radiation.window.utc_stop}. {radiation.window.note}
           </dd>
         </div>
         <div>
-          <dt className="inline text-[#EBEBEB]">Instrument: </dt>
+          <dt className="inline text-text-main">Instrument: </dt>
           <dd className="inline">{radiation.instrument}</dd>
         </div>
       </dl>
       <ul className="mt-2 space-y-1">
         {radiation.measurements.map((m) => (
-          <li key={m.id} className="rounded-lg border border-[#333333] px-2 py-1.5">
-            <div className="text-[#A3A3A3]">{m.label}</div>
-            <div className="font-mono text-[#EBEBEB]">{formatMeasurement(m)}</div>
+          <li key={m.id} className="rounded-lg border border-card-border px-2 py-1.5">
+            <div className="text-text-secondary">{m.label}</div>
+            <div className="font-mono text-text-main">{formatMeasurement(m)}</div>
           </li>
         ))}
       </ul>
-      <h4 className="mt-2 font-semibold text-[#EBEBEB]">Limits for a Jezero walk</h4>
-      <ul className="mt-1 list-disc space-y-0.5 pl-4 leading-relaxed text-[#A3A3A3]">
+      <h4 className="mt-2 font-semibold text-text-main">Limits for a Jezero walk</h4>
+      <ul className="mt-1 list-disc space-y-0.5 pl-4 leading-relaxed text-text-secondary">
         {radiation.limits.map((limit) => (
           <li key={limit}>{limit}</li>
         ))}
@@ -232,17 +232,17 @@ export function EnvironmentPanel({ status, environment, sampleSols }: Environmen
     <section aria-labelledby="environment-heading">
       <h2
         id="environment-heading"
-        className="text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]"
+        className="text-xs font-semibold uppercase tracking-wider text-text-secondary"
       >
         Environment context
       </h2>
       {status === 'loading' && (
-        <p className="mt-2 text-xs text-[#737373]" role="status">
+        <p className="mt-2 text-xs text-text-secondary" role="status">
           Loading archival weather and radiation…
         </p>
       )}
       {status === 'unavailable' && (
-        <p className="mt-2 text-xs text-[#737373]" role="status">
+        <p className="mt-2 text-xs text-text-secondary" role="status">
           Environment context unavailable. The map and scenario still work.
         </p>
       )}

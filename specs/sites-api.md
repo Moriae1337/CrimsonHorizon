@@ -22,6 +22,24 @@ are listed in each package (`sources`, `notes`) and in [sources.md](sources.md).
 Grids use a spherical azimuthal-equidistant frame centred on `center_lon_lat`
 (Mars sphere, R = 3,396,190 m): `x` metres east, `y` metres north.
 
+The Columbia Hills planner offers a one-way Husband Hill to Home Plate example.
+It uses corrected Spirit positions from the [PDS Analyst’s Notebook traverse CSV][spirit-traverse].
+Husband Hill uses site 114, drive 727 (sols 619–623, which include the
+[summit panorama][spirit-summit]). The Home Plate approach uses site 124, drive 0
+(sols 744–746, after the rover [reached the northern edge][home-plate]).
+The corrected easting and northing pairs are `(1410.65, -864634.66)` and
+`(1516.75, -865387.00)` metres. The
+[traverse label][spirit-label] defines an equirectangular projection centred at
+175.5° E and 0°, and the [Spirit basemap][spirit-basemap] specifies the 3,396,190 m
+sphere. Convert the pairs to longitude and latitude, then project them into the
+site grid. The route API computes a crew route between the endpoints.
+
+[spirit-traverse]: https://an.rsl.wustl.edu/mera/AN/pages/mer/mer_traverse.htm
+[spirit-label]: https://an.rsl.wustl.edu/mera/AN/meri/MER/traverse/MERA_traverse.lbl
+[spirit-basemap]: https://an.rsl.wustl.edu/mera/AN/meri/MER/traverse/MERA_Basemap_25cm_README.txt
+[spirit-summit]: https://science.nasa.gov/resource/everest-panorama-20-20-vision/
+[home-plate]: https://ntrs.nasa.gov/api/citations/20070016011/downloads/20070016011.pdf
+
 ### `GET /sites`
 
 `{"sites": [{"site_id", "name", "region", "center_lon_lat", "cell_size_m", "shape"}]}`
@@ -85,7 +103,8 @@ Jezero, Gale, Gusev, Endeavour and Eberswalde. Built by
   direction arrows on the selected one; clicking a route selects it.
 - 3D (`SiteExplorer.tsx` + `Terrain3DView.tsx`): the same planner on the terrain, plus
   playback (walker drawn enlarged, illustrative scale) and vertical exaggeration.
-- `frontend/src/MarsGlobe.tsx`: globe textured from Mars Trek WMTS tiles (Viking MDIM
-  2.1 or MOLA shaded relief, zoom 3, stitched in the browser), IAU labels filtered by
+- `frontend/src/MarsGlobe.tsx`: globe textured from local equirectangular WebP images
+  assembled offline from Mars Trek WMTS tiles (Viking MDIM 2.1 and MOLA shaded
+  relief). IAU labels are filtered by
   camera distance with greedy overlap removal, feature search and site markers.
 - Both views are lazy-loaded so the 2D map bundle does not include three.js.

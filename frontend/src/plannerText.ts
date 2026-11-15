@@ -4,10 +4,16 @@ import type { SiteId } from './sites.ts'
 export const PLANNER_TEXT = {
   en: {
     site: 'Site',
-    newSite: 'new',
+    coverage: 'Routing area',
+    gusevContext:
+      'Spirit explored the Columbia Hills inside Gusev crater. It climbed Husband Hill and found silica near Home Plate, evidence of past hot springs or steam vents.',
+    spiritSources: 'NASA Spirit mission',
+    spiritTraverse: 'Spirit position data',
+    loadExample: 'Load Husband Hill → Home Plate',
+    exampleNote: 'One-way crew route calculated between two archived Spirit positions.',
     loading: 'Loading terrain…',
     noApi: 'Set VITE_API_URL to load terrain and plan routes.',
-    plan: 'Where should the crew go?',
+    plan: 'Waypoints',
     pickStart: 'Pick A',
     pickEnd: 'Pick B',
     addStop: '+ Add stop',
@@ -35,14 +41,19 @@ export const PLANNER_TEXT = {
     sources: 'Data sources',
     method:
       'A* search on the HiRISE DTM grid with line-of-sight shortening. Lower-risk weights surface slope and roughness.',
-    sameIn3d: 'The same site, points and routes appear in the 2D map and the 3D view.',
   },
   uk: {
     site: 'Ділянка',
-    newSite: 'нова',
+    coverage: 'Зона планування',
+    gusevContext:
+      'Марсохід Spirit досліджував пагорби Колумбія в кратері Ґусєв. Він піднявся на пагорб Гасбенд і знайшов кремнезем біля плато Гоум-Плейт, що свідчить про давні гарячі джерела або парові виходи.',
+    spiritSources: 'Місія Spirit на сайті NASA',
+    spiritTraverse: 'Координати Spirit',
+    loadExample: 'Завантажити Гасбенд → Гоум-Плейт',
+    exampleNote: 'Односторонній маршрут екіпажу між двома архівними позиціями Spirit.',
     loading: 'Завантаження рельєфу…',
     noApi: 'Вкажіть VITE_API_URL, щоб завантажити рельєф і планувати маршрути.',
-    plan: 'Куди йде екіпаж?',
+    plan: 'Точки маршруту',
     pickStart: 'Обрати A',
     pickEnd: 'Обрати B',
     addStop: '+ Зупинка',
@@ -71,7 +82,6 @@ export const PLANNER_TEXT = {
     sources: 'Джерела даних',
     method:
       'Пошук A* по сітці HiRISE DTM зі спрямленням за прямою видимістю. Менш ризиковий зважує нахил і шорсткість поверхні.',
-    sameIn3d: 'Та сама ділянка, точки й маршрути показуються і на 2D-мапі, і в 3D.',
   },
 } as const
 
@@ -80,9 +90,9 @@ export function usePlannerText() {
   return PLANNER_TEXT[locale === 'uk' ? 'uk' : 'en']
 }
 
-export const SITE_LABELS: Record<SiteId, { name: string; region: string; isNew: boolean }> = {
-  'columbia-hills': { name: 'Columbia Hills', region: 'Gusev crater · Spirit', isNew: true },
-  'hawksbill-gap': { name: 'Hawksbill Gap', region: 'Jezero crater · Perseverance', isNew: false },
+export const SITE_LABELS: Record<SiteId, { name: string; region: string }> = {
+  'columbia-hills': { name: 'Columbia Hills', region: 'Gusev crater · Spirit' },
+  'hawksbill-gap': { name: 'Hawksbill Gap', region: 'Jezero crater · Perseverance' },
 }
 
 export const SECTION = 'text-[11px] font-bold uppercase tracking-wider text-text-muted'

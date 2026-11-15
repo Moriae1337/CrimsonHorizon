@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import { describe, it } from 'node:test'
 import Feature from 'ol/Feature.js'
 import LineString from 'ol/geom/LineString.js'
 import { directionArrows } from '../src/scenarioLayers.ts'
+import { columbiaHillsWaypoints } from '../src/columbiaHills.ts'
 import {
   aeqdForward,
   aeqdInverse,
@@ -86,6 +88,21 @@ describe('AEQD projection', () => {
 })
 
 describe('route helpers', () => {
+  it('projects the Spirit example onto valid Columbia Hills terrain', () => {
+    const path = new URL('../../backend/data/sites/columbia_hills/terrain.json', import.meta.url)
+    const site = parseTerrainPackage(JSON.parse(readFileSync(path, 'utf8')), 'columbia-hills')
+    const waypoints = columbiaHillsWaypoints(site, decodeTerrain(site))
+    assert.ok(waypoints)
+    const [[x1, y1], [x2, y2]] = waypoints
+    const distance = Math.hypot(x2 - x1, y2 - y1)
+    assert.ok(distance > 750 && distance < 770)
+  })
+
+  it('does not offer the Spirit example on incompatible terrain', () => {
+    const site = pkg([0, 0, 0, 0], 2, 2)
+    assert.equal(columbiaHillsWaypoints(site, decodeTerrain(site)), null)
+  })
+
   it('walks a polyline by fraction of length', () => {
     const path: [number, number][] = [
       [0, 0],

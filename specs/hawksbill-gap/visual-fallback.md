@@ -41,12 +41,16 @@ East–west scale at the crop centre is approximately 0.603 m/px. It uses
 and the cosine of the centre latitude (18.459° N). The 100 m horizontal
 scale bar spans 22.22% of the image width.
 
+The image-edge bounds `[west, south, east, north]` in Mars 2000 degrees are
+`[77.40199685096741, 18.45499277114868, 77.41000056266785, 18.46300721168518]`.
+Suggested alt text is “Grayscale overhead view of Hawksbill Gap showing rocky ridges
+and rippled sand.”
+
 ## Outage integration
 
 [Issue #67](https://github.com/Moriae1337/martian-map/issues/67) owns tile
-failure detection and presentation. Use the
-[asset metadata](../../frontend/src/hawksbillGapOverview.ts) for the local
-image path (relative to Vite's base URL), alt text, date, credit, and scale.
+failure detection and presentation. Resolve `hawksbill-gap-overview.jpg` relative
+to Vite's base URL and use the alt text, date, credit, and scale above.
 Size the scale bar against the rendered image width. If the local image
 fails to load, show **Background imagery unavailable.** Keep route and
 stop selection and plan details usable in both cases.

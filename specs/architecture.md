@@ -11,7 +11,7 @@ independently.
   User browser ─┤ Cloudflare Pages         │  static files (HTML/JS/CSS)
                 │ frontend/ (React + Vite) │
                 └────────────┬─────────────┘
-                             │ fetch(VITE_API_URL + "/health"), JSON over HTTPS
+                             │ fetch requests to VITE_API_URL over HTTPS
                              ▼
                 ┌──────────────────────────┐
                 │ Render Free web service  │  FastAPI + Uvicorn
@@ -28,8 +28,9 @@ There is no database, cache, queue, or authentication. The backend holds no stat
 - Renders the user interface (interactive Mars surface map and expedition controls).
 - Calls the backend over HTTP. The base URL comes from `VITE_API_URL` at build time.
 - Shows loading, success, and error states for every backend call.
-- `App.tsx` renders the page; `useBackendHealth.ts` owns connection state and
-  request cleanup; `api.ts` makes and validates the health request.
+- `App.tsx` switches between the OpenLayers map and the Three.js terrain and globe views.
+  `useRoutePlanner.ts` shares route drafts between the 2D map and 3D site view.
+  `useBackendHealth.ts` reports API connectivity.
 - Strictly adheres to the 3-color palette (`#212121`, `#EBEBEB`, `#8F5A53`) and
   design system specified in [specs/design-system.md](design-system.md).
 - Contains no scientific computation. Heavy processing belongs in the backend.
@@ -53,7 +54,8 @@ There is no database, cache, queue, or authentication. The backend holds no stat
   (default `http://localhost:5173` for local development).
 - Parses environment configuration in `app/config.py`; wildcard CORS origins
   fail startup, and an empty list disables cross-origin access.
-- Will own all geospatial data access and computation (see below).
+- Serves prepared terrain and computes routes. Offline GIS preparation lives in
+  `backend/prep/`; see the [dataset runbook](dataset-runbook.md).
 
 ## Hosting
 
@@ -70,36 +72,9 @@ Free-tier constraints to keep in mind:
   restart or redeploy.
 - **Cloudflare Pages** serves static files only. The frontend has no server-side code.
 
-## Future extension points
+## Data and hosting constraints
 
-These are not implemented. They are listed so new work fits into the existing structure.
-
-### GIS data (backend)
-
-- Add dataset access in a dedicated backend module (e.g. `backend/app/terrain.py`) and
-  expose it through new FastAPI routes.
-- Use only real, cited NASA/USGS datasets (e.g. HiRISE/MOLA/CTX products from the
-  NASA Planetary Data System or USGS Astrogeology). Record each source in `specs/`.
-- Large raster files must not be committed to Git, and they don't fit well on Render
-  Free's ephemeral disk and memory limits. Options to evaluate with the team: small
-  pre-processed tiles committed or generated at build time, or reading from public
-  cloud-hosted datasets on demand.
-- GIS libraries (e.g. rasterio, GDAL, shapely) are added only when this work starts.
-
-### Map display (frontend)
-
-- Add a map view component in `frontend/src/` that renders tiles or GeoJSON from the
-  backend. A map library will be chosen at that point.
-
-### Route planning (backend)
-
-- Route computation (e.g. slope/hazard-aware path finding over terrain data) runs in the
-  backend and is exposed as an API endpoint such as `POST /routes` taking start and end
-  coordinates and returning a GeoJSON path.
-- Define the request/response contract in `specs/` before implementing it.
-- Algorithms must be covered by pytest tests.
-
-### When to revisit this architecture
-
+- Use real, cited Mars datasets and record their provenance in [sources.md](sources.md).
+- Keep full-resolution rasters out of Git. Prepare compact terrain packages offline for the API.
 - If computation gets too heavy for Render Free, or the team needs persistent storage,
   discuss it with the team first (see AGENTS.md). Don't add infrastructure unilaterally.

@@ -108,10 +108,5 @@ export function buildRouteComparison(scenario: Scenario) {
         }) ?? null,
     }
   })
-  const a = scenario.route_options.find((option) => option.id === 'A')
-  const b = scenario.route_options.find((option) => option.id === 'B')
-  return {
-    options,
-    distanceDifference: a && b ? formatMeters(Math.abs(b.round_trip_m - a.round_trip_m)) : null,
-  }
+  return { options }
 }

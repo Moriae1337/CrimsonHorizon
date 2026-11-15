@@ -57,7 +57,7 @@ export interface ElevationProfileProps {
 }
 
 // Design System 3-Color Tokens (specs/design-system.md & Issue #75 requirement)
-export const COLOR_ACCENT = '#d14d28' // Martian Terracotta / Rust accent
+export const COLOR_ACCENT = '#8F5A53' // Martian Terracotta / Rust accent
 export const COLOR_SECONDARY = '#EBEBEB' // High-contrast light foreground
 export const COLOR_SURFACE = '#212121' // Main surface
 export const COLOR_CANVAS = '#171717' // Deep background
@@ -386,28 +386,7 @@ export function ElevationProfile({
         className:
           'flex flex-wrap items-center justify-between gap-3 border-b border-[#333333] pb-3',
       },
-      React.createElement(
-        'div',
-        null,
-        React.createElement(
-          'div',
-          { className: 'flex items-center gap-2' },
-          React.createElement('span', {
-            className: 'inline-block h-2 w-2 rounded-full bg-[#d14d28]',
-            'aria-hidden': 'true',
-          }),
-          React.createElement(
-            'h2',
-            { className: 'text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]' },
-            '05 — Elevation Profiles',
-          ),
-        ),
-        React.createElement(
-          'h3',
-          { className: 'mt-0.5 text-sm font-semibold text-[#EBEBEB]' },
-          title,
-        ),
-      ),
+      React.createElement('h3', { className: 'text-sm font-semibold text-text-main' }, title),
       // Mode Toggle
       React.createElement(
         'div',
@@ -435,7 +414,7 @@ export function ElevationProfile({
               onClick: () => setElevationMode(mode),
               className: `rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                 isActive
-                  ? 'bg-[#d14d28] text-[#EBEBEB] shadow-sm'
+                  ? 'bg-accent text-[#EBEBEB] shadow-sm'
                   : 'text-[#A3A3A3] hover:text-[#EBEBEB]'
               }`,
             },
@@ -794,9 +773,10 @@ export function ElevationProfile({
           {
             type: 'button',
             onClick: () => onSelectOption?.(null),
+            'aria-pressed': selectedOptionId === null,
             className: `cursor-pointer rounded-md border px-2.5 py-1 text-xs font-medium transition ${
               selectedOptionId === null
-                ? 'border-[#d14d28] bg-[#d14d28]/20 text-[#EBEBEB]'
+                ? 'border-accent bg-accent/20 text-[#EBEBEB]'
                 : 'border-[#333333] bg-[#1A1A1A] text-[#A3A3A3] hover:border-[#4A4A4A]'
             }`,
           },
@@ -810,9 +790,10 @@ export function ElevationProfile({
               key: s.id,
               type: 'button',
               onClick: () => onSelectOption?.(isSelected ? null : s.id),
+              'aria-pressed': isSelected,
               className: `flex cursor-pointer items-center gap-2 rounded-md border px-2.5 py-1 text-xs font-medium transition ${
                 isSelected
-                  ? 'border-[#d14d28] bg-[#d14d28]/25 text-[#EBEBEB]'
+                  ? 'border-accent bg-accent/25 text-[#EBEBEB]'
                   : 'border-[#333333] bg-[#1A1A1A] text-[#A3A3A3] hover:border-[#4A4A4A]'
               }`,
             },
@@ -839,10 +820,10 @@ export function ElevationProfile({
           'div',
           {
             className:
-              'flex items-center gap-1.5 rounded border border-amber-900/50 bg-amber-950/20 px-2 py-0.5 text-[11px] text-amber-200',
+              'flex items-center gap-1.5 rounded border border-accent/40 bg-accent/15 px-2 py-0.5 text-[11px] text-text-main',
           },
           React.createElement('span', {
-            className: 'inline-block h-1.5 w-1.5 rounded-full bg-amber-400',
+            className: 'inline-block h-1.5 w-1.5 rounded-full bg-accent',
           }),
           React.createElement(
             'span',
@@ -858,20 +839,20 @@ export function ElevationProfile({
       React.createElement(
         'h4',
         { className: 'text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]' },
-        'Traverse Metrics & Grade Comparison (Metric Units)',
+        'Profile summary',
       ),
       // Side-by-side Metric Cards
       React.createElement(
         'div',
         { className: 'grid grid-cols-1 gap-3 sm:grid-cols-2' },
         preparedSeries.map((s) => {
-          const isOptionA = s.id === 'A'
+          const isSelected = s.id === selectedOptionId
           return React.createElement(
             'div',
             {
               key: `summary-${s.id}`,
               className: `rounded-lg border p-3.5 transition-colors ${
-                isOptionA ? 'border-[#d14d28]/40 bg-[#1A1A1A]' : 'border-[#333333] bg-[#1A1A1A]'
+                isSelected ? 'border-accent/40 bg-[#1A1A1A]' : 'border-[#333333] bg-[#1A1A1A]'
               }`,
             },
             React.createElement(
@@ -932,7 +913,7 @@ export function ElevationProfile({
                 ),
                 React.createElement(
                   'dd',
-                  { className: 'font-mono font-bold text-sm text-[#d14d28]' },
+                  { className: 'font-mono font-bold text-sm text-accent' },
                   formatMeters(s.metrics.ascent_m, 2),
                 ),
                 React.createElement(
@@ -997,48 +978,10 @@ export function ElevationProfile({
                   { className: 'font-semibold text-[#EBEBEB]' },
                   formatMeters(s.metrics.proposed_m),
                 ),
-                ' proposed connector each way (straight 5.2 m between sol 461 and 501).',
+                ' proposed connector each way.',
               ),
           )
         }),
-      ),
-      // Prose Callout
-      React.createElement(
-        'p',
-        {
-          className:
-            'rounded-lg border border-[#333333] bg-[#171717] p-3 text-xs leading-relaxed text-[#A3A3A3]',
-        },
-        React.createElement(
-          'strong',
-          { className: 'text-[#EBEBEB]' },
-          'Field Trade-Off Assessment: ',
-        ),
-        'Option A covers a full round trip of ',
-        React.createElement('span', { className: 'font-mono text-[#EBEBEB]' }, '258.01 m'),
-        ' with ',
-        React.createElement('span', { className: 'font-mono text-[#EBEBEB]' }, '13.34 m'),
-        ' round-trip ascent and a maximum grade of ',
-        React.createElement('span', { className: 'font-mono text-[#EBEBEB]' }, '14.82°'),
-        ' (5 m nominal window). Option B covers a full round trip of ',
-        React.createElement('span', { className: 'font-mono text-[#EBEBEB]' }, '345.28 m'),
-        ' with ',
-        React.createElement('span', { className: 'font-mono text-[#EBEBEB]' }, '17.80 m'),
-        ' round-trip ascent and a maximum grade of ',
-        React.createElement('span', { className: 'font-mono text-[#EBEBEB]' }, '14.93°'),
-        '. Choosing Option B adds ',
-        React.createElement(
-          'span',
-          { className: 'font-semibold text-[#d14d28]' },
-          '+87.27 m (+33.8%)',
-        ),
-        ' walking distance and ',
-        React.createElement(
-          'span',
-          { className: 'font-semibold text-[#d14d28]' },
-          '+4.46 m (+33.4%)',
-        ),
-        ' ascent to bring the crew within direct inspection range of the Skinner Ridge sandstone contact.',
       ),
     ),
   )

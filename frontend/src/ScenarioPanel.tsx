@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { ElevationProfile } from './ElevationProfile.tsx'
+import { ElevationProfile } from './elevationProfile.ts'
+import { EnvironmentPanel } from './EnvironmentPanel.tsx'
 import { EvaBudgetCard } from './EvaBudgetCard.tsx'
 import { formatMarsCoordinate } from './marsCatalog.ts'
 import { RouteComparisonPanel } from './RouteComparisonPanel.tsx'
-import { formatMeters, type Scenario, type ScenarioStatus } from './scenario.ts'
+import { buildRouteComparison } from './routeComparison.ts'
+import { formatSols, type Scenario, type ScenarioStatus } from './scenario.ts'
 import { ScienceStopCard } from './ScienceStopCard.tsx'
-import { STOP_COLOR, formatSamples, optionStyle, stopLabel } from './scenarioLayers.ts'
-import type { EnvironmentContext } from './environment.ts'
+import { STOP_COLOR, formatSamples, stopLabel } from './scenarioLayers.ts'
+import type { EnvironmentState } from './useEnvironment.ts'
 
 export interface ScenarioPanelProps {
   status: ScenarioStatus
@@ -21,7 +23,6 @@ export interface ScenarioPanelProps {
   onSelectStop: (id: string) => void
   onSelectOption: (id: string | null) => void
 
-  // Integrated tabs props (MOMAR architecture)
   globalLayers?: Array<{ id: string; name: string }>
   overlayLayers?: Array<{ id: string; name: string }>
   activeBaseLayerId?: string
@@ -44,11 +45,9 @@ export interface ScenarioPanelProps {
   onFocusJezero?: () => void
   onFocusGlobal?: () => void
 
-  // Environment state
-  environment?: EnvironmentContext | null
-  sampleSols?: Set<number>
+  environmentState: EnvironmentState
+  sampleSols: ReadonlySet<number>
 
-  // Export
   onExportGeoJson?: () => void
 }
 
@@ -67,10 +66,10 @@ function StopDiamond() {
       <polygon
         points="9,1 17,9 9,17 1,9"
         fill={STOP_COLOR}
-        stroke="rgba(2, 6, 23, 0.85)"
+        stroke="var(--color-main)"
         strokeWidth="1.5"
       />
-      <circle cx="9" cy="9" r="1.8" fill="#020617" />
+      <circle cx="9" cy="9" r="1.8" fill="var(--color-main)" />
     </svg>
   )
 }
@@ -100,22 +99,22 @@ export function ScenarioPanel({
   onFocusScenario,
   onFocusJezero,
   onFocusGlobal,
-  environment: _environment,
+  environmentState,
+  sampleSols,
   onExportGeoJson,
 }: ScenarioPanelProps) {
   const [activeTab, setActiveTab] = useState<TabType>('plan')
-  const failed = status === 'unavailable' || status === 'unsupported'
+  const selectedOption = scenario?.route_options.find(({ id }) => id === selectedOptionId)
 
-  const tabs: Array<{ id: TabType; label: string; icon: string }> = [
-    { id: 'plan', label: 'Plan', icon: '🗺️' },
-    { id: 'science', label: 'Science', icon: '🔬' },
-    { id: 'safety', label: 'Safety', icon: '⚠️' },
-    { id: 'layers', label: 'Layers', icon: '🛰️' },
+  const tabs: Array<{ id: TabType; label: string }> = [
+    { id: 'plan', label: 'Plan' },
+    { id: 'science', label: 'Science' },
+    { id: 'safety', label: 'Safety' },
+    { id: 'layers', label: 'Layers' },
   ]
 
   return (
-    <div className="flex flex-col h-full text-xs text-text-main">
-      {/* Top Tab Bar (MOMAR Navigation) */}
+    <div className="flex min-h-0 flex-1 flex-col text-xs text-text-main">
       <nav
         aria-label="Planner panels"
         className="flex border-b border-card-border bg-input shrink-0"
@@ -126,8 +125,7 @@ export function ScenarioPanel({
             <button
               key={tab.id}
               type="button"
-              role="tab"
-              aria-selected={isActive}
+              aria-pressed={isActive}
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 py-2 px-1 text-center font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer ${
                 isActive
@@ -135,123 +133,48 @@ export function ScenarioPanel({
                   : 'text-text-muted hover:bg-card-elevated hover:text-text-secondary'
               }`}
             >
-              <span className="text-[13px]">{tab.icon}</span>
-              <span>{tab.label}</span>
+              {tab.label}
             </button>
           )
         })}
       </nav>
 
-      {/* Loading or Failure Banners */}
-      {failed && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="m-3 rounded-lg border border-red-500/40 bg-red-500/10 p-2.5 text-xs text-red-200"
-        >
-          <p className="font-medium">{STATUS_TEXT[status]}</p>
-          {error && <p className="mt-1 text-[11px] text-red-300/90">{error}</p>}
-          {canRetry && (
-            <button
-              type="button"
-              onClick={onRetry}
-              className="mt-2 w-full rounded border border-red-400/40 bg-red-950/40 py-1 text-xs font-semibold text-red-200 hover:bg-red-900/50 cursor-pointer"
-            >
-              Retry loading scenario
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* Main Tab Content Area */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3.5">
-        {/* ================= TAB 1: PLAN ================= */}
+      <div className="min-h-0 flex-1 space-y-3.5 overflow-y-auto p-3">
+        {!scenario && (activeTab === 'plan' || activeTab === 'safety') && (
+          <div className="rounded-lg border border-card-border bg-input p-3">
+            <p role="status">{STATUS_TEXT[status]}</p>
+            {error && <p className="mt-1 text-text-secondary">{error}</p>}
+            {canRetry && (
+              <button
+                type="button"
+                onClick={onRetry}
+                className="mt-2 rounded-lg border border-card-border px-3 py-1.5 hover:border-secondary cursor-pointer"
+              >
+                Retry loading scenario
+              </button>
+            )}
+          </div>
+        )}
         {activeTab === 'plan' && (
           <div className="space-y-3">
             {scenario && (
               <>
-                {/* 1. Route Selector Cards */}
-                <div>
-                  <h3 className="text-[11px] font-semibold uppercase tracking-wider text-text-muted mb-2">
-                    1 · Select Excursion Route
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {scenario.route_options.map((option) => {
-                      const style = optionStyle(scenario.route_options, option.id)
-                      const isSelected = option.id === selectedOptionId
-                      const isOptionA = option.id === 'A'
-                      return (
-                        <button
-                          key={option.id}
-                          type="button"
-                          aria-pressed={isSelected}
-                          onClick={() => onSelectOption(option.id)}
-                          className={`rounded-xl border p-2.5 text-left transition-all cursor-pointer ${
-                            isSelected
-                              ? 'border-accent bg-accent/20 ring-1 ring-accent shadow-sm'
-                              : 'border-card-border bg-input hover:border-card-border/90 hover:bg-card-elevated'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between mb-1.5">
-                            <span
-                              className="px-1.5 py-0.5 rounded text-[10px] font-bold text-canvas uppercase"
-                              style={{ backgroundColor: style.color }}
-                            >
-                              Option {option.id}
-                            </span>
-                            <span className="font-mono text-[11px] font-semibold text-text-main">
-                              {formatMeters(option.round_trip_m)}
-                            </span>
-                          </div>
-                          <div className="font-medium text-text-main text-[11px] line-clamp-1">
-                            {isOptionA ? 'Direct to Wildcat Ridge' : 'Loop via Skinner Ridge'}
-                          </div>
-                          <div className="mt-1 text-[10px] text-text-secondary flex justify-between">
-                            <span>
-                              Ascent: {option.ascent_m ? `${option.ascent_m.toFixed(1)} m` : '—'}
-                            </span>
-                            <span className="text-text-muted">
-                              {isOptionA ? 'Standoff View' : 'Contact Direct'}
-                            </span>
-                          </div>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* 2. Route Comparison Table (MOMAR A/B Matrix) */}
                 <RouteComparisonPanel
                   scenario={scenario}
                   selectedOptionId={selectedOptionId}
                   onSelectOption={onSelectOption}
                 />
 
-                {/* 3. Interactive SVG Elevation Profile Chart */}
-                <div className="rounded-xl border border-card-border bg-input p-3 shadow-xs">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-text-main flex items-center gap-1.5">
-                      <span
-                        className="inline-block h-2 w-2 rounded-full bg-secondary"
-                        aria-hidden="true"
-                      />
-                      Elevation Profile (1 m USGS DTM)
-                    </h4>
-                  </div>
-                  <ElevationProfile
-                    selectedOptionId={selectedOptionId}
-                    onSelectOption={onSelectOption}
-                  />
-                </div>
+                <ElevationProfile
+                  selectedOptionId={selectedOptionId}
+                  onSelectOption={onSelectOption}
+                />
 
-                {/* 4. EVA Time Budget Progress */}
-                <EvaBudgetCard selectedOptionId={selectedOptionId} scenario={scenario} />
+                {selectedOption && <EvaBudgetCard selectedOptionId={selectedOption.id} />}
 
-                {/* 5. Stops Sequence Timeline */}
                 <div className="rounded-xl border border-card-border bg-input p-3 shadow-xs">
-                  <h4 className="font-semibold text-text-main mb-2">Marswalk Stops Sequence</h4>
+                  <h4 className="font-semibold text-text-main mb-2">Route stops</h4>
                   <div className="space-y-2 text-[11px]">
-                    {/* Start point */}
                     <div className="flex items-center gap-2 text-text-secondary">
                       <div className="h-4 w-4 rounded-full border border-card-border bg-card-elevated flex items-center justify-center font-mono text-[9px] text-text-main">
                         0
@@ -262,59 +185,53 @@ export function ScenarioPanel({
                       </span>
                     </div>
 
-                    {/* Stops */}
                     {scenario.stops.map((stop) => {
                       const isSelected = stop.id === selectedStopId
-                      const isSkinner = stop.id === 'skinner-ridge'
-                      const isIncluded = selectedOptionId !== 'A' || !isSkinner
+                      const isIncluded =
+                        !selectedOption || selectedOption.stop_ids.includes(stop.id)
                       return (
-                        <div
+                        <button
                           key={stop.id}
+                          type="button"
+                          aria-pressed={isSelected}
                           onClick={() => onSelectStop(stop.id)}
-                          className={`flex items-start gap-2 p-1.5 rounded-lg border transition-colors cursor-pointer ${
+                          className={`flex w-full items-start gap-2 rounded-lg border p-1.5 text-left transition-colors cursor-pointer ${
                             isSelected
                               ? 'border-accent bg-accent/20'
                               : 'border-card-border/60 bg-card hover:border-card-border'
                           } ${!isIncluded ? 'opacity-50' : ''}`}
                         >
-                          <div className="mt-0.5">
+                          <span className="mt-0.5">
                             <StopDiamond />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between">
+                          </span>
+                          <span className="flex-1">
+                            <span className="flex items-center justify-between">
                               <span className="font-semibold text-text-main">
                                 {stopLabel(stop)}
                               </span>
                               {!isIncluded && (
-                                <span className="text-[9px] uppercase font-bold text-amber-400 bg-amber-400/10 px-1 rounded">
-                                  Option B Only
+                                <span className="text-[9px] uppercase font-bold text-text-secondary bg-card-elevated px-1 rounded">
+                                  Off selected route
                                 </span>
                               )}
-                            </div>
-                            <div className="text-[10px] text-text-secondary mt-0.5">
+                            </span>
+                            <span className="text-[10px] text-text-secondary mt-0.5">
                               Cores: {formatSamples(stop.samples)}
-                            </div>
-                          </div>
-                        </div>
+                            </span>
+                          </span>
+                        </button>
                       )
                     })}
 
-                    {/* Return leg */}
                     <div className="flex items-center gap-2 text-text-secondary pt-1 border-t border-card-border/50">
                       <div className="h-4 w-4 rounded-full border border-card-border bg-card-elevated flex items-center justify-center font-mono text-[9px] text-text-main">
                         R
                       </div>
-                      <span className="font-medium text-text-main">
-                        Return Leg to Habitat Standpoint
-                      </span>
-                      <span className="text-text-muted font-mono text-[10px] ml-auto">
-                        Turnaround
-                      </span>
+                      <span className="font-medium text-text-main">Return to start</span>
                     </div>
                   </div>
                 </div>
 
-                {/* 6. Quick Actions */}
                 <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
                   <label className="flex items-center gap-2 text-[11px] text-text-secondary cursor-pointer">
                     <input
@@ -323,7 +240,12 @@ export function ScenarioPanel({
                       onChange={onToggleRoverTrack}
                       className="accent-accent cursor-pointer"
                     />
-                    <span>Perseverance Rover Track (Sols 490–516)</span>
+                    <span>
+                      Perseverance track ·{' '}
+                      {formatSols(
+                        scenario.rover_track.features.map(({ properties }) => properties.sol),
+                      )}
+                    </span>
                   </label>
 
                   {onExportGeoJson && (
@@ -341,7 +263,6 @@ export function ScenarioPanel({
           </div>
         )}
 
-        {/* ================= TAB 2: SCIENCE ================= */}
         {activeTab === 'science' && (
           <div className="space-y-3">
             <div className="rounded-xl border border-card-border bg-input p-3 shadow-xs">
@@ -352,7 +273,6 @@ export function ScenarioPanel({
               </p>
             </div>
 
-            {/* Science Stops Cards */}
             <div className="space-y-3">
               <ScienceStopCard stopId="wildcat-ridge" />
               <ScienceStopCard stopId="skinner-ridge" />
@@ -360,113 +280,57 @@ export function ScenarioPanel({
           </div>
         )}
 
-        {/* ================= TAB 3: SAFETY & WEATHER ================= */}
         {activeTab === 'safety' && (
           <div className="space-y-3">
-            {/* Caution Zones */}
-            <div className="rounded-xl border border-card-border bg-input p-3 shadow-xs">
-              <h3 className="font-semibold text-text-main flex items-center gap-1.5 mb-2">
-                <span
-                  className="inline-block h-2 w-2 rounded-full bg-amber-400"
-                  aria-hidden="true"
-                />
-                Route Caution Zones & Obstacles
-              </h3>
-              <div className="space-y-2 text-[11px]">
-                <div className="rounded border border-card-border bg-card p-2">
-                  <div className="font-semibold text-text-main">Proposed Connector (Option A)</div>
-                  <div className="text-[10px] text-text-muted font-mono">
-                    Distance: 107.96–113.15 m (5.2 m)
-                  </div>
-                  <p className="mt-1 text-text-secondary">
-                    Connector between rover drives. Terrain models show steep slope divergence (7°
-                    vs 22°). Footing inspection required.
-                  </p>
-                </div>
-
-                <div className="rounded border border-card-border bg-card p-2">
-                  <div className="font-semibold text-text-main">Steep Slope Segments (&gt;15°)</div>
-                  <div className="text-[10px] text-text-muted font-mono">
-                    Max grade: 20.7° (Opt A) · 22.1° (Opt B)
-                  </div>
-                  <p className="mt-1 text-text-secondary">
-                    Local scarp margins exceed nominal 15° suit mobility threshold at 2 m sampling.
-                    Requires deliberate crew footing.
-                  </p>
-                </div>
-
-                <div className="rounded border border-card-border bg-card p-2">
-                  <div className="font-semibold text-text-main">
-                    Obstacles: Betty's Rock & Fractures
-                  </div>
-                  <p className="mt-1 text-text-secondary">
-                    Large detached float boulder (Betty's Rock) and eastern fracture/overhang at
-                    Skinner Ridge block face.
-                  </p>
-                </div>
-
-                <div className="rounded border border-card-border bg-card p-2">
-                  <div className="font-semibold text-text-main">Terrain DTM Coverage</div>
-                  <p className="mt-1 text-text-secondary">
-                    100% valid USGS 1 m DTM coverage across all outbound and return legs. 0 m data
-                    gap.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Environmental Conditions */}
-            <div className="rounded-xl border border-card-border bg-input p-3 shadow-xs">
-              <h3 className="font-semibold text-text-main mb-2">
-                Environmental & Weather Baseline (MEDA / RAD)
-              </h3>
-              <div className="grid grid-cols-2 gap-2 text-[11px]">
-                <div className="rounded border border-card-border bg-card p-2">
-                  <span className="text-[10px] text-text-muted block uppercase">
-                    Atmospheric Pressure
-                  </span>
-                  <span className="font-semibold font-mono text-text-main">~610–760 Pa</span>
-                  <span className="text-[10px] text-text-muted block mt-0.5">
-                    Jezero diurnal cycle
-                  </span>
-                </div>
-                <div className="rounded border border-card-border bg-card p-2">
-                  <span className="text-[10px] text-text-muted block uppercase">
-                    Surface Temperature
-                  </span>
-                  <span className="font-semibold font-mono text-text-main">−83°C to −14°C</span>
-                  <span className="text-[10px] text-text-muted block mt-0.5">
-                    Sol 490–516 baseline
-                  </span>
-                </div>
-              </div>
-              <div className="mt-2 rounded border border-card-border bg-card p-2 text-[11px]">
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] text-text-muted uppercase">
-                    GCR Radiation Baseline
-                  </span>
-                  <span className="font-mono text-text-main font-semibold">~200 µSv/day</span>
-                </div>
-                <p className="mt-1 text-[10px] text-text-secondary">
-                  Curiosity RAD Gale Crater baseline provided as planetary analog context.
-                  Historical archival data.
-                </p>
-              </div>
-            </div>
+            {scenario && (
+              <section className="space-y-2">
+                <h3 className="font-semibold">Open route cautions</h3>
+                {buildRouteComparison(scenario).options.map(({ id, openZones }) => (
+                  <details
+                    key={id}
+                    open={selectedOptionId === id}
+                    className="rounded-lg border border-card-border bg-input p-3"
+                  >
+                    <summary className="cursor-pointer font-medium">
+                      Option {id} ·{' '}
+                      {openZones === null ? 'review data unavailable' : openZones.length}
+                    </summary>
+                    {openZones?.length ? (
+                      <ul className="mt-2 space-y-2 text-text-secondary">
+                        {openZones.map(({ id: zoneId, label, span, summary }) => (
+                          <li key={zoneId} className="border-t border-card-border pt-2">
+                            <p className="font-medium text-text-main">
+                              {label}
+                              {span && ` · ${span}`}
+                            </p>
+                            {summary && <p className="mt-1">{summary}</p>}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      openZones && (
+                        <p className="mt-2 text-text-secondary">No open cautions reported.</p>
+                      )
+                    )}
+                  </details>
+                ))}
+              </section>
+            )}
+            <EnvironmentPanel {...environmentState} sampleSols={sampleSols} />
           </div>
         )}
 
-        {/* ================= TAB 4: LAYERS & MAP ================= */}
         {activeTab === 'layers' && (
           <div className="space-y-3">
-            {/* Quick Focus Jumps */}
             <div className="rounded-xl border border-card-border bg-input p-3 shadow-xs">
               <h3 className="font-semibold text-text-main mb-2">Quick Focus Views</h3>
               <div className="grid grid-cols-3 gap-1.5">
                 <button
                   type="button"
                   onClick={onFocusScenario}
-                  className="rounded-lg border border-accent bg-accent/20 px-2 py-1.5 text-center text-[11px] font-semibold text-text-main hover:bg-accent/30 cursor-pointer"
+                  disabled={!scenario}
+
+                  className="rounded-lg border border-accent bg-accent/20 px-2 py-1.5 text-center text-[11px] font-semibold text-text-main hover:bg-accent/30 cursor-pointer disabled:cursor-default disabled:opacity-50"
                 >
                   Hawksbill Gap
                 </button>
@@ -487,7 +351,6 @@ export function ScenarioPanel({
               </div>
             </div>
 
-            {/* Base Layer Radio Group */}
             {globalLayers.length > 0 && (
               <div className="rounded-xl border border-card-border bg-input p-3 shadow-xs">
                 <h3 className="font-semibold text-text-main mb-2">Base Map Layer</h3>
@@ -518,7 +381,6 @@ export function ScenarioPanel({
               </div>
             )}
 
-            {/* Overlays Checkboxes */}
             {overlayLayers.length > 0 && (
               <div className="rounded-xl border border-card-border bg-input p-3 shadow-xs">
                 <h3 className="font-semibold text-text-main mb-2">Jezero Overlays</h3>
@@ -548,7 +410,6 @@ export function ScenarioPanel({
               </div>
             )}
 
-            {/* Reference Landmarks */}
             {landmarks && landmarks.features.length > 0 && (
               <div className="rounded-xl border border-card-border bg-input p-3 shadow-xs">
                 <h3 className="font-semibold text-text-main mb-2">Reference Points & Landmarks</h3>

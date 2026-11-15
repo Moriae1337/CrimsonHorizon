@@ -11,15 +11,10 @@ planners prepare Mars surface exploration routes using NASA geospatial data.
 - **Testing and CI:** pytest, Node.js test runner, Oxlint, GitHub Actions.
 - **Hosting target:** Cloudflare Pages + Render Free.
 
-## Current status
+## Explore Mars
 
-The application foundation is ready:
+- **2D map:** Browse Mars imagery and landmarks, or open the prepared Hawksbill Gap scenario to compare two excursions in Jezero crater.
+- **Route planner:** Place a start, an endpoint, and optional stops in Columbia Hills or Hawksbill Gap. Compare the shortest and lower-risk paths, inspect elevation, and export the routes as GeoJSON.
+- **3D site and globe:** Review the same planned route on HiRISE terrain, play back a traverse, or find named features on the Mars globe.
 
-- Landing page with backend connection status and error handling.
-- API endpoints: `GET /` and `GET /health`.
-- Environment configuration and restricted CORS.
-- Automated tests, build and lint checks, and backend deployment configuration.
-
-Maps, Mars dataset integration, GIS processing, and route planning are not implemented yet.
-
-See [specs/architecture.md](specs/architecture.md) for architecture details and [specs/design-system.md](specs/design-system.md) for the 3-color palette design system.
+See the [architecture](specs/architecture.md), [local development checks](specs/development.md), and [Mars data sources](specs/sources.md).

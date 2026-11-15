@@ -82,11 +82,11 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col md:flex-row">
-      <aside className="flex w-full shrink-0 flex-col overflow-y-auto border-b border-card-border bg-card p-4 md:w-[420px] md:border-r md:border-b-0 lg:w-[460px] z-10">
+      <aside className="z-10 flex max-h-[45%] w-full shrink-0 flex-col overflow-y-auto border-b border-card-border bg-card p-4 md:max-h-none md:w-[420px] md:border-r md:border-b-0 lg:w-[460px]">
         <RoutePlannerPanel planner={planner} progress={progress}>
           {selected && (
             <section className="flex flex-col gap-2 text-xs">
-              <h2 className={SECTION}>4 · {T.playback}</h2>
+              <h2 className={SECTION}>{T.playback}</h2>
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
@@ -116,7 +116,7 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
                     type="checkbox"
                     checked={follow}
                     onChange={(e) => setFollow(e.target.checked)}
-                    className="accent-[#8F5A53]"
+                    className="accent-accent"
                   />
                   {T.follow}
                 </label>
@@ -144,18 +144,18 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
                 step={0.5}
                 value={exaggeration}
                 onChange={(e) => setExaggeration(Number(e.target.value))}
-                className="accent-[#8F5A53]"
+                className="accent-accent"
               />
             </label>
             {overlayLines.length > 0 && (
               <p className="text-[11px] text-text-secondary">{T.prepared}</p>
             )}
-            <p className="text-[10px] text-text-muted">{T.walkerNote}</p>
+            {selected && <p className="text-xs text-text-secondary">{T.walkerNote}</p>}
           </section>
         </RoutePlannerPanel>
       </aside>
 
-      <main className="relative min-h-80 flex-1 bg-canvas">
+      <main className="relative min-h-0 flex-1 bg-canvas">
         {grid && pkg && apiUrl ? (
           <>
             <Terrain3DView
@@ -179,12 +179,7 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
               restartNonce={restartNonce}
             />
             <div className="pointer-events-none absolute left-3 top-3 flex flex-col gap-1 rounded-lg border border-card-border bg-card/90 px-3 py-2 text-xs">
-              <span className="font-semibold">
-                {pkg.name} · {pkg.region}
-              </span>
-              <span className="text-[11px] text-text-secondary">
-                HiRISE DTM · {exaggeration.toFixed(1)}× vertical
-              </span>
+              <span className="text-[11px] text-text-secondary">HiRISE DTM</span>
             </div>
             <div className="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-card-border bg-card/90 px-2.5 py-1 text-[11px] text-text-secondary">
               {T.hint}

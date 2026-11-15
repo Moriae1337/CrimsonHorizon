@@ -181,27 +181,31 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
                     : 'border-card-border bg-input hover:border-border-strong'
                 }`}
               >
-                <span className="flex items-center gap-1.5 font-semibold text-text-main">
-                  {s.name}
-                  {s.isNew && (
-                    <span className="rounded-full border border-accent/40 bg-accent/20 px-1.5 text-[9px] uppercase tracking-wider">
-                      {T.newSite}
-                    </span>
-                  )}
-                </span>
+                <span className="block font-semibold text-text-main">{s.name}</span>
                 <span className="text-[11px] text-text-secondary">{s.region}</span>
               </button>
             )
           })}
         </div>
         {p.pkg && (
-          <p className="text-[11px] text-text-muted">
-            {(p.pkg.shape[1] * p.pkg.cell_size_m) / 1000} ×{' '}
-            {(p.pkg.shape[0] * p.pkg.cell_size_m) / 1000} km · {p.pkg.cell_size_m} m DTM ·{' '}
-            {p.pkg.elevation.min_m.toFixed(0)}…{p.pkg.elevation.max_m.toFixed(0)} m
+          <p className="text-[11px] text-text-secondary">
+            {T.coverage} · {(p.pkg.shape[1] * p.pkg.cell_size_m) / 1000} ×{' '}
+            {(p.pkg.shape[0] * p.pkg.cell_size_m) / 1000} km · {p.pkg.cell_size_m} m DTM
           </p>
         )}
-        <p className="text-[10px] text-text-muted">{T.sameIn3d}</p>
+        {p.siteId === 'columbia-hills' && (
+          <div className="space-y-1 text-text-secondary">
+            <p>{T.gusevContext}</p>
+            <a
+              className="underline hover:text-text-main"
+              href="https://science.nasa.gov/mission/mer-spirit/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {T.spiritSources}
+            </a>
+          </div>
+        )}
       </section>
 
       {!p.apiUrl && (
@@ -213,7 +217,7 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
 
       <section className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <h2 className={SECTION}>1 · {T.plan}</h2>
+          <h2 className={SECTION}>{T.plan}</h2>
           <button
             type="button"
             className="text-[11px] text-text-secondary hover:text-text-main cursor-pointer"
@@ -222,6 +226,22 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
             {T.clear}
           </button>
         </div>
+        {p.loadExample && p.waypoints.length === 0 && (
+          <div className="space-y-1 rounded-lg border border-card-border bg-input p-2">
+            <button type="button" className={BTN} onClick={p.loadExample}>
+              {T.loadExample}
+            </button>
+            <p className="text-[11px] text-text-secondary">{T.exampleNote}</p>
+            <a
+              className="text-[11px] text-text-secondary underline hover:text-text-main"
+              href="https://an.rsl.wustl.edu/mera/AN/pages/mer/mer_traverse.htm"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {T.spiritTraverse}
+            </a>
+          </div>
+        )}
         <ol className="flex flex-col gap-1.5">
           {p.waypoints.map((pt, i) => {
             const isStart = i === 0
@@ -314,7 +334,7 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
             step={1}
             value={p.maxGrade}
             onChange={(e) => p.setMaxGrade(Number(e.target.value))}
-            className="accent-[#8F5A53]"
+            className="accent-accent"
           />
           <span className="text-[10px] text-text-muted">{T.gradeNote}</span>
         </label>
@@ -326,7 +346,7 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
 
       {byId.shortest && byId.lower_risk && (
         <section className="flex flex-col gap-2">
-          <h2 className={SECTION}>2 · {T.compare}</h2>
+          <h2 className={SECTION}>{T.compare}</h2>
           <div className="grid grid-cols-2 gap-2">
             {(['lower_risk', 'shortest'] as RouteId[]).map((id) => (
               <button
@@ -390,7 +410,7 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
             </tbody>
           </table>
           <p className="text-[10px] text-text-muted">{T.method}</p>
-          <h2 className={`${SECTION} mt-2`}>3 · {T.profile}</h2>
+          <h2 className={`${SECTION} mt-2`}>{T.profile}</h2>
           <ProfileChart routes={p.routes} selectedId={p.selectedRouteId} progress={progress} />
           <button type="button" className={BTN} onClick={p.exportGeoJson}>
             {T.export}
