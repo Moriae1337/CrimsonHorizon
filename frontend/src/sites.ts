@@ -1,8 +1,8 @@
 // 3D terrain sites and the route planner API.
 // Pure helpers only (no three.js), so Node's test runner can load this module.
 
-export type SiteId = 'columbia-hills' | 'hawksbill-gap'
-export const SITE_IDS: readonly SiteId[] = ['columbia-hills', 'hawksbill-gap']
+export type SiteId = 'columbia-hills' | 'hawksbill-gap' | 'jezero-crater'
+export const SITE_IDS: readonly SiteId[] = ['columbia-hills', 'hawksbill-gap', 'jezero-crater']
 
 export interface SiteSource {
   label: string
@@ -348,4 +348,29 @@ export async function fetchNomenclature(
     (f): f is IauFeature =>
       isRecord(f) && typeof f.name === 'string' && isNum(f.lon) && isNum(f.lat),
   )
+}
+
+/**
+ * Inserts a stop where it lengthens the straight-line A→…→B chain the least, so a
+ * stop clicked anywhere lands between the waypoints it belongs between. Without an
+ * end point yet, the stop is appended.
+ */
+export function insertStop(
+  waypoints: readonly [number, number][],
+  hasEnd: boolean,
+  p: [number, number],
+): [number, number][] {
+  if (!hasEnd || waypoints.length < 2) return [...waypoints, p]
+  const d = (a: readonly [number, number], b: readonly [number, number]) =>
+    Math.hypot(a[0] - b[0], a[1] - b[1])
+  let best = 1
+  let bestCost = Infinity
+  for (let i = 1; i < waypoints.length; i++) {
+    const cost = d(waypoints[i - 1], p) + d(p, waypoints[i]) - d(waypoints[i - 1], waypoints[i])
+    if (cost < bestCost) {
+      bestCost = cost
+      best = i
+    }
+  }
+  return [...waypoints.slice(0, best), p, ...waypoints.slice(best)]
 }

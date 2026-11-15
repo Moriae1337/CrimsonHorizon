@@ -5,6 +5,8 @@ export const PLANNER_TEXT = {
   en: {
     site: 'Site',
     coverage: 'Routing area',
+    regionalNote:
+      'Regional site for long traverses. The 20 m CTX grid smooths out boulders and small scarps, so local slopes can be steeper than shown; use Hawksbill Gap (HiRISE) for detail.',
     gusevContext:
       'Spirit explored the Columbia Hills inside Gusev crater. It climbed Husband Hill and found silica near Home Plate, evidence of past hot springs or steam vents.',
     spiritSources: 'NASA Spirit mission',
@@ -25,6 +27,11 @@ export const PLANNER_TEXT = {
     gradeLimit: 'Grade limit',
     gradeNote: 'Planning parameter, not a cited spacesuit limit. No route is declared safe.',
     planning: 'Planning routes…',
+    mapPlaceStart: 'Click the map to place A',
+    mapPlaceEnd: 'Click the map to place B',
+    mapPlaceStop: 'Click the map to add a stop (it goes between the nearest points)',
+    mapAdjust: 'Drag A, B or a stop to move it · click a route to select it',
+    outside: 'Outside the site DTM window: pick a point inside the dashed outline',
     compare: 'Route comparison',
     metric: 'Metric',
     shortest: 'Shortest',
@@ -45,6 +52,8 @@ export const PLANNER_TEXT = {
   uk: {
     site: 'Ділянка',
     coverage: 'Зона планування',
+    regionalNote:
+      'Регіональна ділянка для довгих маршрутів. Сітка CTX 20 м згладжує валуни й дрібні уступи, тож локальні нахили можуть бути крутішими, ніж показано; для деталей беріть Hawksbill Gap (HiRISE).',
     gusevContext:
       'Марсохід Spirit досліджував пагорби Колумбія в кратері Ґусєв. Він піднявся на пагорб Гасбенд і знайшов кремнезем біля плато Гоум-Плейт, що свідчить про давні гарячі джерела або парові виходи.',
     spiritSources: 'Місія Spirit на сайті NASA',
@@ -66,6 +75,11 @@ export const PLANNER_TEXT = {
     gradeNote:
       'Параметр планування, а не підтверджений ліміт скафандра. Жоден маршрут не оголошується безпечним.',
     planning: 'Розрахунок маршрутів…',
+    mapPlaceStart: 'Клацніть на карті, щоб поставити A',
+    mapPlaceEnd: 'Клацніть на карті, щоб поставити B',
+    mapPlaceStop: 'Клацніть на карті, щоб додати зупинку (вона стане між найближчими точками)',
+    mapAdjust: 'Перетягніть A, B чи зупинку, щоб посунути · клацніть маршрут, щоб вибрати',
+    outside: 'Поза вікном DTM ділянки: оберіть точку всередині пунктирної рамки',
     compare: 'Порівняння маршрутів',
     metric: 'Показник',
     shortest: 'Найкоротший',
@@ -93,6 +107,7 @@ export function usePlannerText() {
 export const SITE_LABELS: Record<SiteId, { name: string; region: string }> = {
   'columbia-hills': { name: 'Columbia Hills', region: 'Gusev crater · Spirit' },
   'hawksbill-gap': { name: 'Hawksbill Gap', region: 'Jezero crater · Perseverance' },
+  'jezero-crater': { name: 'Jezero floor & delta', region: 'Regional · CTX 20 m' },
 }
 
 export const SECTION = 'text-[11px] font-bold uppercase tracking-wider text-text-muted'

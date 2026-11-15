@@ -18,6 +18,7 @@ DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "sites"
 SITE_DIRS: dict[str, Path] = {
     "columbia-hills": DATA_DIR / "columbia_hills",
     "hawksbill-gap": DATA_DIR / "hawksbill_gap",
+    "jezero-crater": DATA_DIR / "jezero_crater",
 }
 
 __all__ = [
