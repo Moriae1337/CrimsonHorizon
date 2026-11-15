@@ -12,7 +12,7 @@ export const PLANNER_TEXT = {
       'Small dots on the map are the rover’s stops; click one to add it to your route as a stop.',
     followRover: 'Follow the rover’s path',
     followNote:
-      'A and B at the rover’s first and last stop in this window, with up to 8 of its stops between them. Long routes take a few seconds to plan.',
+      'Shows the rover’s real drive (dotted) from its first to its last stop in this window, so you can walk it in 3D. For comparison, the two planned routes go through up to 8 of its stops. Long routes take a few seconds.',
     roverStop: 'Rover stop',
     roverStops: 'Stops',
     roverStopTip: 'click to add as a stop',
@@ -48,6 +48,9 @@ export const PLANNER_TEXT = {
     metric: 'Metric',
     shortest: 'Shortest',
     lowerRisk: 'Lower-risk',
+    roverPath: 'Rover’s path',
+    roverPathNote:
+      'Rover’s path is the drive the rover actually made between A and B, measured on this terrain. It ignores your stops and the grade limit.',
     length: 'Distance',
     ascent: 'Ascent',
     descent: 'Descent',
@@ -71,7 +74,7 @@ export const PLANNER_TEXT = {
       'Маленькі точки на карті — зупинки марсохода; клацніть точку, щоб додати її до маршруту як зупинку.',
     followRover: 'Пройти шляхом марсохода',
     followNote:
-      'A і B — перша й остання зупинки марсохода в цьому вікні, між ними до 8 його зупинок. Довгі маршрути рахуються кілька секунд.',
+      'Показує справжній шлях марсохода (пунктир з крапок) від першої до останньої зупинки в цьому вікні — його можна пройти в 3D. Для порівняння два сплановані маршрути йдуть через до 8 його зупинок. Довгі маршрути рахуються кілька секунд.',
     roverStop: 'Зупинка марсохода',
     roverStops: 'Зупинок',
     roverStopTip: 'клацніть, щоб додати як зупинку',
@@ -108,6 +111,9 @@ export const PLANNER_TEXT = {
     metric: 'Показник',
     shortest: 'Найкоротший',
     lowerRisk: 'Менш ризиковий',
+    roverPath: 'Шлях марсохода',
+    roverPathNote:
+      'Шлях марсохода — це те, як марсохід справді проїхав між A і B, виміряне на цьому рельєфі. Ваші зупинки й обмеження ухилу на нього не впливають.',
     length: 'Відстань',
     ascent: 'Набір висоти',
     descent: 'Спуск',

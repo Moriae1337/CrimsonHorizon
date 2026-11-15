@@ -51,13 +51,21 @@ export interface TerrainGrid {
   max: number
 }
 
-export type RouteId = 'shortest' | 'lower_risk'
+export type RouteId = 'shortest' | 'lower_risk' | 'rover'
 
 // Palette: Accent = nominal / lower-risk route,
-// Secondary = alternative / shortest route.
+// Secondary = alternative / shortest route (dashed) and the rover's own path (dotted).
 export const ROUTE_COLORS: Record<RouteId, string> = {
   lower_risk: '#8F5A53',
   shortest: '#EBEBEB',
+  rover: '#EBEBEB',
+}
+
+/** SVG dash pattern per route, matching the map styles. */
+export const ROUTE_DASH: Record<RouteId, string | undefined> = {
+  lower_risk: undefined,
+  shortest: '5 3',
+  rover: '1 3',
 }
 
 export interface RouteMetrics {
@@ -264,6 +272,8 @@ export function routesQuery(
   })
   const stops = waypoints.slice(1, -1)
   if (stops.length > 0) params.set('stops', stops.map(fmt).join(';'))
+  // The API adds the rover's real path when A and B both lie near its traverse.
+  params.set('rover', 'true')
   return params
 }
 
@@ -274,7 +284,7 @@ export function parseRoutePlan(data: unknown): RoutePlan {
     !data.routes.every(
       (r) =>
         isRecord(r) &&
-        (r.id === 'shortest' || r.id === 'lower_risk') &&
+        (r.id === 'shortest' || r.id === 'lower_risk' || r.id === 'rover') &&
         isRecord(r.metrics) &&
         Array.isArray(r.path_xy) &&
         Array.isArray(r.profile),

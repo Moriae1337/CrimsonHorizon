@@ -256,6 +256,7 @@ def site_routes(
     end: str = Query(..., description="x,y in site metres"),
     stops: str = Query("", description="up to 8 'x,y' pairs separated by ';'"),
     max_grade_deg: float = Query(25.0, ge=5.0, le=45.0),
+    rover: bool = Query(False, description="also return the rover's own path A to B"),
 ) -> dict[str, Any]:
     """Plan the shortest and the lower-risk route through optional stops."""
     _site_or_404(site_id)
@@ -270,6 +271,15 @@ def site_routes(
         logger.exception("Terrain for %r is unavailable", site_id)
         raise HTTPException(status_code=503, detail="Terrain unavailable") from None
     try:
-        return plan_routes(grid, [*a, *mid, *b], max_grade_deg=max_grade_deg)
+        rover_lines = None
+        if rover:
+            try:
+                lines = site_traverse(site_id)["lines"]
+                rover_lines = [[(float(x), float(y)) for x, y in run] for run in lines]
+            except (OSError, ValueError, KeyError):
+                logger.exception("Traverse for %r is unavailable", site_id)
+        return plan_routes(
+            grid, [*a, *mid, *b], max_grade_deg=max_grade_deg, rover_lines=rover_lines
+        )
     except RouteError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from None

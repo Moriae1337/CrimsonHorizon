@@ -154,7 +154,7 @@ function plannerStyle(selectedRouteId: () => RouteId) {
           width,
           lineJoin: 'round',
           lineCap: id === 'shortest' ? 'butt' : 'round',
-          lineDash: id === 'shortest' ? [8, 6] : undefined,
+          lineDash: id === 'shortest' ? [8, 6] : id === 'rover' ? [1, width + 4] : undefined,
         }),
       }),
     ]

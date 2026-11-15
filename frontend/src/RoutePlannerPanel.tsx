@@ -3,6 +3,7 @@ import { CRATERS, CRATER_IDS, craterOfSite } from './craters.ts'
 import { useTranslation } from './i18n/useTranslation.ts'
 import {
   ROUTE_COLORS,
+  ROUTE_DASH,
   formatDelta,
   formatMinutes,
   type PlannedRoute,
@@ -86,7 +87,7 @@ export function ProfileChart({
             fill="none"
             stroke={ROUTE_COLORS[r.id]}
             strokeWidth={selected ? 2.2 : 1.3}
-            strokeDasharray={r.id === 'shortest' ? '5 3' : undefined}
+            strokeDasharray={ROUTE_DASH[r.id]}
             opacity={selected ? 1 : 0.6}
           />
         )
@@ -122,6 +123,11 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
   const { locale } = useTranslation()
   const lang = locale === 'uk' ? 'uk' : 'en'
   const crater = craterOfSite(p.siteId)
+  const routeIds: RouteId[] = byId.rover
+    ? ['rover', 'lower_risk', 'shortest']
+    : ['lower_risk', 'shortest']
+  const routeLabel = (id: RouteId) =>
+    id === 'rover' ? T.roverPath : id === 'shortest' ? T.shortest : T.lowerRisk
   const rows: Array<{
     label: string
     get: (r: PlannedRoute) => number
@@ -406,8 +412,8 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
       {byId.shortest && byId.lower_risk && (
         <section className="flex flex-col gap-2">
           <h2 className={SECTION}>{T.compare}</h2>
-          <div className="grid grid-cols-2 gap-2">
-            {(['lower_risk', 'shortest'] as RouteId[]).map((id) => (
+          <div className={`grid gap-2 ${byId.rover ? 'grid-cols-3' : 'grid-cols-2'}`}>
+            {routeIds.map((id) => (
               <button
                 key={id}
                 type="button"
@@ -427,13 +433,11 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
                     y2="4"
                     stroke={ROUTE_COLORS[id]}
                     strokeWidth="3"
-                    strokeDasharray={id === 'shortest' ? '5 3' : undefined}
+                    strokeDasharray={ROUTE_DASH[id]}
                   />
                 </svg>
                 <span className="text-left">
-                  <span className="block font-semibold">
-                    {id === 'shortest' ? T.shortest : T.lowerRisk}
-                  </span>
+                  <span className="block font-semibold">{routeLabel(id)}</span>
                   <span className="text-[11px] text-text-secondary">
                     {byId[id]!.metrics.length_m.toFixed(0)} m ·{' '}
                     {formatMinutes(byId[id]!.metrics.walk_minutes)}
@@ -449,6 +453,7 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
                 <th className="p-1.5 text-right">{T.shortest}</th>
                 <th className="p-1.5 text-right">{T.lowerRisk}</th>
                 <th className="p-1.5 text-right">Δ</th>
+                {byId.rover && <th className="p-1.5 text-right">{T.roverPath}</th>}
               </tr>
             </thead>
             <tbody>
@@ -463,11 +468,15 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
                     <td className="p-1.5 text-right font-mono text-text-secondary">
                       {formatDelta(a, b, row.unit, row.digits ?? 1)}
                     </td>
+                    {byId.rover && (
+                      <td className="p-1.5 text-right font-mono">{row.fmt(row.get(byId.rover))}</td>
+                    )}
                   </tr>
                 )
               })}
             </tbody>
           </table>
+          {byId.rover && <p className="text-[10px] text-text-muted">{T.roverPathNote}</p>}
           <p className="text-[10px] text-text-muted">{T.method}</p>
           <h2 className={`${SECTION} mt-2`}>{T.profile}</h2>
           <ProfileChart routes={p.routes} selectedId={p.selectedRouteId} progress={progress} />
