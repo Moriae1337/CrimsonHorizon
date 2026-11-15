@@ -70,6 +70,16 @@ def test_terrain_layers_returns_cited_mars_catalog():
     for layer in payload["layers"]:
         assert layer["tile_url"].startswith("https://trek.nasa.gov/tiles/Mars/EQ/")
         assert layer["attribution"]
+    attributions = {layer["id"]: layer["attribution"] for layer in payload["layers"]}
+    assert (
+        attributions["jezero-ctx-ortho"]
+        == "USGS Astrogeology Science Center / NASA / JPL / MSSS"
+    )
+    assert (
+        attributions["jezero-hirise-ortho"]
+        == "USGS Astrogeology Science Center / NASA / JPL / University of Arizona"
+    )
+    assert attributions["jezero-ctx-ortho"] != attributions["jezero-hirise-ortho"]
 
 
 def test_terrain_landmarks_returns_valid_jezero_geojson():

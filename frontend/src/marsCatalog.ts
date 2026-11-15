@@ -97,7 +97,7 @@ export const DEFAULT_MAP_CATALOG: MapCatalog = {
       min_zoom: 0,
       max_zoom: 13,
       extent: [77.1604655, 18.2110274, 77.6991776, 18.7211945],
-      attribution: 'USGS Astrogeology / NASA Mars Trek (DOI: 10.5066/P9REJ9JN)',
+      attribution: 'USGS Astrogeology Science Center / NASA / JPL / MSSS',
       source_url:
         'https://trek.nasa.gov/tiles/Mars/EQ/JEZ_ctx_B_soc_008_orthoMosaic_6m_Eqc_latTs0_lon0/1.0.0/WMTSCapabilities.xml',
     },
@@ -112,7 +112,7 @@ export const DEFAULT_MAP_CATALOG: MapCatalog = {
       min_zoom: 0,
       max_zoom: 17,
       extent: [77.2229331, 18.3067994, 77.583964, 18.669315],
-      attribution: 'USGS Astrogeology / NASA Mars Trek (DOI: 10.5066/P9REJ9JN)',
+      attribution: 'USGS Astrogeology Science Center / NASA / JPL / University of Arizona',
       source_url:
         'https://trek.nasa.gov/tiles/Mars/EQ/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first_dd/1.0.0/WMTSCapabilities.xml',
     },
