@@ -3,6 +3,13 @@ import { MarsMap, type ViewFocus } from './MarsMap'
 import { formatMarsCoordinate } from './marsCatalog'
 import { useBackendHealth, type BackendStatus } from './useBackendHealth'
 import { useMarsData } from './useMarsData'
+import { ScenarioPanel } from './ScenarioPanel'
+import { extentOf } from './scenarioLayers'
+import { useScenario } from './useScenario'
+
+const SCENARIO_ID = 'hawksbill-gap'
+const FOCUS_BUTTON =
+  'flex-1 rounded-lg border px-3 py-1.5 text-xs font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400'
 
 const STATUS_STYLES: Record<BackendStatus, { label: string; dot: string; text: string }> = {
   connecting: { label: 'Connecting', dot: 'bg-amber-400', text: 'text-amber-300' },
@@ -14,6 +21,11 @@ function App() {
   const { status, error } = useBackendHealth()
   const { catalog, landmarks, dataSource } = useMarsData()
   const style = STATUS_STYLES[status]
+  const scenarioState = useScenario(SCENARIO_ID)
+  const { scenario } = scenarioState
+  // Off by default: every drive in the track is already part of a route option, so
+  // showing it at first doubles each line. It is an opt-in provenance view by sol.
+  const [showRoverTrack, setShowRoverTrack] = useState(false)
 
   const globalLayers = useMemo(
     () => catalog.layers.filter((layer) => layer.scope === 'global'),
@@ -105,23 +117,43 @@ function App() {
             <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
               Quick Focus
             </h2>
-            <div className="mt-2 flex gap-2">
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button
+                type="button"
+                disabled={!scenario}
+                onClick={() => {
+                  if (scenario) setFocusTarget({ extent: extentOf(scenario), nonce: Date.now() })
+                }}
+                className={`${FOCUS_BUTTON} border-orange-500/40 bg-orange-500/15 text-orange-300 hover:bg-orange-500/25 disabled:cursor-not-allowed disabled:border-slate-800 disabled:bg-slate-900 disabled:text-slate-500`}
+              >
+                Hawksbill Gap
+              </button>
               <button
                 type="button"
                 onClick={() => jumpTo(catalog.default_center, catalog.default_zoom)}
-                className="flex-1 rounded-lg border border-orange-500/40 bg-orange-500/15 px-3 py-1.5 text-xs font-medium text-orange-300 transition hover:bg-orange-500/25"
+                className={`${FOCUS_BUTTON} border-slate-700 bg-slate-800/70 text-slate-200 hover:bg-slate-800`}
               >
-                Jezero Crater
+                Jezero overview
               </button>
               <button
                 type="button"
                 onClick={() => jumpTo([0, 0], 2)}
-                className="flex-1 rounded-lg border border-slate-700 bg-slate-800/70 px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:bg-slate-800"
+                className={`${FOCUS_BUTTON} border-slate-700 bg-slate-800/70 text-slate-200 hover:bg-slate-800`}
               >
                 Global Mars
               </button>
             </div>
           </section>
+
+          <ScenarioPanel
+            status={scenarioState.status}
+            scenario={scenario}
+            error={scenarioState.error}
+            canRetry={scenarioState.canRetry}
+            showRoverTrack={showRoverTrack}
+            onRetry={scenarioState.retry}
+            onToggleRoverTrack={() => setShowRoverTrack((on) => !on)}
+          />
 
           <section>
             <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -220,6 +252,8 @@ function App() {
             visibleOverlayIds={visibleOverlayIds}
             selectedLandmarkId={selectedLandmarkId}
             focusTarget={focusTarget}
+            scenario={scenario}
+            showRoverTrack={showRoverTrack}
             onSelectLandmark={setSelectedLandmarkId}
             onCursorMove={setCursorCoords}
             onZoomChange={setZoom}

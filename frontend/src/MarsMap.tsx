@@ -12,6 +12,8 @@ import XYZ from 'ol/source/XYZ'
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
 import WMTSTileGrid from 'ol/tilegrid/WMTS'
 import { useEffect, useRef } from 'react'
+import type { Scenario } from './scenario'
+import { buildRouteFeatures, buildTrackFeatures, routeStyle, trackStyle } from './scenarioLayers'
 import {
   MARS_EQUATORIAL_METERS_PER_DEGREE,
   MARS_MAX_VIEW_ZOOM,
@@ -23,11 +25,9 @@ import {
   type MarsLandmarksGeoJson,
 } from './marsCatalog'
 
-export interface ViewFocus {
-  center: [number, number]
-  zoom: number
-  nonce: number
-}
+export type ViewFocus =
+  | { center: [number, number]; zoom: number; nonce: number }
+  | { extent: [number, number, number, number]; nonce: number }
 
 interface MarsMapProps {
   catalog: MapCatalog
@@ -36,6 +36,8 @@ interface MarsMapProps {
   visibleOverlayIds: ReadonlySet<string>
   selectedLandmarkId: string | null
   focusTarget: ViewFocus | null
+  scenario: Scenario | null
+  showRoverTrack: boolean
   onSelectLandmark: (id: string | null) => void
   onCursorMove: (coords: [number, number] | null) => void
   onZoomChange: (zoom: number) => void
@@ -94,6 +96,8 @@ export function MarsMap({
   visibleOverlayIds,
   selectedLandmarkId,
   focusTarget,
+  scenario,
+  showRoverTrack,
   onSelectLandmark,
   onCursorMove,
   onZoomChange,
@@ -104,6 +108,9 @@ export function MarsMap({
   const vectorSourceRef = useRef<VectorSource | null>(null)
   const vectorLayerRef = useRef<VectorLayer<VectorSource> | null>(null)
   const projectionRef = useRef<Projection | null>(null)
+  const routeLayerRef = useRef<VectorLayer<VectorSource> | null>(null)
+  const trackLayerRef = useRef<VectorLayer<VectorSource> | null>(null)
+  const tooltipRef = useRef<HTMLDivElement | null>(null)
   const selectedIdRef = useRef<string | null>(selectedLandmarkId)
   const callbacksRef = useRef({ onSelectLandmark, onCursorMove, onZoomChange })
 
@@ -154,6 +161,23 @@ export function MarsMap({
 
     olLayers.push(vectorLayer)
 
+    // Scenario layers sit above the base map and stay empty until a scenario loads, so a
+    // failed scenario request leaves the Mars layers untouched.
+    const routeLayer = new VectorLayer({
+      source: new VectorSource(),
+      zIndex: 11,
+      properties: { layerId: 'scenario-routes' },
+    })
+    const trackLayer = new VectorLayer({
+      source: new VectorSource(),
+      zIndex: 12,
+      visible: false,
+      declutter: true,
+      style: trackStyle,
+      properties: { layerId: 'scenario-rover-track' },
+    })
+    olLayers.push(routeLayer, trackLayer)
+
     const map = new OlMap({
       target: container,
       layers: olLayers,
@@ -175,13 +199,32 @@ export function MarsMap({
       if (event.dragging) return
       const [lon, lat] = event.coordinate
       callbacksRef.current.onCursorMove([lon, lat])
-      const hasFeature = map.hasFeatureAtPixel(event.pixel, { hitTolerance: 6 })
-      container.style.cursor = hasFeature ? 'pointer' : ''
+      const hasLandmark = map.hasFeatureAtPixel(event.pixel, {
+        hitTolerance: 6,
+        layerFilter: (layer) => layer === vectorLayer,
+      })
+      container.style.cursor = hasLandmark ? 'pointer' : ''
+
+      const tooltip = tooltipRef.current
+      if (!tooltip) return
+      const hint = map.forEachFeatureAtPixel(
+        event.pixel,
+        (feature) => feature.get('tooltip') as string | undefined,
+        { hitTolerance: 5, layerFilter: (layer) => layer === routeLayer || layer === trackLayer },
+      )
+      if (hint) {
+        tooltip.textContent = hint
+        tooltip.style.transform = `translate(${event.pixel[0] + 14}px, ${event.pixel[1] + 14}px)`
+        tooltip.hidden = false
+      } else {
+        tooltip.hidden = true
+      }
     })
 
     map.on('singleclick', (event) => {
       const clicked = map.forEachFeatureAtPixel(event.pixel, (feature) => feature.getId(), {
         hitTolerance: 8,
+        layerFilter: (layer) => layer === vectorLayer,
       })
       callbacksRef.current.onSelectLandmark(typeof clicked === 'string' ? clicked : null)
     })
@@ -202,6 +245,8 @@ export function MarsMap({
     tileLayersRef.current = tileLayers
     vectorSourceRef.current = vectorSource
     vectorLayerRef.current = vectorLayer
+    routeLayerRef.current = routeLayer
+    trackLayerRef.current = trackLayer
 
     return () => {
       container.style.cursor = ''
@@ -210,8 +255,29 @@ export function MarsMap({
       tileLayersRef.current.clear()
       vectorSourceRef.current = null
       vectorLayerRef.current = null
+      routeLayerRef.current = null
+      trackLayerRef.current = null
     }
   }, [catalog])
+
+  useEffect(() => {
+    const routeLayer = routeLayerRef.current
+    const trackLayer = trackLayerRef.current
+    if (!routeLayer || !trackLayer) return
+    const routeSource = routeLayer.getSource()
+    const trackSource = trackLayer.getSource()
+    routeSource?.clear()
+    trackSource?.clear()
+    if (tooltipRef.current) tooltipRef.current.hidden = true
+    if (!scenario) return
+    routeLayer.setStyle(routeStyle(scenario.route_options))
+    routeSource?.addFeatures(buildRouteFeatures(scenario))
+    trackSource?.addFeatures(buildTrackFeatures(scenario))
+  }, [catalog, scenario])
+
+  useEffect(() => {
+    trackLayerRef.current?.setVisible(showRoverTrack)
+  }, [catalog, showRoverTrack])
 
   useEffect(() => {
     for (const layerDef of catalog.layers) {
@@ -247,6 +313,10 @@ export function MarsMap({
   useEffect(() => {
     const map = mapRef.current
     if (!map || !focusTarget) return
+    if ('extent' in focusTarget) {
+      map.getView().fit(focusTarget.extent, { padding: [32, 32, 32, 32], duration: 450 })
+      return
+    }
     map.getView().animate({
       center: focusTarget.center,
       zoom: focusTarget.zoom,
@@ -255,11 +325,22 @@ export function MarsMap({
   }, [focusTarget])
 
   return (
-    <div
-      ref={containerRef}
-      className="h-full w-full bg-slate-950"
-      aria-label="Interactive Mars surface map centered on Jezero Crater"
-      onMouseLeave={() => onCursorMove(null)}
-    />
+    <div className="relative h-full w-full">
+      <div
+        ref={containerRef}
+        className="h-full w-full bg-slate-950"
+        aria-label="Interactive Mars surface map centered on Jezero Crater"
+        onMouseLeave={() => {
+          onCursorMove(null)
+          if (tooltipRef.current) tooltipRef.current.hidden = true
+        }}
+      />
+      <div
+        ref={tooltipRef}
+        hidden
+        aria-hidden="true"
+        className="pointer-events-none absolute top-0 left-0 z-10 max-w-72 rounded border border-slate-700 bg-slate-950/90 px-2 py-1 text-xs text-slate-100 shadow"
+      />
+    </div>
   )
 }
