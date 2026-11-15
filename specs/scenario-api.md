@@ -16,6 +16,36 @@ unchanged. Tracking issue: CH26-031 (#49).
   (required fields, `[lon, lat]` tuples, units, unique IDs, cross-references);
   body `{"detail": "Scenario temporarily unavailable"}`. Unknown extra fields are allowed.
 
+## Slope overlay endpoint
+
+`GET /api/scenario/{scenario_id}/slope` (alias: `GET /scenarios/{scenario_id}/slope`).
+Tracking issue: CH26-034 (#52).
+
+- `200`: precomputed slope overlay document for the scenario, served from
+  `backend/data/{scenario_id}/slope_overlay.json` (Horn 3x3 kernel, 1.0 m grid resolution).
+  Carries `Cache-Control: public, max-age=86400` header.
+- `404`: unknown `scenario_id` (`{"detail": "Scenario not found"}`) or missing slope
+  overlay artifact (`{"detail": "Slope overlay not found"}`).
+- `503`: committed slope file missing, unreadable, or malformed JSON;
+  body `{"detail": "Slope overlay temporarily unavailable"}`.
+
+Payload fields:
+
+- `scenario_id`: scenario identifier (e.g. `"hawksbill-gap"`).
+- `input_id`: source DTM product identifier (`"dtm-primary"`).
+- `method`: slope derivation algorithm (`"horn"`).
+- `kernel`: human-readable kernel description (`"Horn 3x3 kernel (1981)"`).
+- `grid`: resolution and grid dimensions (`cell_size_m: 1.0`, `resolution_m: 1.0`, `width: 474`, `height: 474`, `shape: [474, 474]`).
+- `bounds_m`: metric bounding coordinates (`left`, `right`, `top`, `bottom`).
+- `bounds_deg`: planetocentric degree bounds (`lon_min`, `lon_max`, `lat_min`, `lat_max`).
+- `units`: `"degrees"`.
+- `cells`: total cell count (224,676).
+- `valid_cells`: valid numeric slope count (222,784).
+- `nodata_cells`: masked 1-pixel boundary / NoData count (1,892).
+- `slope_degrees`: summary distribution statistics (`min`, `max`, `mean`, `median`, `p95`).
+- `values`: 2D nested list (`474 x 474`) of slope values rounded to 2 decimal places,
+  with border cells and NoData masked to JSON `null`.
+
 ## Versioning
 
 `schema_version` is a `"MAJOR.MINOR"` string; this document defines `"1.3"`.

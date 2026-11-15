@@ -43,6 +43,8 @@ There is no database, cache, queue, or authentication. The backend holds no stat
 - `GET /scenarios/{scenario_id}/environment` serves optional archival context (MEDA
   weather at Jezero, Curiosity RAD at Gale) built by `prep/environment_context.py`;
   see [environment-api.md](environment-api.md).
+- `GET /api/scenario/{scenario_id}/slope` serves the precomputed surface slope overlay
+  (Horn 3x3 kernel, 1.0 m grid resolution) built by `prep/slope.py`; see [scenario-api.md](scenario-api.md).
 - Enforces CORS using the comma-separated `CORS_ORIGINS` variable
   (default `http://localhost:5173` for local development).
 - Parses environment configuration in `app/config.py`; wildcard CORS origins
