@@ -278,3 +278,40 @@ def test_traverse_endpoint(site_id: str) -> None:
     )
     assert cached.status_code == 304
     assert client.get("/sites/nowhere/traverse").status_code == 404
+
+
+def test_rover_segment_follows_the_line_between_nearest_points() -> None:
+    from app.routing import rover_segment
+
+    line = [(0.0, 0.0), (100.0, 0.0), (100.0, 100.0), (0.0, 100.0)]
+    assert rover_segment([line], (5.0, 3.0), (2.0, 98.0)) == line
+    # B before A along the rover's order: the slice comes back reversed.
+    assert rover_segment([line], (100.0, 95.0), (98.0, 2.0)) == [
+        (100.0, 100.0),
+        (100.0, 0.0),
+    ]
+    # Too far from the line: no rover route.
+    assert rover_segment([line], (500.0, 500.0), (0.0, 100.0)) is None
+
+
+def test_routes_endpoint_returns_rover_path_between_rover_stops() -> None:
+    trav = client.get("/sites/jezero-crater/traverse").json()
+    first, last = trav["stops"][0], trav["stops"][-1]
+    params = {
+        "start": f"{first['x']},{first['y']}",
+        "end": f"{last['x']},{last['y']}",
+        "rover": "true",
+    }
+    res = client.get("/sites/jezero-crater/routes", params=params)
+    assert res.status_code == 200
+    routes = {r["id"]: r for r in res.json()["routes"]}
+    assert set(routes) == {"shortest", "lower_risk", "rover"}
+    rover = routes["rover"]["metrics"]["length_m"]
+    # The real drive wanders: much longer than the planned shortest route.
+    assert rover > routes["shortest"]["metrics"]["length_m"] * 1.5
+    # Without the flag the response is unchanged.
+    plain = client.get(
+        "/sites/jezero-crater/routes",
+        params={k: v for k, v in params.items() if k != "rover"},
+    )
+    assert {r["id"] for r in plain.json()["routes"]} == {"shortest", "lower_risk"}

@@ -119,6 +119,10 @@ export function useRoutePlanner(active: boolean) {
   const current = key && result?.key === key ? result : null
   const plan = current?.plan ?? null
   const routes: PlannedRoute[] = plan?.routes ?? []
+  // "rover" exists only when A and B lie on the rover's traverse; fall back otherwise.
+  const selected: RouteId = routes.some((r) => r.id === selectedRouteId)
+    ? selectedRouteId
+    : 'lower_risk'
 
   const updateDraft = (fn: (d: Draft) => Draft) =>
     setDrafts((all) => ({ ...all, [siteId]: fn(all[siteId]) }))
@@ -220,7 +224,10 @@ export function useRoutePlanner(active: boolean) {
     /** A and B at the rover's first and last stop here, up to 8 of its stops between. */
     followRover: () => {
       const wps = traverse ? roverWaypoints(traverse.stops, MAX_STOPS) : null
-      if (wps) updateDraft(() => ({ waypoints: wps, hasEnd: true, pickTarget: null }))
+      if (!wps) return
+      updateDraft(() => ({ waypoints: wps, hasEnd: true, pickTarget: null }))
+      // Show the rover's own path first; the two planned routes stay for comparison.
+      setSelectedRouteId('rover')
     },
     /** Adds a point (e.g. a rover stop) as a stop where it fits best; A/B first if missing. */
     addStopAt: (x: number, y: number) =>
@@ -239,7 +246,7 @@ export function useRoutePlanner(active: boolean) {
     plan,
     routes,
     planKey: key,
-    selectedRouteId,
+    selectedRouteId: selected,
     setSelectedRouteId,
     toLonLat,
     exportGeoJson,

@@ -12,6 +12,7 @@ import { useTranslation } from './i18n/useTranslation.ts'
 import { RoutePlannerPanel } from './RoutePlannerPanel.tsx'
 import { usePlannerText } from './plannerText.ts'
 import { textureUrl } from './sites.ts'
+import { Guide, type GuideTarget } from './GuideDialog.tsx'
 import { useRoutePlanner } from './useRoutePlanner.ts'
 
 // three.js views load on demand so the 2D map stays light.
@@ -142,6 +143,16 @@ function App() {
     }
   }
 
+  const openFromGuide = (target: GuideTarget) => {
+    if (target === 'planner' || target === 'scenario') {
+      setSidebarMode(target)
+      setViewMode('map')
+    } else {
+      setFocusTarget(null)
+      setViewMode(target)
+    }
+  }
+
   return (
     <div className="flex h-dvh w-full flex-col overflow-hidden bg-canvas text-text-main">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-card-border bg-card px-4 py-2 shrink-0">
@@ -184,15 +195,32 @@ function App() {
             </span>
           )}
 
-          {/* Language Switcher */}
-          <button
-            type="button"
-            onClick={() => setLocale(locale === 'en' ? 'uk' : 'en')}
-            className="rounded-lg border border-card-border bg-input px-2 py-1 text-xs font-semibold hover:border-secondary cursor-pointer"
-            title="Switch Language / Змінити мову"
+          <Guide onGo={openFromGuide} />
+
+          {/* Language: English by default; the active one is highlighted. */}
+          <div
+            role="group"
+            aria-label="Language / Мова"
+            className="inline-flex rounded-lg border border-card-border bg-input p-0.5"
           >
-            {locale === 'en' ? 'Українська' : 'English'}
-          </button>
+            {(['en', 'uk'] as const).map((l) => (
+              <button
+                key={l}
+                type="button"
+                lang={l}
+                aria-pressed={locale === l}
+                onClick={() => setLocale(l)}
+                className={`rounded-md px-2 py-0.5 text-[11px] font-semibold cursor-pointer ${
+                  locale === l
+                    ? 'bg-accent text-text-main'
+                    : 'text-text-secondary hover:text-text-main'
+                }`}
+                title={l === 'en' ? 'English' : 'Українська'}
+              >
+                {l === 'en' ? 'EN' : 'УК'}
+              </button>
+            ))}
+          </div>
 
           <div className="text-[11px] text-text-secondary" role="status" title={error ?? undefined}>
             {STATUS_LABELS[status][locale]}

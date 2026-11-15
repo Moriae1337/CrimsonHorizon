@@ -396,12 +396,77 @@ def _snap(grid: TerrainGrid, xy: tuple[float, float], label: str) -> int:
     return i
 
 
+# A and B must lie this close to the rover's line for its real path to be offered.
+ROVER_SNAP_M = 150.0
+
+
+def rover_segment(
+    lines: list[list[tuple[float, float]]],
+    start: tuple[float, float],
+    end: tuple[float, float],
+    tol_m: float = ROVER_SNAP_M,
+) -> list[tuple[float, float]] | None:
+    """The rover's own path between the line points nearest A and B.
+
+    Picks the run where A and B are both within `tol_m` and closest in total, and
+    returns its vertices from A's nearest point to B's (reversed if B comes first).
+    """
+    best: tuple[float, list[tuple[float, float]], int, int] | None = None
+    for run in lines:
+        if len(run) < 2:
+            continue
+        ia = min(range(len(run)), key=lambda k: math.dist(run[k], start))
+        ib = min(range(len(run)), key=lambda k: math.dist(run[k], end))
+        da, db = math.dist(run[ia], start), math.dist(run[ib], end)
+        if (
+            da <= tol_m
+            and db <= tol_m
+            and ia != ib
+            and (best is None or da + db < best[0])
+        ):
+            best = (da + db, run, ia, ib)
+    if best is None:
+        return None
+    _, run, ia, ib = best
+    return run[ia : ib + 1] if ia < ib else run[ib : ia + 1][::-1]
+
+
+def _route(
+    grid: TerrainGrid, route_id: str, poly: list[tuple[float, float]]
+) -> dict[str, Any]:
+    samples = [s for s in _densify_profile(grid, poly) if not math.isnan(s["z"])]
+    if len(samples) < 2:
+        raise RouteError(f"{route_id} route has no valid elevation")
+    return {
+        "id": route_id,
+        "metrics": _metrics(samples),
+        "path_xy": [[round(x, 2), round(y, 2)] for x, y in poly],
+        "path_lon_lat": [[round(v, 7) for v in grid.to_lon_lat(x, y)] for x, y in poly],
+        "profile": [
+            {
+                "d": round(s["d"], 1),
+                "z": round(s["z"], 2),
+                "x": round(s["x"], 2),
+                "y": round(s["y"], 2),
+                "slope": None if math.isnan(s["slope"]) else round(s["slope"], 1),
+            }
+            for s in samples
+        ],
+    }
+
+
 def plan_routes(
     grid: TerrainGrid,
     waypoints: list[tuple[float, float]],
     max_grade_deg: float = 25.0,
+    rover_lines: list[list[tuple[float, float]]] | None = None,
 ) -> dict[str, Any]:
-    """Plan shortest and lower-risk routes through waypoints (local metres)."""
+    """Plan shortest and lower-risk routes through waypoints (local metres).
+
+    With `rover_lines` (the rover traverse in the site frame), also returns the
+    rover's real path between A and B as route "rover" when both lie near it; it
+    ignores stops and the grade limit, since it is the drive the rover made.
+    """
     if not 2 <= len(waypoints) <= MAX_WAYPOINTS + 2:
         raise RouteError("need a start, an end and at most 8 stops")
     if not 5.0 <= max_grade_deg <= 45.0:
@@ -436,30 +501,14 @@ def plan_routes(
             poly.extend(leg if not poly else leg[1:])
         if len(poly) < 2:
             raise RouteError("start and end are in the same cell")
-        samples = _densify_profile(grid, poly)
-        metrics = _metrics(samples)
-        routes.append(
-            {
-                "id": route_id,
-                "metrics": metrics,
-                "path_xy": [[round(x, 2), round(y, 2)] for x, y in poly],
-                "path_lon_lat": [
-                    [round(v, 7) for v in grid.to_lon_lat(x, y)] for x, y in poly
-                ],
-                "profile": [
-                    {
-                        "d": round(s["d"], 1),
-                        "z": None if math.isnan(s["z"]) else round(s["z"], 2),
-                        "x": round(s["x"], 2),
-                        "y": round(s["y"], 2),
-                        "slope": None
-                        if math.isnan(s["slope"])
-                        else round(s["slope"], 1),
-                    }
-                    for s in samples
-                ],
-            }
-        )
+        routes.append(_route(grid, route_id, poly))
+    if rover_lines:
+        seg = rover_segment(rover_lines, waypoints[0], waypoints[-1])
+        if seg and len(seg) > 1:
+            try:
+                routes.append(_route(grid, "rover", seg))
+            except RouteError:
+                pass  # no valid elevation under the rover line here: offer the two routes
     return {
         "max_grade_deg": max_grade_deg,
         "waypoints_xy": [[round(x, 2), round(y, 2)] for x, y in waypoints],

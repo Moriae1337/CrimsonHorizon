@@ -142,6 +142,15 @@ Jezero, Gale, Gusev, Endeavour and Eberswalde. Built by
   where it lengthens the straight-line chain least (`insertStop`). A status line on
   the map says what a click does, shows planning progress and errors, and reports
   clicks outside the window.
+- Rover's path: `/sites/{id}/routes?rover=true` (the frontend always sends it) adds a
+  third route, `rover`, when A and B both lie within 150 m of the rover's traverse:
+  the traverse itself between the line points nearest A and B, with the same metrics
+  and profile as planned routes. It ignores stops and the grade limit. "Follow the
+  rover's path" selects it, so it can be compared in the table and walked in 3D
+  (dotted on the map; the context traverse line is hidden in 3D while it is shown).
+- Guide: the header "Guide" button opens a bilingual how-to (quick start, views, map
+  legend, data and limits); it opens once by itself on a first visit. English is the
+  default language; the header EN | УК toggle highlights the active one.
 - Rover traverse: the planner panel shows each crater's summary, facts and links
   (`frontend/src/craters.ts`), the rover's sols and localized length, and "Follow the
   rover's path", which sets A and B at the rover's first and last stop in the window

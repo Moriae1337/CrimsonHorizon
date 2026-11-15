@@ -59,19 +59,22 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
   // Context: the rover's traverse (every site) and, on Hawksbill Gap, the prepared
   // scenario options and stops.
   const traverse = planner.traverse
+  // When the rover's own path is a planned route, it is drawn as that route instead.
+  const hasRoverRoute = routes.some((r) => r.id === 'rover')
   const { overlayLines, overlayPins } = useMemo(() => {
     const lines: OverlayLine[] = []
     const pins: OverlayPin[] = []
     if (traverse) {
-      traverse.lines.forEach((run, i) => {
-        if (run.length > 1)
-          lines.push({
-            id: `rover-${i}`,
-            label: i === 0 ? traverse.name : '',
-            color: '#EBEBEB',
-            points: run,
-          })
-      })
+      if (!hasRoverRoute)
+        traverse.lines.forEach((run, i) => {
+          if (run.length > 1)
+            lines.push({
+              id: `rover-${i}`,
+              label: i === 0 ? traverse.name : '',
+              color: '#EBEBEB',
+              points: run,
+            })
+        })
       const first = traverse.stops[0]
       const last = traverse.stops[traverse.stops.length - 1]
       if (first)
@@ -96,7 +99,7 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
       pins.push({ id: s.id, label: s.name, x, y })
     }
     return { overlayLines: lines, overlayPins: pins }
-  }, [siteId, scenario, pkg, traverse])
+  }, [siteId, scenario, pkg, traverse, hasRoverRoute])
 
   const restart = () => setRestartNonce((n) => n + 1)
 
