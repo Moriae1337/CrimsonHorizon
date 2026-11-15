@@ -10,21 +10,25 @@ scenario API v1 format:
 - route_metrics.json (prep.profiles): elevation profiles, ascent, grade, and
   DTM coverage gaps along each option.
 
-Profiles are filled since v1.1. Unknowns hold DTM coverage gaps
-("terrain-gap"); caution zones and connector uncertainty (#46, #47) are not
-prepared yet, so "unknowns" stays in pending_sections with evidence. build() is
-pure, so tests can rebuild the document and compare it with the committed file.
+Profiles are filled since v1.1. Since v1.2 (#46) `unknowns` holds every caution
+zone (prep.caution): DTM coverage gaps, A's proposed connector, observation
+approaches, and the steepest 2 m and 5 m segments, each with a review status.
+`obstacles` holds the mission-report obstacles with their PDS figure, and each
+route option carries `caution_review`. Only `evidence` stays pending. build()
+is pure, so tests can rebuild the document and compare it with the committed
+file.
 """
 
 import json
 from typing import Any
 
+from prep import caution
 from prep.common import INPUTS_DIR, SCENARIO_DIR, load_manifest, utc_now
 from prep.profiles import METRICS_PATH
 from prep.routes import ROUTES_PATH, START_RMC
 
 SCENARIO_PATH = SCENARIO_DIR / "scenario.json"
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "1.2"
 
 TRAVERSE_SOURCE = "m20-traverse"
 WAYPOINTS_SOURCE = "m20-waypoints"
@@ -75,7 +79,7 @@ ROUTE_OPTIONS: dict[str, dict[str, Any]] = {
     },
 }
 
-PENDING_SECTIONS = ["evidence", "unknowns"]
+PENDING_SECTIONS = ["evidence"]
 
 Point = list[float]
 
@@ -137,9 +141,18 @@ def start(waypoints: list[dict[str, Any]]) -> dict[str, Any]:
     raise KeyError(f"waypoints have no localization {START_RMC!r}")
 
 
+def option_stops() -> dict[str, list[str]]:
+    return {option: info["stop_ids"] for option, info in ROUTE_OPTIONS.items()}
+
+
 def route_options(
-    routes: dict[str, Any], metrics: dict[str, Any]
+    routes: dict[str, Any],
+    metrics: dict[str, Any],
+    zones: list[dict[str, Any]] | None = None,
+    obstacles: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
+    zones = unknowns(routes, metrics) if zones is None else zones
+    obstacles = caution.obstacles(option_stops()) if obstacles is None else obstacles
     return [
         {
             "id": option,
@@ -150,6 +163,11 @@ def route_options(
             "ascent_m": metrics["options"][option]["ascent_m"],
             "max_grade_deg": metrics["options"][option]["max_grade_deg"],
             "dtm_covered_pct": metrics["options"][option]["coverage"]["covered_pct"],
+            "grade_class_m": {
+                step: item["grade_class_m"]
+                for step, item in metrics["options"][option]["caution"]["steps"].items()
+            },
+            "caution_review": caution.review(zones, obstacles, option),
         }
         for option, info in routes["options"].items()
     ]
@@ -172,22 +190,9 @@ def profiles(metrics: dict[str, Any]) -> list[dict[str, Any]]:
     ]
 
 
-def unknowns(metrics: dict[str, Any]) -> list[dict[str, Any]]:
-    """Outbound spans where the DTM has no valid elevation."""
-    return [
-        {
-            "id": f"terrain-gap-{option.lower()}-{n}",
-            "option": option,
-            "kind": "terrain-gap",
-            "geometry": gap["geometry"],
-            "from_m": gap["from_m"],
-            "to_m": gap["to_m"],
-            "length_m": gap["length_m"],
-            "source_ids": [DTM_SOURCE],
-        }
-        for option, info in metrics["options"].items()
-        for n, gap in enumerate(info["gaps"], start=1)
-    ]
+def unknowns(routes: dict[str, Any], metrics: dict[str, Any]) -> list[dict[str, Any]]:
+    """Caution zones on both options, each with an open review status."""
+    return caution.caution_zones(routes, metrics, STOPS, option_stops())
 
 
 def route_features(routes: dict[str, Any]) -> dict[str, Any]:
@@ -249,6 +254,8 @@ def build(
     metrics: dict[str, Any],
     generated_at: str,
 ) -> dict[str, Any]:
+    zones = unknowns(routes, metrics)
+    obstacles = caution.obstacles(option_stops())
     return {
         "schema_version": SCHEMA_VERSION,
         "scenario_id": manifest["scenario_id"],
@@ -258,12 +265,13 @@ def build(
         "extent": extent(manifest),
         "start": start(waypoints),
         "stops": STOPS,
-        "route_options": route_options(routes, metrics),
+        "route_options": route_options(routes, metrics, zones, obstacles),
         "routes": route_features(routes),
         "rover_track": rover_track(traverse),
         "evidence": [],
         "profiles": profiles(metrics),
-        "unknowns": unknowns(metrics),
+        "unknowns": zones,
+        "obstacles": obstacles,
         "pending_sections": PENDING_SECTIONS,
         "sources": sources(manifest),
     }
@@ -290,7 +298,8 @@ def main() -> None:
         f"{SCENARIO_PATH.name}: {len(scenario['routes']['features'])} route pieces, "
         f"{len(scenario['rover_track']['features'])} drives, "
         f"{len(scenario['profiles'])} profiles, "
-        f"{len(scenario['unknowns'])} unknowns, "
+        f"{len(scenario['unknowns'])} caution zones, "
+        f"{len(scenario['obstacles'])} obstacles, "
         f"{SCENARIO_PATH.stat().st_size} bytes"
     )
 

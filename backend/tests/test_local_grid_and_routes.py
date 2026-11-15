@@ -126,6 +126,26 @@ def test_round_trips_match_the_scope(built: dict) -> None:
     assert built["options"]["B"]["round_trip_m"] == pytest.approx(345.28, abs=0.02)
 
 
+def test_distances_keep_unrounded_values_on_the_mars_sphere() -> None:
+    """CH26-023 (#41): horizontal out-and-back lengths on R = 3,396,190 m."""
+    committed = load(routes.ROUTES_PATH)
+    radius_m = load_manifest()["conventions"]["geographic"]["reference_sphere_radius_m"]
+    assert radius_m == 3_396_190
+    expected = {"A": (258.01, 258), "B": (345.28, 345)}
+    for option, (locked, demo) in expected.items():
+        out = [
+            f["geometry"]["coordinates"]
+            for f in committed["features"]
+            if f["properties"]["option"] == option
+            and f["properties"]["leg"] == "outbound"
+        ]
+        raw = 2 * routes.line_length_m(routes.join(out), radius_m)
+        assert raw == pytest.approx(locked, abs=0.005)
+        # Prepared results keep centimeters; only the demo rounds to meters.
+        assert committed["options"][option]["round_trip_m"] == round(raw, 2) == locked
+        assert round(raw) == demo
+
+
 def test_a_connector_is_separate_and_proposed(built: dict) -> None:
     pieces = [
         f["properties"]

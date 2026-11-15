@@ -11,7 +11,7 @@ import math
 
 import pytest
 
-from prep import profiles, routes, scenario_bundle
+from prep import caution, profiles, routes, scenario_bundle
 from prep.common import SCENARIO_DIR
 
 NODATA = -3.4028226550889045e38
@@ -226,7 +226,7 @@ def test_profiles_match_routes_and_metrics(record: dict) -> None:
 
 
 def test_scenario_carries_the_record(scenario: dict, record: dict) -> None:
-    assert scenario["schema_version"] == "1.1"
+    assert scenario["schema_version"] == "1.2"
     assert "profiles" not in scenario["pending_sections"]
     by_option = {p["option"]: p for p in scenario["profiles"]}
     assert set(by_option) == set(record["options"])
@@ -248,9 +248,10 @@ def test_scenario_carries_the_record(scenario: dict, record: dict) -> None:
         for option, info in record["options"].items()
         for gap in info["gaps"]
     ]
-    assert len(scenario["unknowns"]) == len(gaps)
-    for item, (option, gap) in zip(scenario["unknowns"], gaps):
-        assert item["kind"] == "terrain-gap" and item["option"] == option
+    items = [u for u in scenario["unknowns"] if u["kind"] == "terrain-gap"]
+    assert len(items) == len(gaps)
+    for item, (option, gap) in zip(items, gaps):
+        assert item["option"] == option
         assert item["geometry"] == gap["geometry"]
         assert item["length_m"] == gap["length_m"]
         assert item["source_ids"] == ["dtm-primary"]
@@ -263,9 +264,9 @@ def test_bundle_turns_gaps_into_unknowns() -> None:
         "length_m": 4.0,
         "geometry": {"type": "LineString", "coordinates": [[5.0, 0.0], [9.0, 0.0]]},
     }
-    metrics = {"options": {"A": {"gaps": [gap]}, "B": {"gaps": []}}}
-    [item] = scenario_bundle.unknowns(metrics)
+    [item] = caution.terrain_gaps("A", {"gaps": [gap]})
     assert item["id"] == "terrain-gap-a-1"
     assert item["kind"] == "terrain-gap"
+    assert item["review_status"] == "open"
     assert item["geometry"] == gap["geometry"]
     assert (item["from_m"], item["to_m"], item["length_m"]) == (4.0, 8.0, 4.0)
