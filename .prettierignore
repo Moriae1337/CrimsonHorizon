@@ -1,4 +1,4 @@
-**/node_modules/
+﻿**/node_modules/
 **/dist/
 **/.venv/
 **/.uv-cache/
@@ -28,3 +28,4 @@ backend/data/hawksbill_gap/environment.json
 backend/data/hawksbill_gap/skinner_line_of_sight.json
 backend/data/hawksbill_gap/prelanding_geology.geojson
 backend/data/hawksbill_gap/rimfax_profile.json
+backend/data/hawksbill_gap/eva_budget.json
