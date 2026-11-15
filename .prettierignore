@@ -23,3 +23,4 @@ backend/data/hawksbill_gap/dtm_local.json
 backend/data/hawksbill_gap/routes.geojson
 backend/data/hawksbill_gap/route_metrics.json
 backend/data/hawksbill_gap/scenario.json
+backend/data/hawksbill_gap/environment.json

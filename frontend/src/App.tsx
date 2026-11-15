@@ -3,8 +3,10 @@ import { MarsMap, type ViewFocus } from './MarsMap'
 import { formatMarsCoordinate } from './marsCatalog'
 import { useBackendHealth, type BackendStatus } from './useBackendHealth'
 import { useMarsData } from './useMarsData'
+import { EnvironmentPanel } from './EnvironmentPanel'
 import { ScenarioPanel } from './ScenarioPanel'
 import { extentOf, optionExtent } from './scenarioLayers'
+import { useEnvironment } from './useEnvironment'
 import { useScenario } from './useScenario'
 
 const SCENARIO_ID = 'hawksbill-gap'
@@ -41,6 +43,11 @@ function App() {
   const statusInfo = STATUS_CONFIG[status]
   const scenarioState = useScenario(SCENARIO_ID)
   const { scenario } = scenarioState
+  const environmentState = useEnvironment(SCENARIO_ID)
+  const sampleSols = useMemo(
+    () => new Set(scenario?.stops.flatMap((stop) => stop.samples.map((s) => s.sol)) ?? []),
+    [scenario],
+  )
   // Off by default: every drive in the track is already part of a route option, so
   // showing it at first doubles each line. It is an opt-in provenance view by sol.
   const [showRoverTrack, setShowRoverTrack] = useState(false)
@@ -194,6 +201,12 @@ function App() {
               const extent = next && scenario ? optionExtent(scenario, next) : null
               if (extent) setFocusTarget({ extent, nonce: Date.now() })
             }}
+          />
+
+          <EnvironmentPanel
+            status={environmentState.status}
+            environment={environmentState.environment}
+            sampleSols={sampleSols}
           />
 
           {/* Global Base Layer */}
