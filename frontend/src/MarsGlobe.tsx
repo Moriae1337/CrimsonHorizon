@@ -1,7 +1,9 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { DEFAULT_MAP_CATALOG } from './marsCatalog.ts'
+import { CRATERS, CRATER_IDS, craterByIauName, type CraterInfo } from './craters.ts'
+import { SITE_LABELS } from './plannerText.ts'
 import { fetchNomenclature, type IauFeature, type SiteId } from './sites.ts'
 import { useTranslation } from './i18n/useTranslation.ts'
 
@@ -20,37 +22,15 @@ const CATEGORY_LABEL: Record<string, string> = {
   other: 'Feature',
 }
 
-interface GlobeSite {
-  id: SiteId
-  name: string
-  region: string
-  lon: number
-  lat: number
-}
-
-const GLOBE_SITES: GlobeSite[] = [
-  {
-    id: 'columbia-hills',
-    name: 'Columbia Hills',
-    region: 'Gusev · Spirit',
-    lon: 175.5235,
-    lat: -14.605,
-  },
-  {
-    id: 'hawksbill-gap',
-    name: 'Hawksbill Gap',
-    region: 'Jezero · Perseverance',
-    lon: 77.406,
-    lat: 18.459,
-  },
-]
-
 const TEXT = {
   en: {
     textureError: 'Globe imagery unavailable.',
     labels: 'IAU names',
     drag: 'Drag to rotate · wheel to zoom',
-    open3d: 'Open 3D site',
+    open3d: 'Open in 3D',
+    plan2d: 'Plan routes (2D)',
+    rover: 'Rover',
+    sites: 'Sites with DTM',
     open2d: 'Open on 2D map',
     gazetteer: 'Gazetteer entry',
     diameter: 'Diameter',
@@ -62,7 +42,10 @@ const TEXT = {
     textureError: 'Зображення глобуса недоступне.',
     labels: 'Назви IAU',
     drag: 'Тягніть — обертання · колесо — масштаб',
-    open3d: 'Відкрити 3D-ділянку',
+    open3d: 'Відкрити в 3D',
+    plan2d: 'Планувати маршрути (2D)',
+    rover: 'Марсохід',
+    sites: 'Ділянки з DTM',
     open2d: 'Відкрити на 2D-мапі',
     gazetteer: 'Запис у Gazetteer',
     diameter: 'Діаметр',
@@ -85,12 +68,15 @@ function lonLatToVec(lon: number, lat: number, r = 1): THREE.Vector3 {
 
 export interface MarsGlobeProps {
   onOpenSite: (id: SiteId) => void
+  /** Opens the 2D route planner on a site. */
+  onOpenPlanner: (id: SiteId) => void
   onOpenMap: (lon: number, lat: number, zoom: number) => void
 }
 
-export function MarsGlobe({ onOpenSite, onOpenMap }: MarsGlobeProps) {
+export function MarsGlobe({ onOpenSite, onOpenPlanner, onOpenMap }: MarsGlobeProps) {
   const { locale } = useTranslation()
-  const T = TEXT[locale === 'uk' ? 'uk' : 'en']
+  const lang = locale === 'uk' ? 'uk' : 'en'
+  const T = TEXT[lang]
   const hostRef = useRef<HTMLDivElement>(null)
   const labelHostRef = useRef<HTMLDivElement>(null)
   const globeRef = useRef<THREE.Mesh | null>(null)
@@ -328,23 +314,40 @@ export function MarsGlobe({ onOpenSite, onOpenMap }: MarsGlobeProps) {
     flyRef.current?.(f.lon, f.lat, f.diameter_km > 1500 ? 2.6 : 1.7)
   }
 
+  // Jezero and Gusev markers: the IAU entry when loaded, else the crater's own data.
+  const pickCrater = (c: CraterInfo) => {
+    const f = features.find((x) => x.name === c.iauName)
+    pick(
+      f ?? {
+        name: c.iauName,
+        type: 'Crater, craters',
+        category: 'crater',
+        lon: c.lon,
+        lat: c.lat,
+        diameter_km: c.id === 'jezero' ? 47.5 : 158.1,
+        link: c.links[c.links.length - 1].url,
+      },
+    )
+  }
+  const crater = selected ? craterByIauName(selected.name) : null
+
   return (
     <div ref={hostRef} className="absolute inset-0 overflow-hidden">
       <div ref={labelHostRef} className="pointer-events-none absolute inset-0">
-        {GLOBE_SITES.map((s) => (
+        {CRATER_IDS.map((id) => CRATERS[id]).map((c) => (
           <button
-            key={s.id}
+            key={c.id}
             type="button"
-            data-lon={s.lon}
-            data-lat={s.lat}
+            data-lon={c.lon}
+            data-lat={c.lat}
             data-d={1e9}
             data-site="1"
-            onClick={() => onOpenSite(s.id)}
+            onClick={() => pickCrater(c)}
             className="pointer-events-auto absolute left-0 top-0 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-secondary bg-accent px-2 py-0.5 text-[11px] font-semibold text-text-main shadow-lg cursor-pointer hover:bg-accent-hover"
-            title={T.open3d}
+            title={`${c.iauName} · ${c.rover}`}
           >
             <span className="h-1.5 w-1.5 rounded-full bg-secondary" aria-hidden="true" />
-            {s.name}
+            {c.iauName} · {c.rover}
           </button>
         ))}
         {features.map((f) => (
@@ -434,7 +437,7 @@ export function MarsGlobe({ onOpenSite, onOpenMap }: MarsGlobeProps) {
       </div>
 
       {selected && (
-        <div className="absolute right-3 top-3 w-72 rounded-lg border border-card-border bg-card/95 p-3 text-xs shadow-lg">
+        <div className="absolute right-3 top-3 max-h-[calc(100%-1.5rem)] w-80 overflow-y-auto rounded-lg border border-card-border bg-card/95 p-3 text-xs shadow-lg">
           <div className="flex items-start justify-between gap-2">
             <div>
               <h3 className="text-sm font-bold">{selected.name}</h3>
@@ -459,6 +462,49 @@ export function MarsGlobe({ onOpenSite, onOpenMap }: MarsGlobeProps) {
               {selected.lat.toFixed(2)}°, {selected.lon.toFixed(2)}°E
             </dd>
           </dl>
+          {crater && (
+            <div className="mt-2 flex flex-col gap-2 text-text-secondary">
+              <p>{crater.summary[lang]}</p>
+              <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-[11px]">
+                {crater.facts.slice(1).map((f) => (
+                  <Fragment key={f.label.en}>
+                    <dt className="text-text-muted">{f.label[lang]}</dt>
+                    <dd className="text-text-main">{f.value[lang]}</dd>
+                  </Fragment>
+                ))}
+              </dl>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                {T.sites}
+              </span>
+              {[crater.regional, crater.detail].map((id) => (
+                <div
+                  key={id}
+                  className="flex flex-col gap-1 rounded-lg border border-card-border p-2"
+                >
+                  <span className="text-text-main">
+                    <span className="font-semibold">{SITE_LABELS[id].name}</span> ·{' '}
+                    {SITE_LABELS[id].region}
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => onOpenPlanner(id)}
+                      className="rounded-lg bg-accent px-2.5 py-1 font-medium text-text-main hover:bg-accent-hover cursor-pointer"
+                    >
+                      {T.plan2d}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onOpenSite(id)}
+                      className="rounded-lg border border-card-border px-2.5 py-1 font-medium text-text-main hover:border-secondary cursor-pointer"
+                    >
+                      {T.open3d}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="mt-3 flex flex-wrap gap-2">
             <button
               type="button"

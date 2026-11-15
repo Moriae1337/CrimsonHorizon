@@ -5,11 +5,15 @@ unless noted; every route is a GET so the existing CORS policy applies.
 
 ## Sites
 
+Two craters, each with a regional site for long traverses (CTX, 20 m) and a
+detail site (HiRISE, 8 m):
+
 | Site id          | Region                       | DTM grid                           | Texture                                        |
 | ---------------- | ---------------------------- | ---------------------------------- | ---------------------------------------------- |
-| `columbia-hills` | Gusev crater (Spirit, MER-A) | 500 × 750 cells, 8 m (4 × 6 km)    | HiRISE `PSP_001513_1655_RED_A_01_ORTHO`, 2.5 m |
+| `jezero-crater`  | Jezero crater, regional      | 850 × 400 cells, 20 m (17 × 8 km)  | TRN CTX orthomosaic, 10 m                      |
 | `hawksbill-gap`  | Jezero crater (Perseverance) | 500 × 500 cells, 8 m (4 × 4 km)    | TRN HiRISE orthomosaic, 2.5 m                  |
-| `jezero-crater`  | Jezero crater, regional      | 500 × 500 cells, 20 m (10 × 10 km) | TRN CTX orthomosaic, 10 m                      |
+| `gusev-crater`   | Gusev crater, regional       | 600 × 600 cells, 20 m (12 × 12 km) | USGS controlled CTX orthoimage (DRG), 20 m     |
+| `columbia-hills` | Gusev crater (Spirit, MER-A) | 500 × 750 cells, 8 m (4 × 6 km)    | HiRISE `PSP_001513_1655_RED_A_01_ORTHO`, 2.5 m |
 
 Columbia Hills uses the HiRISE stereo DTM `DTEEC_001513_1655_001777_1650`; Hawksbill
 Gap uses the USGS Mars 2020 TRN HiRISE DTM mosaic (DOI 10.5066/P9REJ9JN), the same
@@ -17,13 +21,17 @@ elevation source as the 2D scenario, with the matching TRN HiRISE orthomosaic
 (DOI 10.5066/P9QJDP48) as texture, cut to a 4 km window so routes of several
 kilometres fit.
 
-`jezero-crater` is a regional site for long traverses (routes of 10 km and more):
-a 10 × 10 km window of the USGS Mars 2020 TRN CTX DTM mosaic, 20 m
-(DOI 10.5066/P906QQT8), centred on the Octavia E. Butler landing site and textured
-with the TRN CTX orthomosaic (DOI 10.5066/P9GV1ND3). The 20 m cells smooth out
-boulders and small scarps, so local slopes can be steeper than the grid shows; the
-package notes and the planner panel say so. A 12.4 km route on it plans in about
-0.8 s locally, the same as the 500 × 500 HiRISE grids.
+`jezero-crater` covers the whole localized Perseverance traverse (landing site,
+delta, crater rim): a 17 × 8 km window of the USGS Mars 2020 TRN CTX DTM mosaic,
+20 m (DOI 10.5066/P906QQT8), centred at 77.3405° E, 18.4598° N and textured with the
+TRN CTX orthomosaic (DOI 10.5066/P9GV1ND3). `gusev-crater` covers the whole Spirit
+traverse (landing site, Bonneville crater, Columbia Hills, Home Plate): a 12 × 12 km
+window of the USGS controlled CTX DTM
+`P21_009319_1651_XN_14S184W__P01_001513_1654_XI_14S184W` (geoid-adjusted DEM and DRG,
+CC0, USGS STAC `mro_ctx_controlled_usgs_dtms`), centred at 175.502° E, 14.582° S;
+96.8 % of its cells are valid. The 20 m cells smooth out boulders and small scarps,
+so local slopes can be steeper than the grid shows; the package notes and the
+planner panel say so.
 
 Packages are built offline by `backend/prep/site_terrain.py` and committed under
 `backend/data/sites/<site>/` (`terrain.json`, `texture.jpg`). Sources and caveats
@@ -62,6 +70,25 @@ NoData), `texture`, `sources`, `notes`. `Cache-Control: public, max-age=86400`.
 ### `GET /sites/{site_id}/texture.jpg`
 
 Grayscale HiRISE orthoimage resampled onto the same frame as the DTM.
+
+### `GET /sites/{site_id}/traverse`
+
+The rover's localized traverse inside the site window, cached for a day:
+`site_id`, `rover` (`perseverance` | `spirit`), `name`, `sols` `[first, last]`,
+`length_m` (whole traverse), `lines` (runs of `[x, y]` inside the window, metres in
+the site frame) and `stops` (one per rover site: `site`, `sol_start`, `sol_end`,
+`lon`, `lat`, `x`, `y`), plus `source` (`label`, `url`). 404 for an unknown site.
+
+The data is built offline by `backend/prep/rover_traverses.py` into
+`backend/data/rover_traverses.json`:
+
+- Perseverance: NASA/JPL Mars 2020 MMGIS traverse and waypoints layers
+  (`M20_traverse.json`, `M20_waypoints.json`), sols 13–2022, 91 stops, 46.8 km.
+- Spirit: PDS MER Analyst's Notebook corrected traverse (`MERA_traverse.csv`,
+  equirectangular centred at 175.5° E), sols 1–2209, 139 stops, 7.1 km. NASA's
+  odometry figure is 7.73 km; ours is the localized line, labelled as such.
+
+Lines are thinned to 10 m; the length is measured before thinning.
 
 ### `GET /sites/{site_id}/routes`
 
@@ -115,13 +142,24 @@ Jezero, Gale, Gusev, Endeavour and Eberswalde. Built by
   where it lengthens the straight-line chain least (`insertStop`). A status line on
   the map says what a click does, shows planning progress and errors, and reports
   clicks outside the window.
-- Window size: grids are kept near 500 × 500 cells because the pure-Python A* and
-  slope/roughness pass grow quickly (measured locally: about 1 s per route at
-  500 × 500, about 15 s at 1000 × 1000), which would be too slow on Render Free.
+- Rover traverse: the planner panel shows each crater's summary, facts and links
+  (`frontend/src/craters.ts`), the rover's sols and localized length, and "Follow the
+  rover's path", which sets A and B at the rover's first and last stop in the window
+  with up to 8 of its stops between them (`roverWaypoints`). The 2D map draws the
+  traverse and its stops; clicking a stop adds it to the route (or snaps A/B to it
+  while picking). The 3D view draws the traverse with its first and last sol.
+- Routing speed: A* runs on flat lists with precomputed cell weights. Grids of
+  300,000 cells or more are searched coarse-to-fine: a block-averaged grid finds a
+  corridor (10 coarse cells wide) and the full grid is searched only inside it,
+  falling back to a full search if that fails. Measured locally: 0.5 s at 500 × 500,
+  about 2 s at 1000 × 1000; a 17 km Jezero route through 8 rover stops takes about
+  0.7 s.
 - 3D (`SiteExplorer.tsx` + `Terrain3DView.tsx`): the same planner on the terrain, plus
   playback (walker drawn enlarged, illustrative scale) and vertical exaggeration.
 - `frontend/src/MarsGlobe.tsx`: globe textured from local equirectangular WebP images
   assembled offline from Mars Trek WMTS tiles (Viking MDIM 2.1 and MOLA shaded
   relief). IAU labels are filtered by
-  camera distance with greedy overlap removal, feature search and site markers.
+  camera distance with greedy overlap removal and feature search. Jezero and Gusev
+  have markers; clicking one (or the IAU label) opens a card with the crater summary
+  and, for each of its two sites, "Plan routes (2D)" and "Open in 3D".
 - Both views are lazy-loaded so the 2D map bundle does not include three.js.

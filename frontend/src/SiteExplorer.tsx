@@ -56,13 +56,33 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
   const progress = progressState.key === progressKey ? progressState.value : 0
   const selected = routes.find((r) => r.id === selectedRouteId)
 
-  // Hawksbill Gap: show the prepared scenario options and stops for context.
+  // Context: the rover's traverse (every site) and, on Hawksbill Gap, the prepared
+  // scenario options and stops.
+  const traverse = planner.traverse
   const { overlayLines, overlayPins } = useMemo(() => {
+    const lines: OverlayLine[] = []
+    const pins: OverlayPin[] = []
+    if (traverse) {
+      traverse.lines.forEach((run, i) => {
+        if (run.length > 1)
+          lines.push({
+            id: `rover-${i}`,
+            label: i === 0 ? traverse.name : '',
+            color: '#EBEBEB',
+            points: run,
+          })
+      })
+      const first = traverse.stops[0]
+      const last = traverse.stops[traverse.stops.length - 1]
+      if (first)
+        pins.push({ id: 'rover-first', label: `Sol ${first.sol_start}`, x: first.x, y: first.y })
+      if (last && last !== first)
+        pins.push({ id: 'rover-last', label: `Sol ${last.sol_end}`, x: last.x, y: last.y })
+    }
     if (siteId !== 'hawksbill-gap' || !scenario || !pkg)
-      return { overlayLines: [], overlayPins: [] }
+      return { overlayLines: lines, overlayPins: pins }
     const [lon0, lat0] = pkg.center_lon_lat
     const proj = (c: number[]) => aeqdForward(c[0], c[1], lon0, lat0, pkg.radius_m)
-    const lines: OverlayLine[] = []
     for (const option of scenario.route_options) {
       const pts = scenario.routes.features
         .filter((f) => f.properties.option === option.id && f.properties.leg === 'outbound')
@@ -71,12 +91,12 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
       if (pts.length > 1)
         lines.push({ id: option.id, label: `Option ${option.id}`, color: '#A3A3A3', points: pts })
     }
-    const pins: OverlayPin[] = scenario.stops.map((s) => {
+    for (const s of scenario.stops) {
       const [x, y] = proj(s.coordinates as number[])
-      return { id: s.id, label: s.name, x, y }
-    })
+      pins.push({ id: s.id, label: s.name, x, y })
+    }
     return { overlayLines: lines, overlayPins: pins }
-  }, [siteId, scenario, pkg])
+  }, [siteId, scenario, pkg, traverse])
 
   const restart = () => setRestartNonce((n) => n + 1)
 
@@ -179,7 +199,9 @@ export function SiteExplorer({ planner, scenario }: SiteExplorerProps) {
               restartNonce={restartNonce}
             />
             <div className="pointer-events-none absolute left-3 top-3 flex flex-col gap-1 rounded-lg border border-card-border bg-card/90 px-3 py-2 text-xs">
-              <span className="text-[11px] text-text-secondary">HiRISE DTM</span>
+              <span className="text-[11px] text-text-secondary">
+                {pkg.cell_size_m >= 15 ? 'CTX' : 'HiRISE'} DTM · {pkg.cell_size_m} m
+              </span>
             </div>
             <div className="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-card-border bg-card/90 px-2.5 py-1 text-[11px] text-text-secondary">
               {T.hint}

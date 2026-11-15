@@ -434,7 +434,7 @@ export function Terrain3DView(props: Terrain3DViewProps) {
       if (line) state.overlayGroup.add(line)
       // Stagger labels along each line so neighbouring options don't overlap.
       const mid = ol.points[Math.floor(ol.points.length * (0.3 + 0.35 * (idx % 2)))]
-      if (mid) {
+      if (mid && ol.label) {
         const label = labelSprite(ol.label, MAIN, SECONDARY)
         label.position.set(mid[0], yAt(mid[0], mid[1]) + size / 60, -mid[1])
         state.overlayGroup.add(label)

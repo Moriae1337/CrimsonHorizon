@@ -209,6 +209,11 @@ function App() {
                 setSidebarMode('planner')
                 setViewMode('site3d')
               }}
+              onOpenPlanner={(id) => {
+                planner.setSiteId(id)
+                setSidebarMode('planner')
+                setViewMode('map')
+              }}
               onOpenMap={(lon, lat, z) => {
                 setSidebarMode('scenario')
                 setFocusTarget({ center: [lon, lat], zoom: z, nonce: Date.now() })
@@ -335,6 +340,9 @@ function App() {
                       onPick: planner.pick,
                       onMoveWaypoint: planner.moveWaypoint,
                       onSelectRoute: planner.setSelectedRouteId,
+                      traverse: planner.traverse,
+                      roverStopTip: PT.roverStopTip,
+                      onAddStop: planner.addStopAt,
                     }
                   : null
               }

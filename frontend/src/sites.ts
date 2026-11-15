@@ -1,8 +1,13 @@
 // 3D terrain sites and the route planner API (specs/sites-api.md).
 // Pure helpers only (no three.js), so Node's test runner can load this module.
 
-export type SiteId = 'columbia-hills' | 'hawksbill-gap' | 'jezero-crater'
-export const SITE_IDS: readonly SiteId[] = ['columbia-hills', 'hawksbill-gap', 'jezero-crater']
+export type SiteId = 'jezero-crater' | 'hawksbill-gap' | 'gusev-crater' | 'columbia-hills'
+export const SITE_IDS: readonly SiteId[] = [
+  'jezero-crater',
+  'hawksbill-gap',
+  'gusev-crater',
+  'columbia-hills',
+]
 
 export interface SiteSource {
   label: string
@@ -311,6 +316,73 @@ export async function fetchRoutePlan(
   const response = await fetch(`${apiUrl}/sites/${siteId}/routes?${query}`, { signal })
   if (!response.ok) throw new Error(await errorDetail(response))
   return parseRoutePlan(await response.json())
+}
+
+// --- Rover traverse inside a site window -------------------------------------
+
+export interface RoverStop {
+  site: number
+  sol_start: number
+  sol_end: number
+  lon: number
+  lat: number
+  x: number
+  y: number
+}
+
+export interface RoverTraverse {
+  site_id: SiteId
+  rover: 'perseverance' | 'spirit'
+  name: string
+  sols: [number, number]
+  length_m: number
+  lines: [number, number][][]
+  stops: RoverStop[]
+  source: { label: string; url: string }
+}
+
+export function parseTraverse(data: unknown, siteId: SiteId): RoverTraverse {
+  const d = data as Partial<RoverTraverse> | null
+  if (
+    !d ||
+    d.site_id !== siteId ||
+    (d.rover !== 'perseverance' && d.rover !== 'spirit') ||
+    !Array.isArray(d.lines) ||
+    !Array.isArray(d.stops) ||
+    !Array.isArray(d.sols) ||
+    typeof d.length_m !== 'number' ||
+    !d.source
+  ) {
+    throw new Error('Unexpected traverse response.')
+  }
+  return d as RoverTraverse
+}
+
+export async function fetchTraverse(
+  apiUrl: string,
+  siteId: SiteId,
+  signal: AbortSignal,
+): Promise<RoverTraverse> {
+  const response = await fetch(`${apiUrl}/sites/${siteId}/traverse`, { signal })
+  if (!response.ok) throw new Error(`Traverse request failed: ${await errorDetail(response)}.`)
+  return parseTraverse(await response.json(), siteId)
+}
+
+/**
+ * Waypoints that follow the rover: its first and last stop in the window as A and
+ * B, and up to `maxStops` stops in between, spread evenly along the rover's order.
+ */
+export function roverWaypoints(
+  stops: readonly RoverStop[],
+  maxStops: number,
+): [number, number][] | null {
+  if (stops.length < 2) return null
+  const inner = stops.length - 2
+  const take = Math.min(maxStops, inner)
+  const picked = [stops[0]]
+  for (let k = 1; k <= take; k++) picked.push(stops[Math.round((k * (inner + 1)) / (take + 1))])
+  picked.push(stops[stops.length - 1])
+  return picked.map((s) => [s.x, s.y])
 }
 
 /** Texture URL versioned by the package build, so a cached image never pairs with a newer grid. */

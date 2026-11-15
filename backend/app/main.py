@@ -15,7 +15,14 @@ from app.scenario import (
     load_scenario,
     load_slope_overlay,
 )
-from app.sites import SITE_DIRS, load_grid, load_site, site_summaries, texture_path
+from app.sites import (
+    SITE_DIRS,
+    load_grid,
+    load_site,
+    site_summaries,
+    site_traverse,
+    texture_path,
+)
 from app.terrain import get_jezero_landmarks, get_map_catalog, get_nomenclature
 
 logger = logging.getLogger(__name__)
@@ -191,6 +198,19 @@ def site_texture(site_id: str) -> FileResponse:
         media_type="image/jpeg",
         headers={"Cache-Control": "public, max-age=86400"},
     )
+
+
+@app.get("/sites/{site_id}/traverse")
+def site_traverse_endpoint(site_id: str, response: Response) -> dict[str, Any]:
+    """The rover traverse and its stops inside one site window."""
+    _site_or_404(site_id)
+    try:
+        doc = site_traverse(site_id)
+    except (OSError, ValueError, KeyError):
+        logger.exception("Traverse for %r is unavailable", site_id)
+        raise HTTPException(status_code=503, detail="Traverse unavailable") from None
+    response.headers["Cache-Control"] = "public, max-age=86400"
+    return doc
 
 
 @app.get("/sites/{site_id}/routes")

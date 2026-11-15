@@ -15,9 +15,12 @@ Sources (all public, read over HTTP range requests with GDAL /vsicurl/):
   HiRISE DTM mosaic (DOI 10.5066/P9REJ9JN), the same elevation source as the
   scenario, textured with the matching TRN HiRISE orthomosaic
   (DOI 10.5066/P9QJDP48).
-- jezero-crater (regional): a 10 x 10 km window of the USGS Mars 2020 TRN CTX
-  DTM mosaic, 20 m (DOI 10.5066/P906QQT8), centred on the Octavia E. Butler
-  landing site, textured with the TRN CTX orthomosaic (DOI 10.5066/P9GV1ND3).
+- jezero-crater (regional): a 17 x 8 km window of the USGS Mars 2020 TRN CTX
+  DTM mosaic, 20 m (DOI 10.5066/P906QQT8), holding Perseverance's whole
+  traverse, textured with the TRN CTX orthomosaic (DOI 10.5066/P9GV1ND3).
+- gusev-crater (regional): a 12 x 12 km window of a USGS controlled CTX DTM
+  (20 m, CC0-1.0, STAC collection mro_ctx_controlled_usgs_dtms) holding Spirit's
+  whole traverse, textured with that item's orthoimage.
 
 The window, grid spacing and texture resolution are planning choices, not data.
 NoData stays NoData (never filled). Elevations are encoded as uint16 steps of
@@ -53,6 +56,10 @@ os.environ.setdefault("GDAL_DISABLE_READDIR_ON_OPEN", "EMPTY_DIR")
 SITES_DIR = Path(__file__).resolve().parents[1] / "data" / "sites"
 NODATA_U16 = 65535
 STAC = "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/hirise/controlled/dtm"
+CTX_STAC = (
+    "https://astrogeo-ard.s3-us-west-2.amazonaws.com/mars/mro/ctx/controlled/usgs"
+)
+GUSEV_CTX = "P21_009319_1651_XN_14S184W__P01_001513_1654_XI_14S184W"
 
 SITES: dict[str, dict[str, Any]] = {
     "columbia-hills": {
@@ -116,11 +123,12 @@ SITES: dict[str, dict[str, Any]] = {
     "jezero-crater": {
         "name": "Jezero crater floor and delta",
         "region": "Jezero crater (regional, CTX)",
-        # Octavia E. Butler landing site (NASA Mars Trek Perseverance traverse, FID 0),
-        # the same point as the map's landing-site landmark. The 10 x 10 km window also
-        # covers the western delta front and Hawksbill Gap.
-        "center_lon_lat": (77.452019, 18.444796),
-        "half_size_m": (5000.0, 5000.0),
+        # Centre of Perseverance's localized traverse, sols 13-2022 (NASA MMGIS
+        # M20_waypoints: lon 77.218-77.463 E, lat 18.420-18.500 N). The 17 x 8 km
+        # window holds the whole traverse from the Octavia E. Butler landing site
+        # across the delta to the crater rim, plus Hawksbill Gap.
+        "center_lon_lat": (77.3405, 18.4598),
+        "half_size_m": (8500.0, 4000.0),
         "cell_size_m": 20.0,
         "texture_cell_m": 10.0,
         "dtm_url": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/"
@@ -142,6 +150,41 @@ SITES: dict[str, dict[str, Any]] = {
                 "Regional planning only: 20 m cells smooth out boulders and small "
                 "scarps, so local slopes can be steeper than shown. Use the Hawksbill "
                 "Gap HiRISE site for detail."
+            ),
+            "Window and grid spacing are planning choices; NoData is never filled.",
+        ],
+    },
+    "gusev-crater": {
+        "name": "Gusev crater plains and Columbia Hills",
+        "region": "Gusev crater (regional, CTX)",
+        # Centre of Spirit's localized traverse, sols 1-2209 (PDS MER Analyst's
+        # Notebook MERA_traverse.csv: lon 175.476-175.528 E, lat -14.601 to
+        # -14.563). The 12 x 12 km window holds the whole traverse from the landing
+        # site past Bonneville crater to Home Plate, with the plains around it.
+        "center_lon_lat": (175.502, -14.582),
+        "half_size_m": (6000.0, 6000.0),
+        "cell_size_m": 20.0,
+        "texture_cell_m": 10.0,
+        "dtm_url": f"{CTX_STAC}/{GUSEV_CTX}/{GUSEV_CTX}-DEM-geoid-adj.tif",
+        "ortho_url": f"{CTX_STAC}/{GUSEV_CTX}/{GUSEV_CTX}-DRG.tif",
+        "sources": [
+            {
+                "label": f"USGS controlled CTX DTM {GUSEV_CTX}, 20 m, geoid-adjusted "
+                "(CC0-1.0)",
+                "url": "https://stac.astrogeology.usgs.gov/api/collections/"
+                f"mro_ctx_controlled_usgs_dtms/items/{GUSEV_CTX}",
+            },
+            {
+                "label": "Orthoimage from the same CTX DTM item (CC0-1.0)",
+                "url": "https://stac.astrogeology.usgs.gov/api/collections/"
+                f"mro_ctx_controlled_usgs_dtms/items/{GUSEV_CTX}",
+            },
+        ],
+        "notes": [
+            (
+                "Regional planning only: 20 m cells smooth out boulders and small "
+                "scarps, so local slopes can be steeper than shown. Use the Columbia "
+                "Hills HiRISE site for detail."
             ),
             "Window and grid spacing are planning choices; NoData is never filled.",
         ],

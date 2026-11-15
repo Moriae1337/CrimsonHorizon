@@ -4,9 +4,21 @@ import type { SiteId } from './sites.ts'
 export const PLANNER_TEXT = {
   en: {
     site: 'Site',
+    crater: 'Crater',
+    roverTraverse: 'Rover traverse',
+    localized: 'localized traverse',
+    sols: 'sols',
+    roverStopsHint:
+      'Small dots on the map are the rover’s stops; click one to add it to your route as a stop.',
+    followRover: 'Follow the rover’s path',
+    followNote:
+      'A and B at the rover’s first and last stop in this window, with up to 8 of its stops between them. Long routes take a few seconds to plan.',
+    roverStop: 'Rover stop',
+    roverStops: 'Stops',
+    roverStopTip: 'click to add as a stop',
+    openPlanner: 'Plan routes (2D)',
+    open3d: 'Open in 3D',
     coverage: 'Routing area',
-    regionalNote:
-      'Regional site for long traverses. The 20 m CTX grid smooths out boulders and small scarps, so local slopes can be steeper than shown; use Hawksbill Gap (HiRISE) for detail.',
     gusevContext:
       'Spirit explored the Columbia Hills inside Gusev crater. It climbed Husband Hill and found silica near Home Plate, evidence of past hot springs or steam vents.',
     spiritSources: 'NASA Spirit mission',
@@ -51,9 +63,21 @@ export const PLANNER_TEXT = {
   },
   uk: {
     site: 'Ділянка',
+    crater: 'Кратер',
+    roverTraverse: 'Траверс марсохода',
+    localized: 'локалізований траверс',
+    sols: 'соли',
+    roverStopsHint:
+      'Маленькі точки на карті — зупинки марсохода; клацніть точку, щоб додати її до маршруту як зупинку.',
+    followRover: 'Пройти шляхом марсохода',
+    followNote:
+      'A і B — перша й остання зупинки марсохода в цьому вікні, між ними до 8 його зупинок. Довгі маршрути рахуються кілька секунд.',
+    roverStop: 'Зупинка марсохода',
+    roverStops: 'Зупинок',
+    roverStopTip: 'клацніть, щоб додати як зупинку',
+    openPlanner: 'Планувати маршрути (2D)',
+    open3d: 'Відкрити в 3D',
     coverage: 'Зона планування',
-    regionalNote:
-      'Регіональна ділянка для довгих маршрутів. Сітка CTX 20 м згладжує валуни й дрібні уступи, тож локальні нахили можуть бути крутішими, ніж показано; для деталей беріть Hawksbill Gap (HiRISE).',
     gusevContext:
       'Марсохід Spirit досліджував пагорби Колумбія в кратері Ґусєв. Він піднявся на пагорб Гасбенд і знайшов кремнезем біля плато Гоум-Плейт, що свідчить про давні гарячі джерела або парові виходи.',
     spiritSources: 'Місія Spirit на сайті NASA',
@@ -105,9 +129,10 @@ export function usePlannerText() {
 }
 
 export const SITE_LABELS: Record<SiteId, { name: string; region: string }> = {
-  'columbia-hills': { name: 'Columbia Hills', region: 'Gusev crater · Spirit' },
-  'hawksbill-gap': { name: 'Hawksbill Gap', region: 'Jezero crater · Perseverance' },
-  'jezero-crater': { name: 'Jezero floor & delta', region: 'Regional · CTX 20 m' },
+  'jezero-crater': { name: 'Jezero · regional', region: 'CTX 20 m · whole rover traverse' },
+  'hawksbill-gap': { name: 'Hawksbill Gap', region: 'HiRISE 8 m · detail' },
+  'gusev-crater': { name: 'Gusev · regional', region: 'CTX 20 m · whole rover traverse' },
+  'columbia-hills': { name: 'Columbia Hills', region: 'HiRISE 8 m · detail' },
 }
 
 export const SECTION = 'text-[11px] font-bold uppercase tracking-wider text-text-muted'
