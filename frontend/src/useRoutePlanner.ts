@@ -6,7 +6,10 @@ import {
   decodeTerrain,
   fetchRoutePlan,
   fetchTerrainPackage,
+  fetchTraverse,
   insertStop,
+  roverWaypoints,
+  type RoverTraverse,
   type PlannedRoute,
   type RouteId,
   type RoutePlan,
@@ -44,12 +47,13 @@ function planKey(siteId: SiteId, draft: Draft, maxGrade: number): string | null 
  * show the same site, waypoints and planned routes. Each site keeps its own draft.
  */
 export function useRoutePlanner(active: boolean) {
-  const [siteId, setSiteId] = useState<SiteId>('columbia-hills')
+  const [siteId, setSiteId] = useState<SiteId>('jezero-crater')
   const [drafts, setDrafts] = useState<Record<SiteId, Draft>>(
     () => Object.fromEntries(SITE_IDS.map((id) => [id, EMPTY_DRAFT])) as Record<SiteId, Draft>,
   )
   const [packages, setPackages] = useState<Partial<Record<SiteId, TerrainPackage>>>({})
   const [loadErrors, setLoadErrors] = useState<Partial<Record<SiteId, string>>>({})
+  const [traverses, setTraverses] = useState<Partial<Record<SiteId, RoverTraverse>>>({})
   const [maxGrade, setMaxGrade] = useState(25)
   const [result, setResult] = useState<PlanResult | null>(null)
   const [selectedRouteId, setSelectedRouteId] = useState<RouteId>('lower_risk')
@@ -74,6 +78,19 @@ export function useRoutePlanner(active: boolean) {
       })
     return () => controller.abort()
   }, [siteId, packages, active])
+
+  // Rover traverse inside the site window (cached per site; optional context).
+  useEffect(() => {
+    if (!API_URL || !active || traverses[siteId]) return
+    const controller = new AbortController()
+    fetchTraverse(API_URL, siteId, controller.signal)
+      .then((t) => setTraverses((all) => ({ ...all, [siteId]: t })))
+      .catch(() => {
+        // The planner works without it; the panel simply shows no rover section.
+      })
+    return () => controller.abort()
+  }, [siteId, traverses, active])
+  const traverse = traverses[siteId] ?? null
 
   // Plan whenever both ends exist and inputs change (debounced).
   const key = planKey(siteId, draft, maxGrade)
@@ -194,6 +211,22 @@ export function useRoutePlanner(active: boolean) {
               : { waypoints: exampleWaypoints, hasEnd: true, pickTarget: null },
           )
       : null,
+    traverse,
+    /** A and B at the rover's first and last stop here, up to 8 of its stops between. */
+    followRover: () => {
+      const wps = traverse ? roverWaypoints(traverse.stops, MAX_STOPS) : null
+      if (wps) updateDraft(() => ({ waypoints: wps, hasEnd: true, pickTarget: null }))
+    },
+    /** Adds a point (e.g. a rover stop) as a stop where it fits best; A/B first if missing. */
+    addStopAt: (x: number, y: number) =>
+      updateDraft((d) => {
+        if (d.waypoints.length === 0)
+          return { waypoints: [[x, y]], hasEnd: false, pickTarget: 'end' }
+        if (!d.hasEnd)
+          return { waypoints: [...d.waypoints, [x, y]], hasEnd: true, pickTarget: null }
+        if (d.waypoints.length - 2 >= MAX_STOPS) return d
+        return { ...d, waypoints: insertStop(d.waypoints, true, [x, y]) }
+      }),
     maxGrade,
     setMaxGrade,
     planning: key !== null && current === null,

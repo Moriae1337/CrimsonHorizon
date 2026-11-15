@@ -19,6 +19,15 @@ SITE_DIRS: dict[str, Path] = {
     "columbia-hills": DATA_DIR / "columbia_hills",
     "hawksbill-gap": DATA_DIR / "hawksbill_gap",
     "jezero-crater": DATA_DIR / "jezero_crater",
+    "gusev-crater": DATA_DIR / "gusev_crater",
+}
+TRAVERSES_PATH = DATA_DIR.parent / "rover_traverses.json"
+# Which rover drove through each site (prep.rover_traverses).
+SITE_ROVER: dict[str, str] = {
+    "columbia-hills": "spirit",
+    "gusev-crater": "spirit",
+    "hawksbill-gap": "perseverance",
+    "jezero-crater": "perseverance",
 }
 
 __all__ = [
@@ -29,6 +38,7 @@ __all__ = [
     "load_grid",
     "load_site",
     "site_summaries",
+    "site_traverse",
     "texture_path",
 ]
 
@@ -69,6 +79,59 @@ def site_summaries() -> list[dict[str, Any]]:
             }
         )
     return out
+
+
+@cache
+def _traverses() -> dict[str, Any]:
+    doc: dict[str, Any] = json.loads(TRAVERSES_PATH.read_text(encoding="utf-8"))
+    if doc.get("version") != 1 or not isinstance(doc.get("rovers"), dict):
+        raise ValueError("unsupported rover traverse document")
+    return doc
+
+
+@cache
+def site_traverse(site_id: str) -> dict[str, Any]:
+    """The rover traverse inside a site window, in site metres and lon/lat.
+
+    `lines` are the runs of the traverse that fall inside the window; `stops` are
+    the rover's site positions (where it stopped and worked) inside the window.
+    """
+    doc = load_site(site_id)
+    rover = _traverses()["rovers"][SITE_ROVER[site_id]]
+    lon0, lat0 = doc["center_lon_lat"]
+    radius = float(doc["radius_m"])
+    b = doc["bounds_m"]
+
+    def inside(x: float, y: float) -> bool:
+        return b["left"] <= x <= b["right"] and b["bottom"] <= y <= b["top"]
+
+    lines: list[list[list[float]]] = []
+    run: list[list[float]] = []
+    for lon, lat in rover["line"]:
+        x, y = aeqd_forward(lon, lat, lon0, lat0, radius)
+        if inside(x, y):
+            run.append([round(x, 1), round(y, 1)])
+        elif run:
+            if len(run) > 1:
+                lines.append(run)
+            run = []
+    if len(run) > 1:
+        lines.append(run)
+    stops = []
+    for s in rover["stops"]:
+        x, y = aeqd_forward(s["lon"], s["lat"], lon0, lat0, radius)
+        if inside(x, y):
+            stops.append({**s, "x": round(x, 1), "y": round(y, 1)})
+    return {
+        "site_id": site_id,
+        "rover": rover["rover"],
+        "name": rover["name"],
+        "sols": rover["sols"],
+        "length_m": rover["length_m"],
+        "lines": lines,
+        "stops": stops,
+        "source": rover["source"],
+    }
 
 
 # --- Spherical azimuthal equidistant projection (matches the package CRS) ----

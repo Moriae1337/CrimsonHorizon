@@ -205,3 +205,66 @@ def test_nomenclature_endpoint() -> None:
     assert features["Jezero"]["category"] == "crater"
     assert all(-180 <= f["lon"] <= 180 for f in features.values())
     assert features["Gusev"]["link"].startswith("https://planetarynames.wr.usgs.gov/")
+
+
+def test_coarse_to_fine_matches_full_search_and_detours_a_wall(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """On a large grid the corridor search must still respect walls and the limit."""
+    from app import routing
+
+    n = 120
+    # A ridge across the grid with one gap near the top: the route must use the gap.
+    z = [[0.0] * n for _ in range(n)]
+    for r in range(n):
+        if r > 12:
+            z[r][60] = 50.0
+            z[r][61] = 50.0
+    grid = make_grid(z, cell=2.0)
+    wps = [(20.0, 30.0), (220.0, 30.0)]
+    monkeypatch.setattr(routing, "HIERARCHY_MIN_CELLS", 10**9)
+    full = plan_routes(grid, wps)
+    monkeypatch.setattr(routing, "HIERARCHY_MIN_CELLS", 1_000)
+    fine = plan_routes(grid, wps)
+    for a, b in zip(full["routes"], fine["routes"], strict=True):
+        assert b["metrics"]["max_grade_deg"] <= 25.0
+        # The detour through the gap is long; the corridor result stays near optimal.
+        assert b["metrics"]["length_m"] == pytest.approx(
+            a["metrics"]["length_m"], rel=0.03
+        )
+        assert min(y for _, y in b["path_xy"]) < 2.0 * n - 2.0 * 12
+
+
+def test_coarse_to_fine_falls_back_when_coarse_grid_is_blocked(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A gap narrower than a coarse cell is invisible at coarse scale: fall back."""
+    from app import routing
+
+    n = 80
+    z = [[0.0] * n for _ in range(n)]
+    for r in range(n):
+        if r != 40:  # one-cell gap in the wall at row 40
+            z[r][40] = 80.0
+    grid = make_grid(z, cell=2.0)
+    monkeypatch.setattr(routing, "HIERARCHY_MIN_CELLS", 1_000)
+    result = plan_routes(grid, [(10.0, 80.0), (150.0, 80.0)])
+    for route in result["routes"]:
+        assert route["metrics"]["max_grade_deg"] <= 25.0
+
+
+@pytest.mark.parametrize("site_id", sorted(SITE_DIRS))
+def test_traverse_endpoint(site_id: str) -> None:
+    res = client.get(f"/sites/{site_id}/traverse")
+    assert res.status_code == 200
+    doc = res.json()
+    assert doc["rover"] in ("spirit", "perseverance")
+    pkg = load_site(site_id)
+    b = pkg["bounds_m"]
+    assert doc["stops"], "every site window holds part of a rover traverse"
+    for s in doc["stops"]:
+        assert b["left"] <= s["x"] <= b["right"]
+        assert b["bottom"] <= s["y"] <= b["top"]
+        assert s["sol_start"] <= s["sol_end"]
+    assert all(len(line) > 1 for line in doc["lines"])
+    assert client.get("/sites/nowhere/traverse").status_code == 404

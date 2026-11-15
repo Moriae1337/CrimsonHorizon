@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react'
+import { Fragment, type ReactNode } from 'react'
+import { CRATERS, CRATER_IDS, craterOfSite } from './craters.ts'
+import { useTranslation } from './i18n/useTranslation.ts'
 import {
   ROUTE_COLORS,
-  SITE_IDS,
   formatDelta,
   formatMinutes,
   type PlannedRoute,
@@ -118,6 +119,9 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
     Record<RouteId, PlannedRoute>
   >
   const nStops = Math.max(0, p.waypoints.length - (p.hasEnd ? 2 : 1))
+  const { locale } = useTranslation()
+  const lang = locale === 'uk' ? 'uk' : 'en'
+  const crater = craterOfSite(p.siteId)
   const rows: Array<{
     label: string
     get: (r: PlannedRoute) => number
@@ -163,47 +167,101 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
 
   return (
     <div className="flex flex-col gap-4 text-xs">
-      <section className="flex flex-col gap-2">
-        <h2 className={SECTION}>{T.site}</h2>
-        <div className="grid grid-cols-3 gap-2">
-          {SITE_IDS.map((id) => {
-            const s = SITE_LABELS[id]
-            const active = id === p.siteId
-            return (
-              <button
-                key={id}
-                type="button"
-                onClick={() => p.setSiteId(id)}
-                aria-pressed={active}
-                className={`rounded-lg border p-2 text-left cursor-pointer transition-colors ${
-                  active
-                    ? 'border-accent bg-accent/20'
-                    : 'border-card-border bg-input hover:border-border-strong'
-                }`}
-              >
-                <span className="block font-semibold text-text-main">{s.name}</span>
-                <span className="text-[11px] text-text-secondary">{s.region}</span>
-              </button>
-            )
-          })}
-        </div>
+      <section className="flex flex-col gap-3">
+        {CRATER_IDS.map((cid) => {
+          const c = CRATERS[cid]
+          const open = crater.id === cid
+          return (
+            <div key={cid} className="flex flex-col gap-2">
+              <h2 className={SECTION}>
+                {T.crater} {c.iauName}
+              </h2>
+              <div className="grid grid-cols-2 gap-2">
+                {[c.regional, c.detail].map((id) => {
+                  const s = SITE_LABELS[id]
+                  const active = id === p.siteId
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => p.setSiteId(id)}
+                      aria-pressed={active}
+                      className={`rounded-lg border p-2 text-left cursor-pointer transition-colors ${
+                        active
+                          ? 'border-accent bg-accent/20'
+                          : 'border-card-border bg-input hover:border-border-strong'
+                      }`}
+                    >
+                      <span className="block font-semibold text-text-main">{s.name}</span>
+                      <span className="text-[11px] text-text-secondary">{s.region}</span>
+                    </button>
+                  )
+                })}
+              </div>
+              {open && (
+                <div className="flex flex-col gap-2 rounded-lg border border-card-border bg-input p-2 text-text-secondary">
+                  <p>{c.summary[lang]}</p>
+                  <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 text-[11px]">
+                    {c.facts.map((f) => (
+                      <Fragment key={f.label.en}>
+                        <dt className="text-text-muted">{f.label[lang]}</dt>
+                        <dd className="text-text-main">{f.value[lang]}</dd>
+                      </Fragment>
+                    ))}
+                    {p.traverse && (
+                      <>
+                        <dt className="text-text-muted">{T.roverTraverse}</dt>
+                        <dd className="text-text-main">
+                          {T.sols} {p.traverse.sols[0]}–{p.traverse.sols[1]} ·{' '}
+                          {(p.traverse.length_m / 1000).toFixed(1)} km ({T.localized})
+                        </dd>
+                      </>
+                    )}
+                  </dl>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px]">
+                    {c.links.map((l) => (
+                      <a
+                        key={l.url}
+                        className="underline hover:text-text-main"
+                        href={l.url}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {l.label} ↗
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
         {p.pkg && (
           <p className="text-[11px] text-text-secondary">
             {T.coverage} · {(p.pkg.shape[1] * p.pkg.cell_size_m) / 1000} ×{' '}
             {(p.pkg.shape[0] * p.pkg.cell_size_m) / 1000} km · {p.pkg.cell_size_m} m DTM
           </p>
         )}
-        {p.siteId === 'jezero-crater' && <p className="text-text-secondary">{T.regionalNote}</p>}
-        {p.siteId === 'columbia-hills' && (
-          <div className="space-y-1 text-text-secondary">
-            <p>{T.gusevContext}</p>
+        {p.siteId === crater.regional && (
+          <p className="text-[11px] text-text-secondary">{crater.regionalNote[lang]}</p>
+        )}
+        {p.traverse && p.traverse.stops.length > 1 && (
+          <div className="flex flex-col gap-1.5 rounded-lg border border-card-border bg-input p-2">
+            <span className="font-semibold">
+              {T.roverTraverse}: {p.traverse.name} · {T.roverStops}: {p.traverse.stops.length}
+            </span>
+            <button type="button" className={`${BTN_ACTIVE} self-start`} onClick={p.followRover}>
+              {T.followRover}
+            </button>
+            <p className="text-[11px] text-text-secondary">{T.followNote}</p>
+            <p className="text-[11px] text-text-secondary">{T.roverStopsHint}</p>
             <a
-              className="underline hover:text-text-main"
-              href="https://science.nasa.gov/mission/mer-spirit/"
+              className="text-[11px] text-text-secondary underline hover:text-text-main"
+              href={p.traverse.source.url}
               target="_blank"
               rel="noreferrer"
             >
-              {T.spiritSources}
+              {p.traverse.source.label} ↗
             </a>
           </div>
         )}
@@ -424,9 +482,9 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
       {p.pkg && (
         <section className="flex flex-col gap-1.5 border-t border-card-border pt-3">
           <h2 className={SECTION}>{T.sources}</h2>
-          {p.pkg.sources.map((s) => (
+          {p.pkg.sources.map((s, i) => (
             <a
-              key={s.url}
+              key={`${i}-${s.url}`}
               href={s.url}
               target="_blank"
               rel="noreferrer"

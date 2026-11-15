@@ -18,9 +18,10 @@ import heapq
 import itertools
 import math
 from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any
 
-from app.sites import TerrainGrid
+from app.sites import TerrainGrid, _slope_and_roughness
 
 GRADE_CLASS_EDGES_DEG = (0.0, 5.0, 10.0, 15.0, 20.0, 25.0)
 SLOPE_WEIGHT = 4.0
@@ -48,11 +49,13 @@ def _p90(values: tuple[float, ...]) -> float:
     return max(s[int(0.9 * (len(s) - 1))], 1e-3)
 
 
-def _risk_factor(
-    grid: TerrainGrid, i: int, max_grade: float, rough_ref: float
-) -> float:
-    s = grid.slope_deg[i] / max_grade
-    return 1.0 + SLOPE_WEIGHT * s * s + grid.roughness_m[i] / rough_ref
+def _risk_weights(grid: TerrainGrid, max_grade: float, rough_ref: float) -> list[float]:
+    """Per-cell lower-risk factor: 1 + 4 (slope / max_grade)^2 + roughness / p90."""
+    inv = 1.0 / max_grade
+    return [
+        1.0 + SLOPE_WEIGHT * (s * inv) ** 2 + r / rough_ref
+        for s, r in zip(grid.slope_deg, grid.roughness_m, strict=True)
+    ]
 
 
 def _astar(
@@ -60,64 +63,190 @@ def _astar(
     start: int,
     goal: int,
     max_tan: float,
-    weight: Callable[[int], float] | None,
+    weight: list[float] | None,
+    allowed: bytearray | None = None,
 ) -> list[int]:
+    """A* on the 8-connected grid; `allowed` optionally restricts it to a corridor."""
     rows, cols, cell, z = grid.rows, grid.cols, grid.cell, grid.z
-    gx, gy = divmod(goal, cols)
-    g_cost = {start: 0.0}
-    came: dict[int, int] = {}
+    n = rows * cols
+    g_cost = [math.inf] * n
+    came = [-1] * n
+    if allowed is None:
+        closed = bytearray(n)
+    else:
+        # Cells outside the corridor behave as already closed.
+        closed = bytearray(allowed.translate(_INVERT))
+        closed[start] = 0
+        closed[goal] = 0
+    goal_r, goal_c = divmod(goal, cols)
+    moves = [
+        (dr, dc, dr * cols + dc, k * cell, max_tan * k * cell, max_tan * k * cell / 2)
+        for dr, dc, k in NEIGHBOURS
+    ]
+    diag_extra = (SQRT2 - 2.0) * cell
+    g_cost[start] = 0.0
     heap = [(0.0, start)]
-    closed: set[int] = set()
+    push, pop, sqrt = heapq.heappush, heapq.heappop, math.sqrt
     while heap:
-        _, cur = heapq.heappop(heap)
+        _, cur = pop(heap)
         if cur == goal:
             path = [cur]
-            while cur in came:
+            while came[cur] >= 0:
                 cur = came[cur]
                 path.append(cur)
             return path[::-1]
-        if cur in closed:
+        if closed[cur]:
             continue
-        closed.add(cur)
+        closed[cur] = 1
         r, c = divmod(cur, cols)
         zc = z[cur]
-        assert zc is not None
-        wc = weight(cur) if weight else 1.0
+        if zc is None:
+            continue
+        wc = weight[cur] if weight is not None else 1.0
         base = g_cost[cur]
-        for dr, dc, k in NEIGHBOURS:
-            rr, cc = r + dr, c + dc
-            if not (0 <= rr < rows and 0 <= cc < cols):
+        for dr, dc, off, run, lim, half in moves:
+            rr = r + dr
+            cc = c + dc
+            if rr < 0 or rr >= rows or cc < 0 or cc >= cols:
                 continue
-            nb = rr * cols + cc
-            if nb in closed:
+            nb = cur + off
+            if closed[nb]:
                 continue
             zn = z[nb]
             if zn is None:
                 continue
-            run = k * cell
             dz = zn - zc
-            if abs(dz) > max_tan * run:
+            if dz > lim or -dz > lim:
                 continue
             if dr and dc:
                 # A diagonal crosses two more cells; check both halves through
                 # the bilinear midpoint so the densified profile obeys the limit.
-                za, zb = z[r * cols + cc], z[rr * cols + c]
+                za = z[cur + dc]
+                zb = z[cur + dr * cols]
                 if za is None or zb is None:
                     continue
                 zm = 0.25 * (zc + zn + za + zb)
-                half = max_tan * run * 0.5
                 if abs(zm - zc) > half or abs(zn - zm) > half:
                     continue
-            step = math.sqrt(run * run + dz * dz)
-            if weight:
-                step *= 0.5 * (wc + weight(nb))
+            step = sqrt(run * run + dz * dz)
+            if weight is not None:
+                step *= 0.5 * (wc + weight[nb])
             ng = base + step
-            if ng < g_cost.get(nb, math.inf):
+            if ng < g_cost[nb]:
                 g_cost[nb] = ng
                 came[nb] = cur
-                h = cell * math.hypot(rr - gx, cc - gy)
-                heapq.heappush(heap, (ng + h, nb))
+                # Octile distance: admissible, as every move costs at least its run.
+                ar = rr - goal_r if rr > goal_r else goal_r - rr
+                ac = cc - goal_c if cc > goal_c else goal_c - cc
+                h = cell * (ar + ac) + diag_extra * (min(ac, ar))
+                push(heap, (ng + h, nb))
     raise RouteError("no route within the grade limit between these points")
+
+
+_INVERT = bytes([1, 0]) + bytes(254)
+
+# Grids at least this large are searched coarse-to-fine: first on a block-averaged
+# grid, then on the full grid inside a corridor around the coarse path. If either
+# step finds nothing, the full grid is searched, so no route is lost.
+HIERARCHY_MIN_CELLS = 300_000
+CORRIDOR_RADIUS = 10  # coarse cells on each side of the coarse path
+
+
+@dataclass(frozen=True)
+class _Coarse:
+    grid: TerrainGrid
+    factor: int
+
+
+_COARSE_CACHE: dict[int, tuple[TerrainGrid, _Coarse]] = {}
+
+
+def _coarse(grid: TerrainGrid) -> _Coarse:
+    """Block-averaged copy of a large grid (cached per grid object)."""
+    hit = _COARSE_CACHE.get(id(grid))
+    if hit is not None and hit[0] is grid:
+        return hit[1]
+    f = max(2, math.ceil(math.sqrt(grid.rows * grid.cols / 60_000)))
+    rows, cols = math.ceil(grid.rows / f), math.ceil(grid.cols / f)
+    z: list[float | None] = []
+    for r in range(rows):
+        for c in range(cols):
+            vals = [
+                v
+                for rr in range(r * f, min((r + 1) * f, grid.rows))
+                for cc in range(c * f, min((c + 1) * f, grid.cols))
+                if (v := grid.z[rr * grid.cols + cc]) is not None
+            ]
+            z.append(sum(vals) / len(vals) if 2 * len(vals) >= f * f else None)
+    slope, rough = _slope_and_roughness(z, rows, cols, grid.cell * f)
+    coarse = _Coarse(
+        TerrainGrid(
+            rows=rows,
+            cols=cols,
+            cell=grid.cell * f,
+            left=grid.left,
+            top=grid.top,
+            z=tuple(z),
+            slope_deg=tuple(slope),
+            roughness_m=tuple(rough),
+            lon0=grid.lon0,
+            lat0=grid.lat0,
+            radius=grid.radius,
+        ),
+        f,
+    )
+    if len(_COARSE_CACHE) > 8:
+        _COARSE_CACHE.clear()
+    _COARSE_CACHE[id(grid)] = (grid, coarse)
+    return coarse
+
+
+def _corridor(grid: TerrainGrid, coarse: _Coarse, path: list[int]) -> bytearray:
+    f, cg = coarse.factor, coarse.grid
+    rad = CORRIDOR_RADIUS
+    marked: set[int] = set()
+    for i in path:
+        r, c = divmod(i, cg.cols)
+        for rr in range(max(r - rad, 0), min(r + rad + 1, cg.rows)):
+            for cc in range(max(c - rad, 0), min(c + rad + 1, cg.cols)):
+                marked.add(rr * cg.cols + cc)
+    mask = bytearray(grid.rows * grid.cols)
+    for i in marked:
+        r, c = divmod(i, cg.cols)
+        c0 = c * f
+        c1 = min(c0 + f, grid.cols)
+        ones = b"\x01" * (c1 - c0)
+        for rr in range(r * f, min(r * f + f, grid.rows)):
+            row = rr * grid.cols
+            mask[row + c0 : row + c1] = ones
+    return mask
+
+
+def _leg(
+    grid: TerrainGrid,
+    a: int,
+    b: int,
+    max_tan: float,
+    weight: list[float] | None,
+    coarse_weight: Callable[[TerrainGrid], list[float] | None],
+) -> list[int]:
+    """One leg a->b: coarse-to-fine on large grids, full search otherwise."""
+    if grid.rows * grid.cols >= HIERARCHY_MIN_CELLS:
+        co = _coarse(grid)
+        cg, f = co.grid, co.factor
+        ra, ca = divmod(a, grid.cols)
+        rb, cb = divmod(b, grid.cols)
+        sa = (ra // f) * cg.cols + ca // f
+        sb = (rb // f) * cg.cols + cb // f
+        if sa != sb and cg.z[sa] is not None and cg.z[sb] is not None:
+            try:
+                coarse_path = _astar(cg, sa, sb, max_tan, coarse_weight(cg))
+                return _astar(
+                    grid, a, b, max_tan, weight, _corridor(grid, co, coarse_path)
+                )
+            except RouteError:
+                pass
+    return _astar(grid, a, b, max_tan, weight)
 
 
 def _segment_cost(
@@ -125,7 +254,7 @@ def _segment_cost(
     a: tuple[float, float],
     b: tuple[float, float],
     max_tan: float,
-    weight: Callable[[int], float] | None,
+    weight: list[float] | None,
 ) -> float | None:
     """Cost of the straight segment a->b sampled at half-cell steps; None if invalid."""
     length = math.dist(a, b)
@@ -147,11 +276,11 @@ def _segment_cost(
         if abs(dz) > max_tan * run + 1e-9:
             return None
         step = math.sqrt(run * run + dz * dz)
-        if weight:
+        if weight is not None:
             i = grid.index(x, y)
             if i is None:
                 return None
-            step *= weight(i)
+            step *= weight[i]
         total += step
         prev_z = zk
     return total
@@ -161,7 +290,7 @@ def _string_pull(
     grid: TerrainGrid,
     pts: list[tuple[float, float]],
     max_tan: float,
-    weight: Callable[[int], float] | None,
+    weight: list[float] | None,
     lookahead: int = 48,
 ) -> list[tuple[float, float]]:
     """Greedy any-angle shortcutting; a shortcut must not cost more than the path."""
@@ -287,9 +416,13 @@ def plan_routes(
         for k, p in enumerate(waypoints)
     ]
     rough_ref = _p90(grid.roughness_m)
-    weights: dict[str, Callable[[int], float] | None] = {
+    weights: dict[str, list[float] | None] = {
         "shortest": None,
-        "lower_risk": lambda i: _risk_factor(grid, i, max_grade_deg, rough_ref),
+        "lower_risk": _risk_weights(grid, max_grade_deg, rough_ref),
+    }
+    coarse_weights: dict[str, Callable[[TerrainGrid], list[float] | None]] = {
+        "shortest": lambda _g: None,
+        "lower_risk": lambda g: _risk_weights(g, max_grade_deg, _p90(g.roughness_m)),
     }
     routes = []
     for route_id, weight in weights.items():
@@ -297,7 +430,7 @@ def plan_routes(
         for a, b in itertools.pairwise(idx):
             if a == b:
                 continue
-            cells = _astar(grid, a, b, max_tan, weight)
+            cells = _leg(grid, a, b, max_tan, weight, coarse_weights[route_id])
             pts = [grid.center(i) for i in cells]
             leg = _string_pull(grid, pts, max_tan, weight)
             poly.extend(leg if not poly else leg[1:])
@@ -332,7 +465,8 @@ def plan_routes(
         "waypoints_xy": [[round(x, 2), round(y, 2)] for x, y in waypoints],
         "routes": routes,
         "model": {
-            "search": "A* on the 8-connected grid + line-of-sight string pulling",
+            "search": "A* on the 8-connected grid (coarse-to-fine corridor on "
+            "large grids) + line-of-sight string pulling",
             "lower_risk_weight": "d * (1 + 4 (slope / max_grade)^2 + roughness / p90)",
             "walk_speed": "spacesuit-scaled Tobler, 2.5 km/h on flat ground",
             "caveat": "max_grade_deg is a planning parameter, not a cited suit "
