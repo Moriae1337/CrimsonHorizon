@@ -6,25 +6,30 @@ v1 shape defined in specs/scenario-api.md:
 - manifest.json: conventions, extent, and the cited sources;
 - routes.geojson (prep.routes): route options and their pieces;
 - inputs/rover_traverse.geojson: historical drives, one feature per sol;
-- inputs/rover_waypoints.geojson: the start localization.
+- inputs/rover_waypoints.geojson: the start localization;
+- route_metrics.json (prep.profiles): elevation profiles, ascent, grade, and
+  DTM coverage gaps along each option.
 
-Evidence, profiles, and unknowns are not prepared yet. They are empty lists and
-listed in pending_sections. build() is pure, so tests can rebuild the document
-and compare it with the committed file.
+Profiles are filled since v1.1. Unknowns hold DTM coverage gaps
+("terrain-gap"); caution zones and connector uncertainty (#46, #47) are not
+prepared yet, so "unknowns" stays in pending_sections with evidence. build() is
+pure, so tests can rebuild the document and compare it with the committed file.
 """
 
 import json
 from typing import Any
 
 from prep.common import INPUTS_DIR, SCENARIO_DIR, load_manifest, utc_now
+from prep.profiles import METRICS_PATH
 from prep.routes import ROUTES_PATH, START_RMC
 
 SCENARIO_PATH = SCENARIO_DIR / "scenario.json"
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"
 
 TRAVERSE_SOURCE = "m20-traverse"
 WAYPOINTS_SOURCE = "m20-waypoints"
 SAMPLES_SOURCE = "pds-initial-reports"
+DTM_SOURCE = "dtm-primary"
 
 # Science stops. Pins sit at the first sample coordinate of each stop, in
 # [lon, lat] order, with sols and nearest localizations from the stop specs:
@@ -71,7 +76,7 @@ ROUTE_OPTIONS: dict[str, dict[str, Any]] = {
     },
 }
 
-PENDING_SECTIONS = ["evidence", "profiles", "unknowns"]
+PENDING_SECTIONS = ["evidence", "unknowns"]
 
 Point = list[float]
 
@@ -133,7 +138,9 @@ def start(waypoints: list[dict[str, Any]]) -> dict[str, Any]:
     raise KeyError(f"waypoints have no localization {START_RMC!r}")
 
 
-def route_options(routes: dict[str, Any]) -> list[dict[str, Any]]:
+def route_options(
+    routes: dict[str, Any], metrics: dict[str, Any]
+) -> list[dict[str, Any]]:
     return [
         {
             "id": option,
@@ -141,8 +148,46 @@ def route_options(routes: dict[str, Any]) -> list[dict[str, Any]]:
             "outbound_m": info["outbound_m"],
             "round_trip_m": info["round_trip_m"],
             "proposed_m": info["proposed_m"],
+            "ascent_m": metrics["options"][option]["ascent_m"],
+            "max_grade_deg": metrics["options"][option]["max_grade_deg"],
+            "dtm_covered_pct": metrics["options"][option]["coverage"]["covered_pct"],
         }
         for option, info in routes["options"].items()
+    ]
+
+
+def profiles(metrics: dict[str, Any]) -> list[dict[str, Any]]:
+    """One round-trip elevation series per option; null elevations are gaps."""
+    return [
+        {
+            "id": f"profile-{option.lower()}",
+            "option": option,
+            "step_m": info["profile"]["step_m"],
+            "spacing_m": info["profile"]["spacing_m"],
+            "outbound_m": info["outbound_m"],
+            "distance_m": info["profile"]["distance_m"],
+            "elevation_m": info["profile"]["elevation_m"],
+            "source_ids": [DTM_SOURCE],
+        }
+        for option, info in metrics["options"].items()
+    ]
+
+
+def unknowns(metrics: dict[str, Any]) -> list[dict[str, Any]]:
+    """Outbound spans where the DTM has no valid elevation."""
+    return [
+        {
+            "id": f"terrain-gap-{option.lower()}-{n}",
+            "option": option,
+            "kind": "terrain-gap",
+            "geometry": gap["geometry"],
+            "from_m": gap["from_m"],
+            "to_m": gap["to_m"],
+            "length_m": gap["length_m"],
+            "source_ids": [DTM_SOURCE],
+        }
+        for option, info in metrics["options"].items()
+        for n, gap in enumerate(info["gaps"], start=1)
     ]
 
 
@@ -202,6 +247,7 @@ def build(
     routes: dict[str, Any],
     traverse: list[dict[str, Any]],
     waypoints: list[dict[str, Any]],
+    metrics: dict[str, Any],
     generated_at: str,
 ) -> dict[str, Any]:
     return {
@@ -213,18 +259,18 @@ def build(
         "extent": extent(manifest),
         "start": start(waypoints),
         "stops": STOPS,
-        "route_options": route_options(routes),
+        "route_options": route_options(routes, metrics),
         "routes": route_features(routes),
         "rover_track": rover_track(traverse),
         "evidence": [],
-        "profiles": [],
-        "unknowns": [],
+        "profiles": profiles(metrics),
+        "unknowns": unknowns(metrics),
         "pending_sections": PENDING_SECTIONS,
         "sources": sources(manifest),
     }
 
 
-def load_inputs() -> tuple[dict, dict, list, list]:
+def load_inputs() -> tuple[dict, dict, list, list, dict]:
     def read(path):
         return json.loads(path.read_text(encoding="utf-8"))
 
@@ -233,6 +279,7 @@ def load_inputs() -> tuple[dict, dict, list, list]:
         read(ROUTES_PATH),
         read(INPUTS_DIR / "rover_traverse.geojson")["features"],
         read(INPUTS_DIR / "rover_waypoints.geojson")["features"],
+        read(METRICS_PATH),
     )
 
 
@@ -243,6 +290,8 @@ def main() -> None:
     print(
         f"{SCENARIO_PATH.name}: {len(scenario['routes']['features'])} route pieces, "
         f"{len(scenario['rover_track']['features'])} drives, "
+        f"{len(scenario['profiles'])} profiles, "
+        f"{len(scenario['unknowns'])} unknowns, "
         f"{SCENARIO_PATH.stat().st_size} bytes"
     )
 

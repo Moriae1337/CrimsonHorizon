@@ -16,13 +16,18 @@ unchanged. Tracking issue: CH26-031 (#49).
 
 ## Versioning
 
-`schema_version` is a `"MAJOR.MINOR"` string; this document defines `"1.0"`.
+`schema_version` is a `"MAJOR.MINOR"` string; this document defines `"1.1"`.
 
 - Adding an optional field or a new pending section bumps MINOR. Clients ignore
   fields they do not know.
 - Renaming, removing, or changing the meaning or units of a field bumps MAJOR.
 - Clients accept MAJOR `1` with any MINOR, and they reject any other MAJOR with a
   "scenario version not supported" state, without crashing the base map.
+
+| Version | Change                                                                                               |
+| ------- | ---------------------------------------------------------------------------------------------------- |
+| `1.0`   | First contract. `evidence`, `profiles`, and `unknowns` pending.                                      |
+| `1.1`   | Fills `profiles`; defines `terrain-gap` unknowns; adds terrain metrics to route options (see below). |
 
 ## Conventions
 
@@ -32,15 +37,15 @@ unchanged. Tracking issue: CH26-031 (#49).
 | Coordinates    | GeoJSON order: `[lon, lat]` or `[lon, lat, elev_m]`. Never `[lat, lon]`. GeoJSON `crs` members are not used.                                                                                   |
 | Elevation      | Meters. Route and track vertices carry the rover localization `elev_geoid`. `vertical_reference` explains the datum.                                                                           |
 | Units          | Lengths in meters (`*_m`), angles in degrees (`*_deg`), dates ISO 8601. Field names carry the unit suffix.                                                                                     |
-| Missing values | A missing number is JSON `null`, never `0`, `-9999`, or NaN. A section that is not prepared yet is listed in `pending_sections` and is present as an empty list.                               |
+| Missing values | A missing number is JSON `null`, never `0`, `-9999`, or NaN. A section that is not prepared yet is listed in `pending_sections` and is present as a list, empty or partly filled.              |
 | IDs            | Lowercase kebab-case strings, stable across MINOR versions. Rover localizations keep their mission `RMC` (`"26_1004"`). Source IDs match `backend/data/hawksbill_gap/manifest.json` input IDs. |
-| Sources        | Every stop, route feature, track feature, and evidence item has `source_ids`, a non-empty list of IDs from `sources`.                                                                          |
+| Sources        | Every stop, route feature, track feature, profile, unknown, and evidence item has `source_ids`, a non-empty list of IDs from `sources`.                                                        |
 
 ## Document
 
 ```jsonc
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "scenario_id": "hawksbill-gap",
   "title": "Hawksbill Gap",
   "generated_at": "2026-11-14T12:00:00Z",
@@ -96,6 +101,9 @@ unchanged. Tracking issue: CH26-031 (#49).
       "outbound_m": 129.0,
       "round_trip_m": 258.01,
       "proposed_m": 5.2,
+      "ascent_m": 13.33, // round-trip ascent at the 5 m step
+      "max_grade_deg": { "2": 20.44, "5": 14.62, "10": 14.12 }, // keyed by sampling step in meters
+      "dtm_covered_pct": 100.0, // share of the outbound length with valid DTM elevation
     },
     {
       "id": "B",
@@ -104,6 +112,9 @@ unchanged. Tracking issue: CH26-031 (#49).
       "outbound_m": 172.64,
       "round_trip_m": 345.28,
       "proposed_m": 0,
+      "ascent_m": 17.8,
+      "max_grade_deg": { "2": 20.56, "5": 14.86, "10": 13.92 },
+      "dtm_covered_pct": 100.0,
     },
   ],
   "routes": {
@@ -145,9 +156,37 @@ unchanged. Tracking issue: CH26-031 (#49).
     ],
   },
   "evidence": [],
-  "profiles": [],
-  "unknowns": [],
-  "pending_sections": ["evidence", "profiles", "unknowns"],
+  "profiles": [
+    {
+      "id": "profile-a",
+      "option": "A",
+      "step_m": 5, // nominal step; samples are never farther apart
+      "spacing_m": 4.9617, // actual even spacing: outbound_m / ceil(outbound_m / step_m)
+      "outbound_m": 129.0, // turnaround; the second half mirrors the outbound
+      "distance_m": [0, 4.96, 9.92], // round trip, from 0 to round_trip_m
+      "elevation_m": [-2535.607, -2534.691, null], // null = DTM gap (illustrative), breaks the line
+      "source_ids": ["dtm-primary"],
+    },
+  ],
+  "unknowns": [
+    {
+      "id": "terrain-gap-a-1", // illustrative: the current routes have no DTM gaps
+      "option": "A",
+      "kind": "terrain-gap",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.4061, 18.4581],
+          [77.4062, 18.4582],
+        ],
+      },
+      "from_m": 4.96, // outbound distance
+      "to_m": 14.88,
+      "length_m": 9.92,
+      "source_ids": ["dtm-primary"],
+    },
+  ],
+  "pending_sections": ["evidence", "unknowns"],
   "sources": [
     {
       "id": "m20-traverse",
@@ -163,19 +202,54 @@ unchanged. Tracking issue: CH26-031 (#49).
 
 The values above are an example. The served file is generated by
 `backend/prep/scenario_bundle.py` from committed inputs (`manifest.json`,
-`routes.geojson`, `inputs/rover_traverse.geojson`, `inputs/rover_waypoints.geojson`)
-and the stop specs in `specs/hawksbill-gap/`.
+`routes.geojson`, `inputs/rover_traverse.geojson`, `inputs/rover_waypoints.geojson`,
+`route_metrics.json`) and the stop specs in `specs/hawksbill-gap/`.
+
+## Terrain fields (v1.1)
+
+Computed by `backend/prep/profiles.py` on the primary USGS DTM resampled to the
+1 m local grid. `backend/data/hawksbill_gap/route_metrics.json` records the
+method, the 2 m and 10 m series counts, and the DTM hash. Profile elevations use
+the DTM's vertical reference (MOLA-tied, relative to the Mars geoid), not the
+rover `elev_geoid` stored on route vertices.
+
+- **Sampling.** Each option's outbound path (A includes the proposed connector)
+  is split into `ceil(L / step_m)` equal intervals of `spacing_m`, from the start
+  vertex to the final vertex. Distances are great-circle on the Mars sphere.
+  Elevation is bilinear; a sample whose neighbouring cells include NoData is `null`.
+- **`profiles[]`.** One item per route option: `id`, `option`, `step_m`,
+  `spacing_m`, `outbound_m`, the parallel arrays `distance_m` and `elevation_m`,
+  and `source_ids`. The series is the outbound samples followed by their mirror,
+  so it starts and ends at the same elevation. A `null` elevation inside the
+  series is a gap: draw a break, never interpolate across it or plot it as 0.
+- **`route_options[].ascent_m`.** Round-trip ascent in meters at the 5 m step: the
+  sum of absolute elevation changes between consecutive valid outbound samples
+  (each outbound descent is a climb on the return).
+- **`route_options[].max_grade_deg`.** Object keyed by sampling step in meters
+  (`"2"`, `"5"`, `"10"`). Each value is the maximum, over consecutive valid
+  samples, of `atan(|dz| / dd)` in degrees: `dz` is the elevation change in
+  meters and `dd` the horizontal distance in meters between the two samples (the
+  even spacing for that step). `null` when no pair is valid.
+- **`route_options[].dtm_covered_pct`.** Percent of the outbound length whose
+  5 m intervals have a valid elevation at both ends.
+- **`unknowns[]` with `kind: "terrain-gap"`.** One item per run of uncovered
+  intervals: `id`, `option`, `kind`, a `[lon, lat]` LineString `geometry` along
+  the outbound path, `from_m` and `to_m` (outbound distance), `length_m`, and
+  `source_ids`. The return retraces the same span. Other kinds (caution zones,
+  connector uncertainty) follow in later MINOR versions; clients skip a `kind`
+  they do not know.
 
 ## Sections planned for later MINOR versions
 
-These fields are already in v1.0 as empty lists so clients can render a
-"not prepared yet" state. Their item shapes are defined when they are filled.
+These fields stay in `pending_sections` so clients can render a "not prepared
+yet" state. Item shapes are defined when they are filled. `unknowns` already
+holds `terrain-gap` items (none for the current routes) and stays pending until
+the other kinds are prepared.
 
-| Field      | Will hold                                                                 | Tracking issues    |
-| ---------- | ------------------------------------------------------------------------- | ------------------ |
-| `evidence` | Images and SuperCam items, each with one `stop_id` and its `source_ids`.  | #50                |
-| `profiles` | Per-option elevation series along distance; DTM gaps as `null`.           | #42, #43, #51      |
-| `unknowns` | Caution zones, coverage gaps, and connector uncertainty along each route. | #45, #46, #47, #51 |
+| Field      | Will hold                                                                | Tracking issues |
+| ---------- | ------------------------------------------------------------------------ | --------------- |
+| `evidence` | Images and SuperCam items, each with one `stop_id` and its `source_ids`. | #50             |
+| `unknowns` | Caution zones and connector uncertainty, next to `terrain-gap` items.    | #46, #47, #51   |
 
 ## Client rules
 
