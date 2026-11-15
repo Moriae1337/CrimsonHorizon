@@ -33,3 +33,15 @@ test('default catalog and landmarks contain cited Jezero coordinates', () => {
   assert.equal(DEFAULT_LANDMARKS.type, 'FeatureCollection')
   assert.ok(DEFAULT_LANDMARKS.features.length >= 4)
 })
+
+test('optical layers have distinct product-specific USGS attributions', () => {
+  const ctx = DEFAULT_MAP_CATALOG.layers.find((layer) => layer.id === 'jezero-ctx-ortho')
+  const hirise = DEFAULT_MAP_CATALOG.layers.find((layer) => layer.id === 'jezero-hirise-ortho')
+  assert.ok(ctx && hirise)
+  assert.notEqual(ctx.attribution, hirise.attribution)
+  assert.equal(ctx.attribution, 'USGS Astrogeology Science Center / NASA / JPL / MSSS')
+  assert.equal(
+    hirise.attribution,
+    'USGS Astrogeology Science Center / NASA / JPL / University of Arizona',
+  )
+})

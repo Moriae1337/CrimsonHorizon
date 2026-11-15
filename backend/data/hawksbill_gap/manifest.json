@@ -91,7 +91,7 @@
       "url": "https://trek.nasa.gov/tiles/Mars/EQ/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first_dd/1.0.0/WMTSCapabilities.xml",
       "source_page": "https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_hirise_orthorectified_image_mosaic",
       "doi": "10.5066/P9REJ9JN",
-      "credit": "USGS Astrogeology Mars 2020 TRN mosaic, served by NASA Mars Trek",
+      "credit": "USGS Astrogeology Science Center / NASA / JPL / University of Arizona",
       "license": "Public domain",
       "convention": {
         "crs": "IAU2000:104905 equirectangular (Mars Trek EQ tiles)",
@@ -108,7 +108,7 @@
       "url": "https://trek.nasa.gov/tiles/Mars/EQ/JEZ_ctx_B_soc_008_orthoMosaic_6m_Eqc_latTs0_lon0/1.0.0/WMTSCapabilities.xml",
       "source_page": "https://astrogeology.usgs.gov/search/map/mars_2020_terrain_relative_navigation_context_camera_orthorectified_image_mosaic",
       "doi": "10.5066/P9REJ9JN",
-      "credit": "USGS Astrogeology Mars 2020 TRN mosaic, served by NASA Mars Trek",
+      "credit": "USGS Astrogeology Science Center / NASA / JPL / MSSS",
       "license": "Public domain",
       "convention": {
         "crs": "IAU2000:104905 equirectangular (Mars Trek EQ tiles)",
