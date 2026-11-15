@@ -92,7 +92,7 @@ describe('ElevationProfile Unit Tests', () => {
     })
 
     it('verifies 3-color palette line styles for Option A and Option B', () => {
-      assert.equal(OPTION_A_PROFILE.color, COLOR_ACCENT)
+      assert.equal(OPTION_A_PROFILE.color, '#8F5A53')
       assert.equal(OPTION_A_PROFILE.lineStyle, 'solid')
 
       assert.equal(OPTION_B_PROFILE.color, COLOR_SECONDARY)
@@ -190,12 +190,12 @@ describe('ElevationProfile Unit Tests', () => {
       assert.ok(html.includes('aria-label='), 'SVG should have accessible label')
 
       // Design system colors present
-      assert.ok(html.includes(COLOR_ACCENT), 'Should use accent #d14d28')
+      assert.ok(html.includes(COLOR_ACCENT), 'Should use accent #8F5A53')
       assert.ok(html.includes(COLOR_SECONDARY), 'Should use secondary #EBEBEB')
       assert.ok(html.includes(COLOR_SURFACE), 'Should use surface #212121')
 
       // Option line styles present
-      assert.ok(html.includes('stroke="#d14d28"'), 'Option A should stroke with accent')
+      assert.ok(html.includes('stroke="#8F5A53"'), 'Option A should stroke with accent')
       assert.ok(html.includes('stroke="#EBEBEB"'), 'Option B should stroke with secondary')
       assert.ok(html.includes('stroke-dasharray="6 4"'), 'Option B should have dashed stroke')
     })

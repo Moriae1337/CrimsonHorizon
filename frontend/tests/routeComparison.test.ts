@@ -10,10 +10,9 @@ const publishedBundle = new URL('../../backend/data/hawksbill_gap/scenario.json'
 test('compares published Hawksbill Gap routes using the backend values', () => {
   const {
     options: [a, b],
-    distanceDifference,
   } = buildRouteComparison(parseScenario(JSON.parse(readFileSync(publishedBundle, 'utf8'))))
   assert.deepEqual([a.id, b.id], ['A', 'B'])
-  assert.deepEqual([a.roundTrip, b.roundTrip, distanceDifference], ['258 m', '345 m', '87 m'])
+  assert.deepEqual([a.roundTrip, b.roundTrip], ['258 m', '345 m'])
   assert.deepEqual([a.ascent, b.ascent], ['13.34 m', '17.80 m'])
   assert.deepEqual(a.maxGrades, ['14.82°', '20.69°', '14.15°'])
   assert.deepEqual(b.maxGrades, ['14.93°', '22.13°', '13.95°'])

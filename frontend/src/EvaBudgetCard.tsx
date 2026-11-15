@@ -1,8 +1,5 @@
-import { type Scenario } from './scenario.ts'
-
 interface EvaBudgetCardProps {
-  selectedOptionId: string | null
-  scenario?: Scenario | null
+  selectedOptionId: string
 }
 
 export function EvaBudgetCard({ selectedOptionId }: EvaBudgetCardProps) {
@@ -32,7 +29,8 @@ export function EvaBudgetCard({ selectedOptionId }: EvaBudgetCardProps) {
     },
   }
 
-  const activeOption = selectedOptionId === 'B' ? optionsData.B : optionsData.A
+  if (selectedOptionId !== 'A' && selectedOptionId !== 'B') return null
+  const activeOption = optionsData[selectedOptionId]
   const isOptionB = selectedOptionId === 'B'
 
   return (
@@ -91,7 +89,7 @@ export function EvaBudgetCard({ selectedOptionId }: EvaBudgetCardProps) {
         </div>
         <div className="rounded border border-card-border bg-card px-2 py-1">
           <span className="text-text-muted block text-[10px] uppercase">PLSS Margin</span>
-          <span className="font-semibold text-emerald-400">
+          <span className="font-semibold text-text-main">
             +{activeOption.marginMin.toFixed(1)} min
           </span>
         </div>

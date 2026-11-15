@@ -7,15 +7,12 @@ import {
   type MarsLandmarksGeoJson,
 } from './marsCatalog'
 
-export type MarsDataSource = 'builtin' | 'backend'
-
 const API_URL = import.meta.env.VITE_API_URL?.trim().replace(/\/+$/, '')
 const DATA_TIMEOUT_MS = 60_000
 
 export function useMarsData() {
   const [catalog, setCatalog] = useState<MapCatalog>(DEFAULT_MAP_CATALOG)
   const [landmarks, setLandmarks] = useState<MarsLandmarksGeoJson>(DEFAULT_LANDMARKS)
-  const [dataSource, setDataSource] = useState<MarsDataSource>('builtin')
 
   useEffect(() => {
     if (!API_URL) return
@@ -33,7 +30,6 @@ export function useMarsData() {
         if (unmounted) return
         setCatalog(remoteCatalog)
         setLandmarks(remoteLandmarks)
-        setDataSource('backend')
       } catch {
         // Keep built-in NASA/USGS fallback catalog if the backend is unavailable.
       } finally {
@@ -50,5 +46,5 @@ export function useMarsData() {
     }
   }, [])
 
-  return { catalog, landmarks, dataSource }
+  return { catalog, landmarks }
 }
