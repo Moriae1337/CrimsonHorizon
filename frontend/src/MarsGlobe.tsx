@@ -5,6 +5,7 @@ import { DEFAULT_MAP_CATALOG } from './marsCatalog.ts'
 import { CRATERS, CRATER_IDS, craterByIauName, type CraterInfo } from './craters.ts'
 import { SITE_LABELS } from './plannerText.ts'
 import { PlaceMap } from './PlaceMap.tsx'
+import { PLACES } from './places.ts'
 import { placeExtent } from './marsTiles.ts'
 import { fetchNomenclature, type IauFeature, type SiteId } from './sites.ts'
 import { useTranslation } from './i18n/useTranslation.ts'
@@ -39,6 +40,7 @@ const TEXT = {
     noLabels: 'IAU names need the API (VITE_API_URL).',
     source: 'Names: USGS Gazetteer of Planetary Nomenclature (IAU)',
     search: 'Find a feature…',
+    timeline: 'Mission timeline',
   },
   uk: {
     textureError: 'Зображення глобуса недоступне.',
@@ -54,6 +56,7 @@ const TEXT = {
     noLabels: 'Назви IAU потребують API (VITE_API_URL).',
     source: 'Назви: USGS Gazetteer of Planetary Nomenclature (IAU)',
     search: 'Знайти об’єкт…',
+    timeline: 'Хронологія місії',
   },
 } as const
 
@@ -485,6 +488,22 @@ export function MarsGlobe({ onOpenSite, onOpenPlanner, onOpenMap }: MarsGlobePro
                   </Fragment>
                 ))}
               </dl>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
+                {T.timeline} · {crater.rover}
+              </span>
+              <ol className="flex flex-col gap-0.5 text-[11px]">
+                {PLACES.filter((pl) => pl.crater === crater.id).map((pl, i) => (
+                  <li key={pl.id} className="flex items-center gap-2" title={pl.text[lang]}>
+                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-text-main">
+                      {i + 1}
+                    </span>
+                    <span className="w-14 shrink-0 font-mono text-text-muted">
+                      {lang === 'uk' ? 'Сол' : 'Sol'} {pl.sol}
+                    </span>
+                    <span className="text-text-main">{pl.name[lang]}</span>
+                  </li>
+                ))}
+              </ol>
               <span className="text-[11px] font-semibold uppercase tracking-wider text-text-muted">
                 {T.sites}
               </span>
