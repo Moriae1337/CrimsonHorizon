@@ -39,6 +39,14 @@ Coverage (#45)
   Runs of uncovered intervals become gap segments, cut from the outbound
   geometry as [lon, lat] LineStrings for the map.
 
+Caution inputs (#46), consumed by prep.caution
+- At the 2 m and 5 m windows: the steepest interval between consecutive valid
+  samples and the covered length per 5-degree grade class. The classes are
+  display bins only; there is no cited spacesuit grade threshold, so none is
+  "safe".
+- The outbound span of each proposed piece (A's connector) and the max grade of
+  the 2 m intervals that overlap it.
+
 The served values reproduce the scope's locked table. The record also keeps
 local_grid_check: the same sampling on the 1 m local aeqd grid. That grid is a
 second bilinear resampling of the crop, which smooths short relief, so its
@@ -53,11 +61,17 @@ from typing import Any
 from prep.common import SCENARIO_DIR, sha256_bytes, utc_now, write_json
 from prep.local_grid import LOCAL_PATH, aeqd_forward, bilinear, relative
 from prep.local_grid import RECORD_PATH as LOCAL_RECORD_PATH
-from prep.routes import ROUTES_PATH, distance_m, join
+from prep.routes import ROUTES_PATH, distance_m, join, line_length_m
 
 METRICS_PATH = SCENARIO_DIR / "route_metrics.json"
 STEPS_M = (2.0, 5.0, 10.0)
 NOMINAL_STEP_M = 5.0
+# Caution inputs (#46): the steepest along-route interval is flagged at these
+# windows (specs/martian-map-scope-2026.md, "Crew safety").
+CAUTION_STEPS_M = (2.0, 5.0)
+# Grade display bins in degrees. They are not safety limits: no cited grade
+# threshold for walking in a loaded spacesuit exists yet, so no bin is "safe".
+GRADE_CLASS_EDGES_DEG = (0.0, 5.0, 10.0, 15.0, 20.0, 25.0)
 
 Point = list[float]
 Transform = tuple[float, float, float, float, float, float]
@@ -174,6 +188,47 @@ def max_grade_deg(
     return max(grades) if grades else None
 
 
+def graded_intervals(
+    distances: list[float], elevations: list[float | None]
+) -> list[tuple[float, float, float]]:
+    """(from_m, to_m, grade_deg) for consecutive samples that are both valid."""
+    out = []
+    for (d0, z0), (d1, z1) in itertools.pairwise(zip(distances, elevations)):
+        if z0 is not None and z1 is not None and d1 > d0:
+            out.append((d0, d1, math.degrees(math.atan(abs(z1 - z0) / (d1 - d0)))))
+    return out
+
+
+def grade_class(grade_deg: float) -> str:
+    """Display bin label for a grade; the bins carry no safety verdict."""
+    for low, high in itertools.pairwise(GRADE_CLASS_EDGES_DEG):
+        if grade_deg < high:
+            return f"{low:g}-{high:g}"
+    return f"{GRADE_CLASS_EDGES_DEG[-1]:g}+"
+
+
+def grade_class_m(intervals: list[tuple[float, float, float]]) -> dict[str, float]:
+    """Covered outbound length in each grade class, every class listed."""
+    labels = [grade_class(low) for low in GRADE_CLASS_EDGES_DEG]
+    out = dict.fromkeys(labels, 0.0)
+    for d0, d1, grade in intervals:
+        out[grade_class(grade)] += d1 - d0
+    return out
+
+
+def steepest(intervals: list[tuple[float, float, float]]):
+    """The first interval with the maximum grade, or None."""
+    return max(intervals, key=lambda i: i[2], default=None)
+
+
+def span_max_grade(
+    intervals: list[tuple[float, float, float]], start: float, end: float
+) -> float | None:
+    """Max grade over intervals that overlap [start, end] by more than 1 mm."""
+    grades = [g for d0, d1, g in intervals if min(d1, end) - max(d0, start) > 1e-3]
+    return max(grades) if grades else None
+
+
 def round_trip(
     distances: list[float], elevations: list[float | None]
 ) -> tuple[list[float], list[float | None]]:
@@ -266,9 +321,81 @@ def summary(coords: list[Point], grid: Grid, radius_m: float) -> dict[str, Any]:
     }
 
 
-def option_metrics(coords: list[Point], grid: Grid, radius_m: float) -> dict:
+def proposed_spans(routes: dict[str, Any], option: str, radius_m: float):
+    """(from_m, to_m) along the joined outbound path of each proposed piece."""
+    spans, start = [], 0.0
+    for f in routes["features"]:
+        props = f["properties"]
+        if props["option"] != option or props["leg"] != "outbound":
+            continue
+        end = start + line_length_m(f["geometry"]["coordinates"], radius_m)
+        if props.get("proposed"):
+            spans.append((start, end))
+        start = end
+    return spans
+
+
+def caution_metrics(
+    coords: list[Point],
+    by_step: dict[float, dict[str, list]],
+    spans: list[tuple[float, float]],
+    radius_m: float,
+) -> dict[str, Any]:
+    """Steepest interval and grade classes per caution window; proposed spans."""
+    cumulative = cumulative_m(coords, radius_m)
+    steps: dict[str, Any] = {}
+    for step in CAUTION_STEPS_M:
+        s = by_step[step]
+        intervals = graded_intervals(s["distance_m"], s["elevation_m"])
+        top = steepest(intervals)
+        steps[f"{step:g}"] = {
+            "spacing_m": round(s["distance_m"][1], 4),
+            "grade_class_m": {
+                k: round(v, 2) for k, v in grade_class_m(intervals).items()
+            },
+            "steepest": None
+            if top is None
+            else {
+                "from_m": round(top[0], 2),
+                "to_m": round(top[1], 2),
+                "length_m": round(top[1] - top[0], 2),
+                "grade_deg": round(top[2], 2),
+                "grade_class": grade_class(top[2]),
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": [
+                        [round(v, 8) for v in p]
+                        for p in cut_line(coords, cumulative, top[0], top[1])
+                    ],
+                },
+            },
+        }
+    fine = by_step[min(CAUTION_STEPS_M)]
+    fine_intervals = graded_intervals(fine["distance_m"], fine["elevation_m"])
+    return {
+        "steps": steps,
+        "proposed": [
+            {
+                "from_m": round(a, 2),
+                "to_m": round(b, 2),
+                "length_m": round(b - a, 2),
+                "step_m": min(CAUTION_STEPS_M),
+                "max_grade_deg": r(span_max_grade(fine_intervals, a, b), 2),
+            }
+            for a, b in spans
+        ],
+    }
+
+
+def option_metrics(
+    coords: list[Point],
+    grid: Grid,
+    radius_m: float,
+    spans: list[tuple[float, float]] | None = None,
+) -> dict:
     stats = summary(coords, grid, radius_m)
-    nominal = stats.pop("by_step")[NOMINAL_STEP_M]
+    by_step = stats.pop("by_step")
+    nominal = by_step[NOMINAL_STEP_M]
     distances, elevations = round_trip(nominal["distance_m"], nominal["elevation_m"])
     cover = coverage(coords, nominal["distance_m"], nominal["elevation_m"], radius_m)
     nominal_key = f"{NOMINAL_STEP_M:g}"
@@ -301,6 +428,7 @@ def option_metrics(coords: list[Point], grid: Grid, radius_m: float) -> dict:
             }
             for g in cover["gaps"]
         ],
+        "caution": caution_metrics(coords, by_step, spans or [], radius_m),
         "profile": {
             "step_m": NOMINAL_STEP_M,
             "spacing_m": stats["spacing_m"][nominal_key],
@@ -331,6 +459,12 @@ METHOD = {
     "coverage": "An interval between consecutive 5 m samples is covered when both "
     "samples are valid. Gaps are runs of uncovered intervals as lon/lat "
     "LineStrings.",
+    "caution": "Per caution window (2 m and 5 m): the steepest interval between "
+    "consecutive valid samples (first one on ties), and the covered outbound "
+    "length in each grade class. Classes are display bins of 5 degrees with no "
+    "safety verdict: no cited spacesuit grade threshold exists yet. 'proposed' "
+    "lists the outbound span of each proposed piece (A's connector) with the "
+    "max grade over the 2 m intervals that overlap it.",
     "local_grid_check": "Same sampling on the 1 m local aeqd grid (prep.local_grid); "
     "a second bilinear resampling smooths short relief, lowering the 2 m grades most.",
 }
@@ -347,7 +481,8 @@ def build(
     checks = {}
     for option in routes["options"]:
         coords = outbound_line(routes, option)
-        options[option] = option_metrics(coords, grid, radius_m)
+        spans = proposed_spans(routes, option, radius_m)
+        options[option] = option_metrics(coords, grid, radius_m, spans)
         if check_grid is not None:
             stats = summary(coords, check_grid, radius_m)
             checks[option] = {

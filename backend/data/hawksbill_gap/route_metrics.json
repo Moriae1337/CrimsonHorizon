@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-11-14T12:05:35Z",
+  "created_at": "2026-11-14T12:21:52Z",
   "input_id": "dtm-primary",
   "dtm": {
     "file": "data/hawksbill_gap/derived/dtm_primary_window.tif",
@@ -69,6 +69,7 @@
     "ascent_m": "Round-trip ascent in meters: sum of |dz| between consecutive valid outbound samples at 5 m (each outbound descent is a climb on return).",
     "max_grade_deg": "Degrees: max over consecutive valid samples of degrees(atan(|dz| / dd)), dz in meters, dd the horizontal great-circle distance in meters between the two samples (the interval L / n).",
     "coverage": "An interval between consecutive 5 m samples is covered when both samples are valid. Gaps are runs of uncovered intervals as lon/lat LineStrings.",
+    "caution": "Per caution window (2 m and 5 m): the steepest interval between consecutive valid samples (first one on ties), and the covered outbound length in each grade class. Classes are display bins of 5 degrees with no safety verdict: no cited spacesuit grade threshold exists yet. 'proposed' lists the outbound span of each proposed piece (A's connector) with the max grade over the 2 m intervals that overlap it.",
     "local_grid_check": "Same sampling on the 1 m local aeqd grid (prep.local_grid); a second bilinear resampling smooths short relief, lowering the 2 m grades most."
   },
   "options": {
@@ -115,6 +116,97 @@
         "covered_pct": 100.0
       },
       "gaps": [],
+      "caution": {
+        "steps": {
+          "2": {
+            "spacing_m": 1.9847,
+            "grade_class_m": {
+              "0-5": 59.54,
+              "5-10": 39.69,
+              "10-15": 23.82,
+              "15-20": 3.97,
+              "20-25": 1.98,
+              "25+": 0.0
+            },
+            "steepest": {
+              "from_m": 45.65,
+              "to_m": 47.63,
+              "length_m": 1.98,
+              "grade_deg": 20.69,
+              "grade_class": "20-25",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    77.40650304,
+                    18.45795035
+                  ],
+                  [
+                    77.40650009,
+                    18.45798371
+                  ]
+                ]
+              }
+            }
+          },
+          "5": {
+            "spacing_m": 4.9617,
+            "grade_class_m": {
+              "0-5": 69.46,
+              "5-10": 29.77,
+              "10-15": 29.77,
+              "15-20": 0.0,
+              "20-25": 0.0,
+              "25+": 0.0
+            },
+            "steepest": {
+              "from_m": 44.66,
+              "to_m": 49.62,
+              "length_m": 4.96,
+              "grade_deg": 14.82,
+              "grade_class": "10-15",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    77.40649844,
+                    18.45795259
+                  ],
+                  [
+                    77.40650296,
+                    18.45795715
+                  ],
+                  [
+                    77.4065032,
+                    18.45794851
+                  ],
+                  [
+                    77.40649882,
+                    18.45799801
+                  ],
+                  [
+                    77.4064979,
+                    18.45801215
+                  ],
+                  [
+                    77.40649752,
+                    18.45801711
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "proposed": [
+          {
+            "from_m": 107.96,
+            "to_m": 113.15,
+            "length_m": 5.2,
+            "step_m": 2.0,
+            "max_grade_deg": 7.11
+          }
+        ]
+      },
       "profile": {
         "step_m": 5.0,
         "spacing_m": 4.9617,
@@ -273,6 +365,93 @@
         "covered_pct": 100.0
       },
       "gaps": [],
+      "caution": {
+        "steps": {
+          "2": {
+            "spacing_m": 1.9843,
+            "grade_class_m": {
+              "0-5": 85.33,
+              "5-10": 45.64,
+              "10-15": 27.78,
+              "15-20": 7.94,
+              "20-25": 5.95,
+              "25+": 0.0
+            },
+            "steepest": {
+              "from_m": 150.81,
+              "to_m": 152.79,
+              "length_m": 1.98,
+              "grade_deg": 22.13,
+              "grade_class": "20-25",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    77.40616486,
+                    18.45887817
+                  ],
+                  [
+                    77.40616131,
+                    18.45886109
+                  ],
+                  [
+                    77.40615819,
+                    18.4588453
+                  ]
+                ]
+              }
+            }
+          },
+          "5": {
+            "spacing_m": 4.9325,
+            "grade_class_m": {
+              "0-5": 88.79,
+              "5-10": 44.39,
+              "10-15": 39.46,
+              "15-20": 0.0,
+              "20-25": 0.0,
+              "25+": 0.0
+            },
+            "steepest": {
+              "from_m": 44.39,
+              "to_m": 49.33,
+              "length_m": 4.93,
+              "grade_deg": 14.93,
+              "grade_class": "10-15",
+              "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                  [
+                    77.40649525,
+                    18.45794937
+                  ],
+                  [
+                    77.40650296,
+                    18.45795715
+                  ],
+                  [
+                    77.4065032,
+                    18.45794851
+                  ],
+                  [
+                    77.40649882,
+                    18.45799801
+                  ],
+                  [
+                    77.4064979,
+                    18.45801215
+                  ],
+                  [
+                    77.4064979,
+                    18.4580122
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        "proposed": []
+      },
       "profile": {
         "step_m": 5.0,
         "spacing_m": 4.9325,

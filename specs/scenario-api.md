@@ -16,7 +16,7 @@ unchanged. Tracking issue: CH26-031 (#49).
 
 ## Versioning
 
-`schema_version` is a `"MAJOR.MINOR"` string; this document defines `"1.1"`.
+`schema_version` is a `"MAJOR.MINOR"` string; this document defines `"1.2"`.
 
 - Adding an optional field or a new pending section bumps MINOR. Clients ignore
   fields they do not know.
@@ -28,6 +28,7 @@ unchanged. Tracking issue: CH26-031 (#49).
 | ------- | ---------------------------------------------------------------------------------------------------- |
 | `1.0`   | First contract. `evidence`, `profiles`, and `unknowns` pending.                                      |
 | `1.1`   | Fills `profiles`; defines `terrain-gap` unknowns; adds terrain metrics to route options (see below). |
+| `1.2`   | Fills `unknowns` with caution zones; adds `obstacles`, `grade_class_m`, `caution_review` (#46).      |
 
 ## Conventions
 
@@ -39,13 +40,13 @@ unchanged. Tracking issue: CH26-031 (#49).
 | Units          | Lengths in meters (`*_m`), angles in degrees (`*_deg`), dates ISO 8601. Field names carry the unit suffix.                                                                                     |
 | Missing values | A missing number is JSON `null`, never `0`, `-9999`, or NaN. A section that is not prepared yet is listed in `pending_sections` and is present as a list, empty or partly filled.              |
 | IDs            | Lowercase kebab-case strings, stable across MINOR versions. Rover localizations keep their mission `RMC` (`"26_1004"`). Source IDs match `backend/data/hawksbill_gap/manifest.json` input IDs. |
-| Sources        | Every stop, route feature, track feature, profile, unknown, and evidence item has `source_ids`, a non-empty list of IDs from `sources`.                                                        |
+| Sources        | Every stop, route feature, track feature, profile, unknown, obstacle, and evidence item has `source_ids`, a non-empty list of IDs from `sources`.                                              |
 
 ## Document
 
 ```jsonc
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "scenario_id": "hawksbill-gap",
   "title": "Hawksbill Gap",
   "generated_at": "2026-11-14T12:00:00Z",
@@ -104,6 +105,26 @@ unchanged. Tracking issue: CH26-031 (#49).
       "ascent_m": 13.34, // round-trip ascent at the 5 m step
       "max_grade_deg": { "2": 20.69, "5": 14.82, "10": 14.15 }, // keyed by sampling step in meters
       "dtm_covered_pct": 100.0, // share of the outbound length with valid DTM elevation
+      "grade_class_m": {
+        // covered outbound meters per grade class, keyed by window; no "safe" class
+        "2": {
+          "0-5": 59.54,
+          "5-10": 39.69,
+          "10-15": 23.82,
+          "15-20": 3.97,
+          "20-25": 1.98,
+          "25+": 0,
+        },
+        "5": { "0-5": 69.46, "5-10": 29.77, "10-15": 29.77, "15-20": 0, "20-25": 0, "25+": 0 },
+      },
+      "caution_review": {
+        "zones": 5, // caution zones (unknowns) on this option
+        "obstacles": 2, // obstacles whose option_ids include this option
+        "open_zone_ids": ["connector-a-1", "observation-approach-a-skinner-ridge"],
+        "open_obstacle_ids": ["bettys-rock", "skinner-ridge-east-crack-overhang"],
+        "cleared": false, // true only when nothing is open
+        "safety_verdict": null, // stays null until a cited spacesuit grade threshold exists
+      },
     },
     {
       "id": "B",
@@ -172,7 +193,7 @@ unchanged. Tracking issue: CH26-031 (#49).
     {
       "id": "terrain-gap-a-1", // illustrative: the current routes have no DTM gaps
       "option": "A",
-      "kind": "terrain-gap",
+      "kind": "terrain-gap", // "terrain-gap" | "connector" | "observation-approach" | "steep-segment"
       "geometry": {
         "type": "LineString",
         "coordinates": [
@@ -180,13 +201,82 @@ unchanged. Tracking issue: CH26-031 (#49).
           [77.4062, 18.4582],
         ],
       },
-      "from_m": 4.96, // outbound distance
+      "from_m": 4.96, // outbound distance; the return retraces the span
       "to_m": 14.88,
       "length_m": 9.92,
+      "review_status": "open", // "open" | "reviewed" (since 1.2)
+      "summary": "No valid DTM elevation on this span; grade and ascent are unknown.",
+      "source_ids": ["dtm-primary"],
+    },
+    {
+      "id": "connector-a-1",
+      "option": "A",
+      "kind": "connector",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.40632, 18.45822],
+          [77.40627, 18.45826],
+        ],
+      },
+      "from_m": 107.96,
+      "to_m": 113.15,
+      "length_m": 5.2,
+      "review_status": "open",
+      "summary": "Proposed straight connector, not driven by the rover. ...",
+      "uncertainty": {
+        "kind": "terrain-model-disagreement",
+        "step_m": 2,
+        "max_grade_deg": { "dtm-primary": 7.11, "dtm-fallback": 22 },
+        "computed": ["dtm-primary"], // recomputed by prep/profiles.py
+        "reported": ["dtm-fallback"], // quoted from the project scope
+      },
+      "source_ids": ["m20-traverse", "dtm-primary", "dtm-fallback"],
+    },
+    {
+      "id": "steep-segment-a-2m",
+      "option": "A",
+      "kind": "steep-segment",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.4062, 18.4579],
+          [77.4062, 18.45792],
+        ],
+      },
+      "from_m": 45.65,
+      "to_m": 47.63,
+      "length_m": 1.98,
+      "review_status": "open",
+      "summary": "Steepest along-route interval at the 2 m window: 20.69 deg. Grade class only. ...",
+      "step_m": 2,
+      "grade_deg": 20.69,
+      "grade_class": "20-25",
       "source_ids": ["dtm-primary"],
     },
   ],
-  "pending_sections": ["evidence", "unknowns"],
+  "obstacles": [
+    {
+      "id": "bettys-rock",
+      "name": "Betty's Rock",
+      "kind": "boulder", // "boulder" | "crack-overhang"
+      "stop_id": "skinner-ridge",
+      "description": "Large float block beside the Skinner Ridge block, described in the mission report.",
+      "position": "Beside the Skinner Ridge block; the report gives no coordinates.",
+      "coordinates": null, // [lon, lat] once a cited position exists
+      "option_ids": ["A", "B"],
+      "review_status": "open",
+      "figure": {
+        "source_id": "pds-initial-reports",
+        "section": "11",
+        "figure": "5",
+        "label": "PDS Initial Reports, section 11 (Swift Run), fig. 5",
+        "url": "https://pds-geosciences.wustl.edu/missions/mars2020/Mars%202020%20Initial%20Reports%20Volume%202%20Release%202.pdf",
+      },
+      "source_ids": ["pds-initial-reports"],
+    },
+  ],
+  "pending_sections": ["evidence"],
   "sources": [
     {
       "id": "m20-traverse",
@@ -203,7 +293,8 @@ unchanged. Tracking issue: CH26-031 (#49).
 The values above are an example. The served file is generated by
 `backend/prep/scenario_bundle.py` from committed inputs (`manifest.json`,
 `routes.geojson`, `inputs/rover_traverse.geojson`, `inputs/rover_waypoints.geojson`,
-`route_metrics.json`) and the stop specs in `specs/hawksbill-gap/`.
+`route_metrics.json`) and the stop specs in `specs/hawksbill-gap/`; caution zones
+and obstacles come from `backend/prep/caution.py`.
 
 ## Terrain fields (v1.1)
 
@@ -238,21 +329,65 @@ rover `elev_geoid` stored on route vertices.
 - **`unknowns[]` with `kind: "terrain-gap"`.** One item per run of uncovered
   intervals: `id`, `option`, `kind`, a `[lon, lat]` LineString `geometry` along
   the outbound path, `from_m` and `to_m` (outbound distance), `length_m`, and
-  `source_ids`. The return retraces the same span. Other kinds (caution zones,
-  connector uncertainty) follow in later MINOR versions; clients skip a `kind`
-  they do not know.
+  `source_ids`. The return retraces the same span. Since v1.2 every `unknowns`
+  item is a caution zone (below); clients skip a `kind` they do not know.
+
+## Caution zones and obstacles (v1.2)
+
+Built by `backend/prep/caution.py` from `routes.geojson`, `route_metrics.json`
+and the stops (#46). Every `unknowns[]` item is a caution zone on one option,
+with the `terrain-gap` fields above plus `review_status` (`"open"` or
+`"reviewed"`; all are `"open"` today) and a `summary`. The scope clears an
+option only when every caution zone on it has been reviewed, and gives no
+"safe" verdict until a cited grade threshold for walking in a loaded spacesuit
+exists ([scope, Crew safety](martian-map-scope-2026.md#crew-safety)).
+
+- **`terrain-gap`**: no valid DTM elevation (see above). None on the current
+  routes.
+- **`connector`**: a proposed piece (A's 5.2 m connector, never driven).
+  `uncertainty.kind` is `"terrain-model-disagreement"`, with `max_grade_deg`
+  per DTM at `step_m` 2. The primary value is the max grade of the 2 m
+  intervals that overlap the connector (7.11°). The fallback value (22°) is
+  reported from the scope's model-sensitivity check, because the fallback DTM
+  is not prepared here; `computed` and `reported` say which is which.
+- **`observation-approach`**: the last 10 m of outbound path before the point
+  closest to a stop pin (two nominal 5 m steps; a display convention, not a
+  limit). Extra fields: `stop_id`, `approach` (`"visit"` or `"stand-off"`) and
+  `closest_offset_m`. A stand-off (A at Skinner Ridge) carries
+  `uncertainty.kind: "contact-visibility"` from the scope's rough line-of-sight
+  check, with `follow_up: "#48"` for the DTM check.
+- **`steep-segment`**: the steepest interval between consecutive valid samples
+  at each caution window, `step_m` 2 and 5. `grade_deg` equals
+  `route_options[].max_grade_deg` for that window; `grade_class` is a display
+  bin.
+
+Grade classes are 5° bins, `"0-5"`, `"5-10"`, `"10-15"`, `"15-20"`, `"20-25"`,
+`"25+"`, lower bound inclusive. They are display bins, not safety limits.
+
+- **`route_options[].grade_class_m`.** Covered outbound meters per class,
+  keyed by window (`"2"`, `"5"`); each window sums to the covered length.
+- **`route_options[].caution_review`.** `zones` and `obstacles` count what
+  applies to the option. `open_zone_ids` and `open_obstacle_ids` list what is
+  still open in document order, so a panel can list open caution zones per
+  option. `cleared` is true only when both lists are empty. `safety_verdict` is
+  always `null`.
+- **`obstacles[]`.** Obstacles the mission report describes: Betty's Rock
+  beside the Skinner Ridge block, and the crack and overhang on the block's
+  eastern side ([PDS Initial Reports, section 11, fig. 5][pds]). Fields: `id`,
+  `name`, `kind`, `stop_id`, `description`, `position` (text), `coordinates`,
+  `option_ids`, `review_status`, `figure` (`source_id`, `section`, `figure`,
+  `label`, `url`) and `source_ids`. `coordinates` is `null` because the report
+  gives none: place the obstacle at its stop and say so. A passes Skinner Ridge
+  at its stand-off view, so both options list both obstacles.
 
 ## Sections planned for later MINOR versions
 
 These fields stay in `pending_sections` so clients can render a "not prepared
-yet" state. Item shapes are defined when they are filled. `unknowns` already
-holds `terrain-gap` items (none for the current routes) and stays pending until
-the other kinds are prepared.
+yet" state. Item shapes are defined when they are filled.
 
 | Field      | Will hold                                                                | Tracking issues |
 | ---------- | ------------------------------------------------------------------------ | --------------- |
 | `evidence` | Images and SuperCam items, each with one `stop_id` and its `source_ids`. | #50             |
-| `unknowns` | Caution zones and connector uncertainty, next to `terrain-gap` items.    | #46, #47, #51   |
 
 ## Client rules
 
@@ -262,3 +397,5 @@ the other kinds are prepared.
 - Draw `kind: "connector"` features as visibly proposed (for example dashed), never as
   rover-driven geometry.
 - Show `rover_track` as historical rover movement, separate from crew route options.
+
+[pds]: https://pds-geosciences.wustl.edu/missions/mars2020/Mars%202020%20Initial%20Reports%20Volume%202%20Release%202.pdf

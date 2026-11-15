@@ -44,6 +44,7 @@ def cited(doc: dict):
     yield from doc["evidence"]
     yield from doc["profiles"]
     yield from doc["unknowns"]
+    yield from doc["obstacles"]
 
 
 def test_unknown_scenario_returns_404() -> None:
@@ -56,7 +57,7 @@ def test_scenario_has_v1_shape(doc: dict) -> None:
     assert doc["schema_version"].startswith("1.")
     assert doc["scenario_id"] == "hawksbill-gap"
     assert doc["conventions"]["coordinate_order"] == ["lon", "lat", "elev_m"]
-    assert doc["pending_sections"] == ["evidence", "unknowns"]
+    assert doc["pending_sections"] == ["evidence"]
     assert doc["evidence"] == []
     assert [p["option"] for p in doc["profiles"]] == ["A", "B"]
     assert [o["id"] for o in doc["route_options"]] == ["A", "B"]
