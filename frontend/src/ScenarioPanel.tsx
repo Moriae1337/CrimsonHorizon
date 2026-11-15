@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { formatMarsCoordinate } from './marsCatalog'
 import { RouteComparisonPanel } from './RouteComparisonPanel'
 import { formatMeters, formatSols, type Scenario, type ScenarioStatus } from './scenario'
+import { ScienceStopCard } from './ScienceStopCard'
 import {
   CONNECTOR_DASH,
   STOP_COLOR,
@@ -176,19 +177,23 @@ export function ScenarioPanel({
                     </span>
                   </button>
                   {selected && (
-                    <div className="mt-1 rounded-lg border border-slate-800 bg-slate-950/70 px-2.5 py-2 text-slate-300">
-                      {stop.summary && <p>{stop.summary}</p>}
-                      <p className="mt-1 font-mono text-[11px] text-slate-400">
-                        {formatMarsCoordinate(stop.coordinates[0], stop.coordinates[1])}
-                      </p>
-                      <p className="mt-1 text-[11px] text-slate-500">
-                        Pin marks the drill site, not where the rover or crew stood
-                        {stop.nearest_rmc && ` (rover parked at localization ${stop.nearest_rmc})`}.
-                        Source:{' '}
-                        {stop.source_ids
-                          .map((id) => scenario.sources.find((s) => s.id === id)?.title ?? id)
-                          .join('; ')}
-                      </p>
+                    <div className="mt-1 space-y-2">
+                      <div className="rounded-lg border border-slate-800 bg-slate-950/70 px-2.5 py-2 text-slate-300">
+                        {stop.summary && <p>{stop.summary}</p>}
+                        <p className="mt-1 font-mono text-[11px] text-slate-400">
+                          {formatMarsCoordinate(stop.coordinates[0], stop.coordinates[1])}
+                        </p>
+                        <p className="mt-1 text-[11px] text-slate-500">
+                          Pin marks the drill site, not where the rover or crew stood
+                          {stop.nearest_rmc &&
+                            ` (rover parked at localization ${stop.nearest_rmc})`}
+                          . Source:{' '}
+                          {stop.source_ids
+                            .map((id) => scenario.sources.find((s) => s.id === id)?.title ?? id)
+                            .join('; ')}
+                        </p>
+                      </div>
+                      <ScienceStopCard stopId={stop.id} />
                     </div>
                   )}
                 </li>
