@@ -29,3 +29,4 @@ backend/data/hawksbill_gap/skinner_line_of_sight.json
 backend/data/hawksbill_gap/prelanding_geology.geojson
 backend/data/hawksbill_gap/rimfax_profile.json
 backend/data/hawksbill_gap/eva_budget.json
+backend/data/hawksbill_gap/supercam_spectra.json
