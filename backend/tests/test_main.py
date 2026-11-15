@@ -30,7 +30,9 @@ def test_cors_rejects_unknown_origin():
 
 
 def test_cors_origins_parses_comma_separated_list(monkeypatch):
-    monkeypatch.setenv("CORS_ORIGINS", "https://a.example.com, https://b.example.com/ ,")
+    monkeypatch.setenv(
+        "CORS_ORIGINS", "https://a.example.com, https://b.example.com/ ,"
+    )
     assert get_cors_origins() == ["https://a.example.com", "https://b.example.com"]
 
 

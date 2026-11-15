@@ -1,0 +1,17 @@
+**/node_modules/
+**/dist/
+**/.venv/
+**/.uv-cache/
+**/.pytest_cache/
+**/.ruff_cache/
+.tools/
+.secrets/
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+frontend/package-lock.json
+frontend/public/
+backend/uv.lock

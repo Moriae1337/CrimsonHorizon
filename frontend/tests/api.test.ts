@@ -14,7 +14,10 @@ test('accepts the backend health response', async (t) => {
 
 test('reports HTTP failures', async (t) => {
   t.mock.method(globalThis, 'fetch', async () => new Response(null, { status: 503 }))
-  await assert.rejects(checkHealth('http://localhost:8000', new AbortController().signal), /HTTP 503/)
+  await assert.rejects(
+    checkHealth('http://localhost:8000', new AbortController().signal),
+    /HTTP 503/,
+  )
 })
 
 for (const payload of [null, {}, { status: 'error' }, 'ok', [{ status: 'ok' }]]) {
@@ -29,6 +32,8 @@ for (const payload of [null, {}, { status: 'error' }, 'ok', [{ status: 'ok' }]])
 
 test('preserves network errors', async (t) => {
   const error = new TypeError('Failed to fetch')
-  t.mock.method(globalThis, 'fetch', async () => { throw error })
+  t.mock.method(globalThis, 'fetch', async () => {
+    throw error
+  })
   await assert.rejects(checkHealth('http://localhost:8000', new AbortController().signal), error)
 })
