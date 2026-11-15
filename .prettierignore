@@ -21,3 +21,4 @@ backend/data/hawksbill_gap/inputs/
 backend/data/hawksbill_gap/dtm_primary_window.json
 backend/data/hawksbill_gap/dtm_local.json
 backend/data/hawksbill_gap/routes.geojson
+backend/data/hawksbill_gap/scenario.json
