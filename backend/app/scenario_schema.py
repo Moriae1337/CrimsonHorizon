@@ -37,6 +37,8 @@ Position = Annotated[
 ]
 SourceIds = Annotated[list[str], Field(min_length=1)]
 NonEmpty = Annotated[str, Field(min_length=1)]
+Https = Annotated[str, Field(pattern=r"^https://")]
+NonNegativeInt = Annotated[int, Field(strict=True, ge=0)]
 
 
 class Model(BaseModel):
@@ -168,16 +170,51 @@ class Unknown(Cited):
 
 
 class Evidence(Cited):
-    pass
+    id: NonEmpty
+    stop_id: NonEmpty
+    sols: Annotated[list[NonNegativeInt], Field(min_length=1)]
+    product_id: NonEmpty
+    credit: NonEmpty
+
+
+class ImageEvidence(Evidence):
+    kind: Literal["image"]
+    role: NonEmpty
+    url: Https
+    panel: NonEmpty
+    subject: NonEmpty
+    alt: NonEmpty
+    instrument: NonEmpty
+
+
+class SpectrumQuality(Model):
+    saturated: NonNegativeInt
+    glitch: NonNegativeInt
+    spike: NonNegativeInt
+    flagged_um: list[NonNegative]
+
+
+class SuperCamEvidence(Evidence):
+    kind: Literal["supercam"]
+    sols: Annotated[list[NonNegativeInt], Field(min_length=1, max_length=1)]
+    product_version: NonEmpty
+    target: NonEmpty
+    measurement_condition: NonEmpty
+    data_url: Https
+    wavelength_um: tuple[NonNegative, NonNegative]
+    spectral_channels: Annotated[int, Field(strict=True, gt=0)]
+    quality: SpectrumQuality
 
 
 class Source(Model):
     id: NonEmpty
     title: NonEmpty
-    url: Annotated[str, Field(pattern=r"^https://")]
+    url: Https
     credit: NonEmpty
     license: NonEmpty
     doi: str | None
+    product_id: NonEmpty | None = None
+    source_page: Https | None = None
 
 
 class Scenario(Model):
@@ -192,7 +229,9 @@ class Scenario(Model):
     route_options: Annotated[list[RouteOption], Field(min_length=1)]
     routes: RouteCollection
     rover_track: TrackCollection
-    evidence: list[Evidence]
+    evidence: list[
+        Annotated[ImageEvidence | SuperCamEvidence, Field(discriminator="kind")]
+    ]
     profiles: list[Profile]
     unknowns: list[Unknown]
     pending_sections: list[str]
@@ -212,6 +251,7 @@ class Scenario(Model):
         unique("route option", [o.id for o in self.route_options])
         unique("profile", [p.id for p in self.profiles])
         unique("unknown", [u.id for u in self.unknowns])
+        unique("evidence", [e.id for e in self.evidence])
         unique(
             "place and feature",
             [self.start.id]
@@ -227,13 +267,16 @@ class Scenario(Model):
         cited += [(f"track {f.id}", f.properties) for f in self.rover_track.features]
         cited += [(f"profile {p.id}", p) for p in self.profiles]
         cited += [(f"unknown {u.id}", u) for u in self.unknowns]
-        cited += [(f"evidence[{i}]", e) for i, e in enumerate(self.evidence)]
+        cited += [(f"evidence {e.id}", e) for e in self.evidence]
         for label, item in cited:
             missing = sorted(set(item.source_ids) - known_sources)
             if missing:
                 problems.append(f"{label} cites unknown sources {missing}")
 
         stop_ids = {s.id for s in self.stops}
+        for item in self.evidence:
+            if item.stop_id not in stop_ids:
+                problems.append(f"evidence {item.id} has unknown stop {item.stop_id!r}")
         option_ids = {o.id for o in self.route_options}
         for option in self.route_options:
             missing = sorted(set(option.stop_ids) - stop_ids)

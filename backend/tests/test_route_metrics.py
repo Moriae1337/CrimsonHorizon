@@ -226,7 +226,6 @@ def test_profiles_match_routes_and_metrics(record: dict) -> None:
 
 
 def test_scenario_carries_the_record(scenario: dict, record: dict) -> None:
-    assert scenario["schema_version"] == "1.2"
     assert "profiles" not in scenario["pending_sections"]
     by_option = {p["option"]: p for p in scenario["profiles"]}
     assert set(by_option) == set(record["options"])

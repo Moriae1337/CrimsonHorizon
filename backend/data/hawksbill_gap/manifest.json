@@ -257,6 +257,14 @@
       "convention": {
         "crs": "none",
         "note": "Oblique Mastcam-Z view, not georeferenced. Use it to check placement (#34), not to measure positions."
+      },
+      "instrument": "Mastcam-Z",
+      "sols": [518],
+      "acquired_utc_date": "2022-08-04",
+      "files": {
+        "jpg": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24924/PIA24924.jpg",
+        "tif": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24924/PIA24924.tif",
+        "annotated_jpg": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia24/pia24924/figures/PIA24924_figA.jpg"
       }
     },
     {
@@ -286,6 +294,252 @@
         "crs": "none",
         "note": "Measured in Gale Crater, not Jezero. Show as historical context only (#114)."
       }
+    },
+    {
+      "id": "abrasion-image-pia24926",
+      "role": "abrasion-image",
+      "product_id": "PIA24926",
+      "title": "2 Abrasion Patches From Perseverance at Jezero Delta",
+      "url": "https://science.nasa.gov/photojournal/2-abrasion-patches-from-perseverance-at-jezero-delta/",
+      "source_page": "https://science.nasa.gov/photojournal/2-abrasion-patches-from-perseverance-at-jezero-delta/",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "license": "NASA/JPL image use policy",
+      "instrument": "SHERLOC WATSON",
+      "sols": [482, 504],
+      "files": {
+        "jpg": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24926/PIA24926.jpg",
+        "tif": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24926/PIA24926.tif"
+      },
+      "convention": {
+        "crs": "none"
+      }
+    },
+    {
+      "id": "core-image-pia24927",
+      "role": "core-image",
+      "product_id": "PIA24927",
+      "title": "Rock Cores From Skinner Ridge",
+      "url": "https://science.nasa.gov/photojournal/rock-cores-from-skinner-ridge",
+      "source_page": "https://science.nasa.gov/photojournal/rock-cores-from-skinner-ridge",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "license": "NASA/JPL image use policy",
+      "instrument": "Mastcam-Z",
+      "sols": [490, 495],
+      "files": {
+        "jpg": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24927/PIA24927.jpg",
+        "tif": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24927/PIA24927.tif"
+      },
+      "convention": {
+        "crs": "none"
+      }
+    },
+    {
+      "id": "workspace-image-pia24925",
+      "role": "workspace-image",
+      "product_id": "PIA24925",
+      "title": "Perseverance Workspace at Skinner Ridge",
+      "url": "https://science.nasa.gov/photojournal/perseverance-workspace-at-skinner-ridge",
+      "source_page": "https://science.nasa.gov/photojournal/perseverance-workspace-at-skinner-ridge",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "license": "NASA/JPL image use policy",
+      "instrument": "Mastcam-Z",
+      "sols": [484, 492],
+      "files": {
+        "jpg": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24925/PIA24925.jpg",
+        "tif": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24925/PIA24925.tif",
+        "annotated_jpg": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia24/pia24925/figures/PIA24925_figA.jpg"
+      },
+      "convention": {
+        "crs": "none"
+      }
+    },
+    {
+      "id": "workspace-image-pia24928",
+      "role": "workspace-image",
+      "product_id": "PIA24928",
+      "title": "Sample Collection and Rock Analysis at Wildcat Ridge",
+      "url": "https://science.nasa.gov/photojournal/sample-collection-and-rock-analysis-at-wildcat-ridge/",
+      "source_page": "https://science.nasa.gov/photojournal/sample-collection-and-rock-analysis-at-wildcat-ridge/",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "license": "NASA/JPL image use policy",
+      "instrument": "Mastcam-Z",
+      "sols": [518],
+      "acquired_utc_date": "2022-08-04",
+      "files": {
+        "jpg": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24928/PIA24928.jpg",
+        "tif": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24928/PIA24928.tif"
+      },
+      "convention": {
+        "crs": "none"
+      }
+    },
+    {
+      "id": "core-image-pia24929",
+      "role": "core-image",
+      "product_id": "PIA24929",
+      "title": "Perseverance Rock Cores From Wildcat Ridge",
+      "url": "https://science.nasa.gov/photojournal/perseverance-rock-cores-from-wildcat-ridge/",
+      "source_page": "https://science.nasa.gov/photojournal/perseverance-rock-cores-from-wildcat-ridge/",
+      "credit": "NASA/JPL-Caltech/ASU/MSSS",
+      "license": "NASA/JPL image use policy",
+      "instrument": "Mastcam-Z",
+      "sols": [509, 516],
+      "files": {
+        "jpg": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24929/PIA24929.jpg",
+        "tif": "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia24/pia24929/PIA24929.tif"
+      },
+      "convention": {
+        "crs": "none"
+      }
+    },
+    {
+      "id": "raw-watson-0482-thornton-gap",
+      "role": "raw-image",
+      "product_id": "SIF_0482_0709737248_976EBY_N0261004SRLC01034_0000LMJ",
+      "title": "Mars Perseverance Sol 482: WATSON Camera (Thornton Gap abrasion)",
+      "url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00482/ids/edr/browse/shrlc/SIF_0482_0709737248_976EBY_N0261004SRLC01034_0000LMJ01.png",
+      "source_page": "https://mars.nasa.gov/mars2020/multimedia/raw-images/SIF_0482_0709737248_976EBY_N0261004SRLC01034_0000LMJ",
+      "credit": "NASA/JPL-Caltech",
+      "license": "NASA/JPL image use policy",
+      "instrument": "SHERLOC WATSON",
+      "sols": [482],
+      "acquired_utc": "2022-06-29T01:21:20.537Z",
+      "cited_as": "SIF_0482_0709737248_976RAS_N02621004SRLC01034_0000LMJ01 (PDS Initial Reports, section 11, figure 12)",
+      "convention": {
+        "crs": "none"
+      }
+    },
+    {
+      "id": "raw-watson-0504-berry-hollow",
+      "role": "raw-image",
+      "product_id": "SIF_0504_0711696567_636EBY_N0261222SRLC01034_0000LMJ",
+      "title": "Mars Perseverance Sol 504: WATSON Camera (Berry Hollow abrasion)",
+      "url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00504/ids/edr/browse/shrlc/SIF_0504_0711696567_636EBY_N0261222SRLC01034_0000LMJ01.png",
+      "source_page": "https://mars.nasa.gov/mars2020/multimedia/raw-images/SIF_0504_0711696567_636EBY_N0261222SRLC01034_0000LMJ",
+      "credit": "NASA/JPL-Caltech",
+      "license": "NASA/JPL image use policy",
+      "instrument": "SHERLOC WATSON",
+      "sols": [504],
+      "acquired_utc": "2022-07-21T17:36:54.981Z",
+      "cited_as": "SIF_0504_0711696567_636FDR_N02621222SRLC01034_0000LMJ01 (PDS Initial Reports, section 14, figure 12)",
+      "convention": {
+        "crs": "none"
+      }
+    },
+    {
+      "id": "raw-mcz-0505-berry-hollow",
+      "role": "raw-image",
+      "product_id": "ZR0_0505_0711770186_519EBY_N0261222ZCAM03405_1100LMJ",
+      "title": "Mars Perseverance Sol 505: Right Mastcam-Z Camera (Berry Hollow abrasion)",
+      "url": "https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00505/ids/edr/browse/zcam/ZR0_0505_0711770186_519EBY_N0261222ZCAM03405_1100LMJ01.png",
+      "source_page": "https://mars.nasa.gov/mars2020/multimedia/raw-images/ZR0_0505_0711770186_519EBY_N0261222ZCAM03405_1100LMJ",
+      "credit": "NASA/JPL-Caltech/ASU",
+      "license": "NASA/JPL image use policy",
+      "instrument": "Mastcam-Z",
+      "sols": [505],
+      "acquired_utc": "2022-07-22T14:03:53.566Z",
+      "cited_as": "ZRF_0505_0711770186_519FDR_N02621222ZCAM03405_1100LMJ01 (PDS Initial Reports, section 14, figure 12)",
+      "convention": {
+        "crs": "none"
+      }
+    }
+  ],
+  "evidence_images": [
+    {
+      "id": "img-skinner-ridge-context",
+      "stop_id": "skinner-ridge",
+      "role": "two-stop-context",
+      "source_ids": ["context-image-pia24924"],
+      "file": "annotated_jpg",
+      "panel": "full; Skinner Ridge label upper right",
+      "subject": "Hawksbill Gap: Wildcat Ridge and Skinner Ridge about 20 m apart",
+      "sols": [518],
+      "alt": "Color panorama across a slope of pale, cracked rock slabs and dark sand toward a layered ridge. Labels mark Wildcat Ridge in the lower left foreground and Skinner Ridge in the upper right, about 20 meters apart."
+    },
+    {
+      "id": "img-skinner-ridge-abrasion",
+      "stop_id": "skinner-ridge",
+      "role": "abrasion",
+      "source_ids": [
+        "abrasion-image-pia24926",
+        "pds-initial-reports",
+        "raw-watson-0482-thornton-gap"
+      ],
+      "file": "jpg",
+      "panel": "left",
+      "subject": "Thornton Gap abrasion patch, about 7 mm deep, WATSON at 7 cm standoff",
+      "sols": [482],
+      "alt": "Close-up of a circular patch ground into Skinner Ridge rock, showing a speckled mix of dark, reddish and pale sand grains up to about 2 millimeters across. A 5 mm scale bar is in the corner."
+    },
+    {
+      "id": "img-skinner-ridge-cores",
+      "stop_id": "skinner-ridge",
+      "role": "cores",
+      "source_ids": ["core-image-pia24927"],
+      "file": "jpg",
+      "panel": "full; Swift Run left, Skyland right",
+      "subject": "Swift Run and Skyland cores in the drill bit",
+      "sols": [490, 495],
+      "alt": "Two end-on views of rock cores held inside the rover's drill bit. Each core is a reddish-brown disk about 13 millimeters wide, flecked with dark and pale grains."
+    },
+    {
+      "id": "img-skinner-ridge-workspace",
+      "stop_id": "skinner-ridge",
+      "role": "workspace",
+      "source_ids": ["workspace-image-pia24925"],
+      "file": "annotated_jpg",
+      "panel": "full",
+      "subject": "Skinner Ridge workspace below Rockytop, with the Thornton Gap abrasion patch",
+      "sols": [484, 492],
+      "alt": "Color mosaic of the rover's robotic arm reaching over sand toward a pale rock block with a bright circular abrasion patch. Layered cliffs rise behind. Labels mark Rockytop at the top and Skinner Ridge on the block."
+    },
+    {
+      "id": "img-wildcat-ridge-context",
+      "stop_id": "wildcat-ridge",
+      "role": "two-stop-context",
+      "source_ids": ["context-image-pia24924"],
+      "file": "annotated_jpg",
+      "panel": "full; Wildcat Ridge label lower left",
+      "subject": "Hawksbill Gap: Wildcat Ridge and Skinner Ridge about 20 m apart",
+      "sols": [518],
+      "alt": "Color panorama across a slope of pale, cracked rock slabs and dark sand toward a layered ridge. Labels mark Wildcat Ridge in the lower left foreground and Skinner Ridge in the upper right, about 20 meters apart."
+    },
+    {
+      "id": "img-wildcat-ridge-abrasion",
+      "stop_id": "wildcat-ridge",
+      "role": "abrasion",
+      "source_ids": [
+        "abrasion-image-pia24926",
+        "pds-initial-reports",
+        "raw-watson-0504-berry-hollow"
+      ],
+      "file": "jpg",
+      "panel": "right",
+      "subject": "Berry Hollow abrasion patch, about 8 mm deep, WATSON at 7 cm standoff",
+      "sols": [504],
+      "alt": "Close-up of a circular patch ground into Wildcat Ridge rock, showing a smooth, even, tan surface of very fine grains with a few thin white veins. A 5 mm scale bar is in the corner."
+    },
+    {
+      "id": "img-wildcat-ridge-cores",
+      "stop_id": "wildcat-ridge",
+      "role": "cores",
+      "source_ids": ["core-image-pia24929"],
+      "file": "jpg",
+      "panel": "full; Hazeltop left, Bearwallow right",
+      "subject": "Hazeltop and Bearwallow cores in the drill bit",
+      "sols": [509, 516],
+      "alt": "Two angled views of rock cores held inside the rover's drill bit. The left core is fine-grained and reddish brown; the right core is fine-grained and lighter brown."
+    },
+    {
+      "id": "img-wildcat-ridge-workspace",
+      "stop_id": "wildcat-ridge",
+      "role": "workspace",
+      "source_ids": ["workspace-image-pia24928"],
+      "file": "jpg",
+      "panel": "full",
+      "subject": "Wildcat Ridge outcrop with the Berry Hollow abrasion patch and both drill holes",
+      "sols": [518],
+      "alt": "Overhead color mosaic of a pale, cracked rock outcrop among dark sand and loose stones. It shows a bright circular abrasion patch about 5 centimeters across and two smaller drill holes surrounded by gray drill powder."
     }
   ]
 }

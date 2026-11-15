@@ -35,6 +35,16 @@ def test_committed_scenario_is_valid() -> None:
     check(COMMITTED)
 
 
+def test_v1_2_bundle_with_pending_evidence_is_valid() -> None:
+    check(
+        broken(
+            lambda d: d.update(
+                schema_version="1.2", evidence=[], pending_sections=["evidence"]
+            )
+        )
+    )
+
+
 def test_additive_fields_are_accepted() -> None:
     def add(doc: dict) -> None:
         doc["schema_version"] = "1.7"
@@ -70,6 +80,26 @@ INVALID_CASES: dict[str, tuple[Callable[[dict], object], str]] = {
     "empty-source-ids": (
         lambda d: d["routes"]["features"][0]["properties"].update(source_ids=[]),
         "source_ids",
+    ),
+    "evidence-unknown-source": (
+        lambda d: d["evidence"][0].update(source_ids=["nope"]),
+        "unknown sources ['nope']",
+    ),
+    "evidence-no-source": (
+        lambda d: d["evidence"][0].update(source_ids=[]),
+        "source_ids",
+    ),
+    "evidence-unknown-stop": (
+        lambda d: d["evidence"][0].update(stop_id="start"),
+        "unknown stop 'start'",
+    ),
+    "evidence-multiple-stops": (
+        lambda d: d["evidence"][0].update(stop_id=["skinner-ridge", "wildcat-ridge"]),
+        "stop_id",
+    ),
+    "evidence-duplicate-id": (
+        lambda d: d["evidence"].append(d["evidence"][0]),
+        "duplicate evidence ids",
     ),
     "duplicate-stop": (
         lambda d: d["stops"][1].update(id=d["stops"][0]["id"]),

@@ -54,11 +54,10 @@ def test_unknown_scenario_returns_404() -> None:
 
 
 def test_scenario_has_v1_shape(doc: dict) -> None:
-    assert doc["schema_version"].startswith("1.")
+    assert doc["schema_version"] == "1.3"
     assert doc["scenario_id"] == "hawksbill-gap"
     assert doc["conventions"]["coordinate_order"] == ["lon", "lat", "elev_m"]
-    assert doc["pending_sections"] == ["evidence"]
-    assert doc["evidence"] == []
+    assert doc["pending_sections"] == []
     assert [p["option"] for p in doc["profiles"]] == ["A", "B"]
     assert [o["id"] for o in doc["route_options"]] == ["A", "B"]
     assert [s["id"] for s in doc["stops"]] == ["skinner-ridge", "wildcat-ridge"]
@@ -92,6 +91,49 @@ def test_every_source_id_resolves(doc: dict) -> None:
         assert source["url"].startswith("https://")
         assert source["credit"] and source["license"] and source["title"]
         assert "doi" in source
+
+
+@pytest.mark.parametrize(
+    ("stop_id", "sol", "abrasion_sol", "panel", "spectrum_source"),
+    [
+        ("skinner-ridge", 493, 482, "left", "supercam-thornton-gap"),
+        ("wildcat-ridge", 515, 504, "right", "supercam-berry-hollow"),
+    ],
+)
+def test_evidence_reaches_the_api(
+    doc: dict,
+    stop_id: str,
+    sol: int,
+    abrasion_sol: int,
+    panel: str,
+    spectrum_source: str,
+) -> None:
+    assert len(doc["evidence"]) == 10
+    sources = {source["id"]: source for source in doc["sources"]}
+    items = [item for item in doc["evidence"] if item["stop_id"] == stop_id]
+    images = {item["role"]: item for item in items if item["kind"] == "image"}
+    assert set(images) == {"two-stop-context", "abrasion", "cores", "workspace"}
+    assert images["two-stop-context"]["product_id"] == "PIA24924"
+    abrasion = images["abrasion"]
+    assert (abrasion["product_id"], abrasion["sols"], abrasion["panel"]) == (
+        "PIA24926",
+        [abrasion_sol],
+        panel,
+    )
+    assert all(
+        image["url"].startswith("https://assets.science.nasa.gov/")
+        for image in images.values()
+    )
+    assert all(image["alt"] for image in images.values())
+    (spectrum,) = [item for item in items if item["kind"] == "supercam"]
+    assert spectrum["source_ids"] == [spectrum_source, "pds-initial-reports"]
+    assert spectrum["sols"] == [sol]
+    assert spectrum["product_version"] == "1.2"
+    assert spectrum["measurement_condition"]
+    for item in items:
+        primary = sources[item["source_ids"][0]]
+        assert item["product_id"] == primary["product_id"]
+        assert item["credit"] == primary["credit"]
 
 
 def test_ids_are_unique(doc: dict) -> None:
