@@ -5,6 +5,7 @@ import { useBackendHealth, type BackendStatus } from './useBackendHealth'
 import { useMarsData } from './useMarsData'
 import { EnvironmentPanel } from './EnvironmentPanel'
 import { ScenarioPanel } from './ScenarioPanel'
+import { downloadScenarioGeoJson } from './scenarioExport'
 import { extentOf, optionExtent } from './scenarioLayers'
 import { useEnvironment } from './useEnvironment'
 import { useScenario } from './useScenario'
@@ -202,6 +203,16 @@ function App() {
               if (extent) setFocusTarget({ extent, nonce: Date.now() })
             }}
           />
+
+          {scenario && (
+            <button
+              type="button"
+              className="cursor-pointer self-start rounded-lg border border-card-border px-3 py-1.5 text-xs font-medium text-secondary transition hover:border-secondary hover:bg-card-elevated focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              onClick={() => downloadScenarioGeoJson(scenario, selectedOptionId)}
+            >
+              Export plan as GeoJSON
+            </button>
+          )}
 
           <EnvironmentPanel
             status={environmentState.status}
