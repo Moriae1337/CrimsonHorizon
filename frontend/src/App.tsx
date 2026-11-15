@@ -10,6 +10,7 @@ import { useEnvironment } from './useEnvironment.ts'
 import { useScenario } from './useScenario.ts'
 import { useTranslation } from './i18n/useTranslation.ts'
 import { RoutePlannerPanel } from './RoutePlannerPanel.tsx'
+import { usePlannerText } from './plannerText.ts'
 import { textureUrl } from './sites.ts'
 import { useRoutePlanner } from './useRoutePlanner.ts'
 
@@ -56,6 +57,16 @@ function App() {
     viewMode === 'site3d' || (viewMode === 'map' && sidebarMode === 'planner'),
   )
   const plannerOn = viewMode === 'map' && sidebarMode === 'planner'
+  const PT = usePlannerText()
+  const plannerStatus =
+    planner.pickTarget === 'start'
+      ? PT.mapPlaceStart
+      : planner.pickTarget === 'end'
+        ? PT.mapPlaceEnd
+        : planner.pickTarget === 'stop'
+          ? PT.mapPlaceStop
+          : (planner.planError ??
+            (planner.planning ? PT.planning : planner.routes.length > 0 ? PT.mapAdjust : null))
 
   const sampleSols = useMemo(
     () => new Set(scenario?.stops.flatMap((stop) => stop.samples.map((s) => s.sol)) ?? []),
@@ -319,9 +330,10 @@ function App() {
                       waypoints: planner.waypoints,
                       hasEnd: planner.hasEnd,
                       picking: planner.pickTarget !== null,
-                      onPick: (x, y) => {
-                        planner.pick(x, y)
-                      },
+                      status: plannerStatus,
+                      outsideMessage: PT.outside,
+                      onPick: planner.pick,
+                      onMoveWaypoint: planner.moveWaypoint,
                       onSelectRoute: planner.setSelectedRouteId,
                     }
                   : null

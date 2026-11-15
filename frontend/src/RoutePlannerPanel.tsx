@@ -165,7 +165,7 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
     <div className="flex flex-col gap-4 text-xs">
       <section className="flex flex-col gap-2">
         <h2 className={SECTION}>{T.site}</h2>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {SITE_IDS.map((id) => {
             const s = SITE_LABELS[id]
             const active = id === p.siteId
@@ -193,6 +193,7 @@ export function RoutePlannerPanel({ planner: p, progress = 0, children }: RouteP
             {(p.pkg.shape[0] * p.pkg.cell_size_m) / 1000} km · {p.pkg.cell_size_m} m DTM
           </p>
         )}
+        {p.siteId === 'jezero-crater' && <p className="text-text-secondary">{T.regionalNote}</p>}
         {p.siteId === 'columbia-hills' && (
           <div className="space-y-1 text-text-secondary">
             <p>{T.gusevContext}</p>

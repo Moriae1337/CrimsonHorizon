@@ -2,6 +2,7 @@ import 'ol/ol.css'
 import OlMap from 'ol/Map'
 import View from 'ol/View'
 import { ScaleLine, defaults as defaultControls } from 'ol/control'
+import { DoubleClickZoom, Pointer as PointerInteraction } from 'ol/interaction'
 import GeoJSON from 'ol/format/GeoJSON'
 import Feature, { type FeatureLike } from 'ol/Feature'
 import LineString from 'ol/geom/LineString'
@@ -17,7 +18,7 @@ import VectorSource from 'ol/source/Vector'
 import XYZ from 'ol/source/XYZ'
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style'
 import WMTSTileGrid from 'ol/tilegrid/WMTS'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Scenario } from './scenario'
 import {
   ROUTE_COLORS,
@@ -63,7 +64,12 @@ export interface PlannerOverlay {
   waypoints: [number, number][]
   hasEnd: boolean
   picking: boolean
-  onPick: (x: number, y: number) => void
+  /** Short status shown on the map: what a click does now, planning progress or an error. */
+  status: string | null
+  /** Shown briefly when a click or drag lands outside the site window. */
+  outsideMessage: string
+  onPick: (x: number, y: number) => boolean
+  onMoveWaypoint: (index: number, x: number, y: number) => boolean
   onSelectRoute: (id: RouteId) => void
 }
 
@@ -216,6 +222,14 @@ export function MarsMap({
   const plannerLayerRef = useRef<VectorLayer<VectorSource> | null>(null)
   const plannerImageRef = useRef<ImageLayer<ImageStatic> | null>(null)
   const selectedRouteRef = useRef<RouteId>(planner?.selectedRouteId ?? 'lower_risk')
+  const dblClickZoomRef = useRef<DoubleClickZoom | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
+  const noticeTimerRef = useRef<number | null>(null)
+  const showNoticeRef = useRef((text: string) => {
+    if (noticeTimerRef.current !== null) window.clearTimeout(noticeTimerRef.current)
+    setNotice(text)
+    noticeTimerRef.current = window.setTimeout(() => setNotice(null), 2500)
+  })
   const containerRef = useRef<HTMLDivElement | null>(null)
   const mapRef = useRef<OlMap | null>(null)
   const tileLayersRef = useRef<globalThis.Map<string, TileLayer<XYZ>>>(new globalThis.Map())
@@ -371,11 +385,21 @@ export function MarsMap({
                   layer === vectorLayer || layer === stopLayer || layer === routeLayer,
               },
             ) === true
-          container.style.cursor = plannerRef.current?.picking
-            ? 'crosshair'
-            : hasClickable
-              ? 'pointer'
-              : ''
+          const plannerHit = plannerRef.current
+            ? map.forEachFeatureAtPixel(
+                pixel,
+                (feature) => feature.get('role') as string | undefined,
+                { hitTolerance: 6, layerFilter: (layer) => layer === plannerLayer },
+              )
+            : undefined
+          container.style.cursor =
+            plannerHit === 'waypoint'
+              ? 'grab'
+              : plannerRef.current?.picking
+                ? 'crosshair'
+                : hasClickable || plannerHit === 'route'
+                  ? 'pointer'
+                  : ''
 
           const tooltip = tooltipRef.current
           if (!tooltip) return
@@ -410,17 +434,76 @@ export function MarsMap({
       }
     })
 
+    const toSiteXy = (plan: PlannerOverlay, coordinate: number[]) => {
+      const [lon0, lat0] = plan.pkg.center_lon_lat
+      return aeqdForward(coordinate[0], coordinate[1], lon0, lat0, plan.pkg.radius_m)
+    }
+
+    // Route planner picks on the immediate click (no 250 ms single-click wait, and two
+    // quick clicks place A then B instead of zooming); the single-click handler below
+    // then skips that click.
+    const plannerClicks = new WeakSet<Event>()
+    map.on('click', (event) => {
+      const plan = plannerRef.current
+      if (!plan?.picking) return
+      plannerClicks.add(event.originalEvent)
+      const [x, y] = toSiteXy(plan, event.coordinate)
+      if (!plan.onPick(x, y)) showNoticeRef.current(plan.outsideMessage)
+    })
+
+    // Drag A, B and stops; the route is replanned when the point is dropped.
+    let drag: { index: number; point: Point; origin: number[]; moved: boolean } | null = null
+    map.addInteraction(
+      new PointerInteraction({
+        handleDownEvent: (event) => {
+          if (!plannerRef.current) return false
+          const feature = map.forEachFeatureAtPixel(
+            event.pixel,
+            (f) => (f.get('role') === 'waypoint' ? f : undefined),
+            { hitTolerance: 6, layerFilter: (layer) => layer === plannerLayer },
+          )
+          const point = feature?.getGeometry()
+          if (!feature || !(point instanceof Point)) return false
+          drag = {
+            index: feature.get('index') as number,
+            point,
+            origin: point.getCoordinates(),
+            moved: false,
+          }
+          container.style.cursor = 'grabbing'
+          return true
+        },
+        handleDragEvent: (event) => {
+          if (!drag) return
+          drag.moved = true
+          drag.point.setCoordinates(event.coordinate)
+        },
+        handleUpEvent: (event) => {
+          const plan = plannerRef.current
+          if (drag?.moved && plan) {
+            const [x, y] = toSiteXy(plan, event.coordinate)
+            if (!plan.onMoveWaypoint(drag.index, x, y)) {
+              drag.point.setCoordinates(drag.origin)
+              showNoticeRef.current(plan.outsideMessage)
+            }
+          }
+          drag = null
+          container.style.cursor = 'grab'
+          return false
+        },
+      }),
+    )
+    dblClickZoomRef.current =
+      map
+        .getInteractions()
+        .getArray()
+        .find((i): i is DoubleClickZoom => i instanceof DoubleClickZoom) ?? null
+
     map.on('singleclick', (event) => {
-      // Route planner: place the point being picked, or select a planned route.
+      if (plannerClicks.has(event.originalEvent)) return
+      // Route planner: a click on a planned route selects it.
       const plan = plannerRef.current
       if (plan) {
-        if (plan.picking) {
-          const [lon, lat] = event.coordinate
-          const [lon0, lat0] = plan.pkg.center_lon_lat
-          const [x, y] = aeqdForward(lon, lat, lon0, lat0, plan.pkg.radius_m)
-          plan.onPick(x, y)
-          return
-        }
         const routeId = map.forEachFeatureAtPixel(
           event.pixel,
           (feature) => feature.get('routeId') as RouteId | undefined,
@@ -509,6 +592,19 @@ export function MarsMap({
     plannerRef.current = planner
   }, [planner])
 
+  // In the route planner a double click is two picks, not a zoom.
+  const plannerActive = planner !== null
+  useEffect(() => {
+    dblClickZoomRef.current?.setActive(!plannerActive)
+  }, [catalog, plannerActive])
+
+  useEffect(
+    () => () => {
+      if (noticeTimerRef.current !== null) window.clearTimeout(noticeTimerRef.current)
+    },
+    [],
+  )
+
   // Site imagery (the same HiRISE texture as the 3D view) under the planner vectors.
   const plannerPkg = planner?.pkg ?? null
   const plannerTexture = planner?.textureUrl ?? null
@@ -578,6 +674,7 @@ export function MarsMap({
       const f = new Feature(new Point(ll(x, y)))
       f.set('role', 'waypoint')
       f.set('kind', isStart ? 'start' : isEnd ? 'end' : 'stop')
+      f.set('index', i)
       f.set('label', isStart ? 'A' : isEnd ? 'B' : `S${i}`)
       source.addFeature(f)
     })
@@ -689,6 +786,14 @@ export function MarsMap({
             />
           </svg>
           <span>{TERRAIN_GAP_LABEL}</span>
+        </div>
+      )}
+      {planner && (notice ?? planner.status) && (
+        <div
+          role="status"
+          className="border-card-border bg-card/95 text-text-main pointer-events-none absolute top-2 left-1/2 z-10 w-max max-w-[calc(100%-5rem)] -translate-x-1/2 rounded border px-3 py-1.5 text-xs shadow"
+        >
+          {notice ?? planner.status}
         </div>
       )}
       <div

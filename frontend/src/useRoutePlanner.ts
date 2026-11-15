@@ -6,6 +6,7 @@ import {
   decodeTerrain,
   fetchRoutePlan,
   fetchTerrainPackage,
+  insertStop,
   type PlannedRoute,
   type RouteId,
   type RoutePlan,
@@ -126,12 +127,18 @@ export function useRoutePlanner(active: boolean) {
         }
       }
       if (w.length - (d.hasEnd ? 2 : 1) >= MAX_STOPS) return { ...d, pickTarget: null }
-      return {
-        waypoints: d.hasEnd ? [...w.slice(0, -1), [x, y], w[w.length - 1]] : [...w, [x, y]],
-        hasEnd: d.hasEnd,
-        pickTarget: null,
-      }
+      return { waypoints: insertStop(w, d.hasEnd, [x, y]), hasEnd: d.hasEnd, pickTarget: null }
     })
+    return true
+  }
+
+  /** Moves an existing waypoint (drag on the map); returns false if (x, y) is off the grid. */
+  const moveWaypoint = (index: number, x: number, y: number): boolean => {
+    if (!inBounds(x, y) || index < 0 || index >= draft.waypoints.length) return false
+    updateDraft((d) => ({
+      ...d,
+      waypoints: d.waypoints.map((p, i) => (i === index ? [x, y] : p)),
+    }))
     return true
   }
 
@@ -175,6 +182,7 @@ export function useRoutePlanner(active: boolean) {
     pickTarget: draft.pickTarget,
     setPickTarget: (t: PickTarget) => updateDraft((d) => ({ ...d, pickTarget: t })),
     pick,
+    moveWaypoint,
     removeStop: (index: number) =>
       updateDraft((d) => ({ ...d, waypoints: d.waypoints.filter((_, i) => i !== index) })),
     clear: () => updateDraft(() => EMPTY_DRAFT),

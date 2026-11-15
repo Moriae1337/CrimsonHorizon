@@ -11,10 +11,13 @@ Sources (all public, read over HTTP range requests with GDAL /vsicurl/):
   mro_hirise_socet_dtms; rationale recorded by the producer: "Possible location
   of Spirit Rover in Columbia Hills") and its orthoimage
   PSP_001513_1655_RED_A_01_ORTHO.
-- hawksbill-gap (Jezero crater): a 2 x 2 km window of the USGS Mars 2020 TRN
+- hawksbill-gap (Jezero crater): a 4 x 4 km window of the USGS Mars 2020 TRN
   HiRISE DTM mosaic (DOI 10.5066/P9REJ9JN), the same elevation source as the
   scenario, textured with the matching TRN HiRISE orthomosaic
   (DOI 10.5066/P9QJDP48).
+- jezero-crater (regional): a 10 x 10 km window of the USGS Mars 2020 TRN CTX
+  DTM mosaic, 20 m (DOI 10.5066/P906QQT8), centred on the Octavia E. Butler
+  landing site, textured with the TRN CTX orthomosaic (DOI 10.5066/P9GV1ND3).
 
 The window, grid spacing and texture resolution are planning choices, not data.
 NoData stays NoData (never filled). Elevations are encoded as uint16 steps of
@@ -56,7 +59,8 @@ SITES: dict[str, dict[str, Any]] = {
         "name": "Columbia Hills",
         "region": "Gusev crater",
         "center_lon_lat": (175.51, -14.6),
-        "half_size_m": 2000.0,
+        # 4 km east-west by 6 km north-south, along the north-south DTM strip.
+        "half_size_m": (2000.0, 3000.0),
         "cell_size_m": 8.0,
         "texture_cell_m": 2.5,
         "dtm_url": f"{STAC}/PSP_001513_1655_PSP_001777_1650/"
@@ -87,9 +91,9 @@ SITES: dict[str, dict[str, Any]] = {
         "name": "Hawksbill Gap",
         "region": "Jezero crater",
         "center_lon_lat": (77.406, 18.459),
-        "half_size_m": 1000.0,
-        "cell_size_m": 4.0,
-        "texture_cell_m": 1.25,
+        "half_size_m": (2000.0, 2000.0),
+        "cell_size_m": 8.0,
+        "texture_cell_m": 2.5,
         # Same USGS TRN mosaic as the Hawksbill Gap scenario, so elevations agree.
         "dtm_url": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/HiRISE/"
         "JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif",
@@ -106,6 +110,39 @@ SITES: dict[str, dict[str, Any]] = {
             },
         ],
         "notes": [
+            "Window and grid spacing are planning choices; NoData is never filled.",
+        ],
+    },
+    "jezero-crater": {
+        "name": "Jezero crater floor and delta",
+        "region": "Jezero crater (regional, CTX)",
+        # Octavia E. Butler landing site (NASA Mars Trek Perseverance traverse, FID 0),
+        # the same point as the map's landing-site landmark. The 10 x 10 km window also
+        # covers the western delta front and Hawksbill Gap.
+        "center_lon_lat": (77.452019, 18.444796),
+        "half_size_m": (5000.0, 5000.0),
+        "cell_size_m": 20.0,
+        "texture_cell_m": 10.0,
+        "dtm_url": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/"
+        "JEZ_ctx_B_soc_008_DTM_MOLAtopography_DeltaGeoid_20m_Eqc_latTs0_lon0.tif",
+        "ortho_url": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/"
+        "JEZ_ctx_B_soc_008_orthoMosaic_6m_Eqc_latTs0_lon0.tif",
+        "sources": [
+            {
+                "label": "USGS Mars 2020 TRN CTX DTM mosaic, 20 m (DOI 10.5066/P906QQT8)",
+                "url": "https://doi.org/10.5066/P906QQT8",
+            },
+            {
+                "label": "USGS Mars 2020 TRN CTX orthomosaic, 6 m (DOI 10.5066/P9GV1ND3)",
+                "url": "https://doi.org/10.5066/P9GV1ND3",
+            },
+        ],
+        "notes": [
+            (
+                "Regional planning only: 20 m cells smooth out boulders and small "
+                "scarps, so local slopes can be steeper than shown. Use the Hawksbill "
+                "Gap HiRISE site for detail."
+            ),
             "Window and grid spacing are planning choices; NoData is never filled.",
         ],
     },
@@ -244,8 +281,8 @@ def build_site(site_id: str) -> dict[str, Any]:
     crs = CRS.from_proj4(aeqd_proj4(lon, lat))
     cell = cfg["cell_size_m"]
 
-    h = cfg["half_size_m"]
-    left, right, bottom, top = -h, h, -h, h
+    hx, hy = cfg["half_size_m"]
+    left, right, bottom, top = -hx, hx, -hy, hy
     dtm_src = "/vsicurl/" + cfg["dtm_url"]
 
     cols = round((right - left) / cell)

@@ -5,16 +5,25 @@ unless noted; every route is a GET so the existing CORS policy applies.
 
 ## Sites
 
-| Site id          | Region                       | DTM grid                    | Texture                                        |
-| ---------------- | ---------------------------- | --------------------------- | ---------------------------------------------- |
-| `columbia-hills` | Gusev crater (Spirit, MER-A) | 500 × 500 cells, 8 m (4 km) | HiRISE `PSP_001513_1655_RED_A_01_ORTHO`, 2.5 m |
-| `hawksbill-gap`  | Jezero crater (Perseverance) | 500 × 500 cells, 4 m (2 km) | TRN HiRISE orthomosaic, 1.25 m                 |
+| Site id          | Region                       | DTM grid                           | Texture                                        |
+| ---------------- | ---------------------------- | ---------------------------------- | ---------------------------------------------- |
+| `columbia-hills` | Gusev crater (Spirit, MER-A) | 500 × 750 cells, 8 m (4 × 6 km)    | HiRISE `PSP_001513_1655_RED_A_01_ORTHO`, 2.5 m |
+| `hawksbill-gap`  | Jezero crater (Perseverance) | 500 × 500 cells, 8 m (4 × 4 km)    | TRN HiRISE orthomosaic, 2.5 m                  |
+| `jezero-crater`  | Jezero crater, regional      | 500 × 500 cells, 20 m (10 × 10 km) | TRN CTX orthomosaic, 10 m                      |
 
 Columbia Hills uses the HiRISE stereo DTM `DTEEC_001513_1655_001777_1650`; Hawksbill
 Gap uses the USGS Mars 2020 TRN HiRISE DTM mosaic (DOI 10.5066/P9REJ9JN), the same
 elevation source as the 2D scenario, with the matching TRN HiRISE orthomosaic
-(DOI 10.5066/P9QJDP48) as texture, cut to a 2 km window so routes of several
+(DOI 10.5066/P9QJDP48) as texture, cut to a 4 km window so routes of several
 kilometres fit.
+
+`jezero-crater` is a regional site for long traverses (routes of 10 km and more):
+a 10 × 10 km window of the USGS Mars 2020 TRN CTX DTM mosaic, 20 m
+(DOI 10.5066/P906QQT8), centred on the Octavia E. Butler landing site and textured
+with the TRN CTX orthomosaic (DOI 10.5066/P9GV1ND3). The 20 m cells smooth out
+boulders and small scarps, so local slopes can be steeper than the grid shows; the
+package notes and the planner panel say so. A 12.4 km route on it plans in about
+0.8 s locally, the same as the 500 × 500 HiRISE grids.
 
 Packages are built offline by `backend/prep/site_terrain.py` and committed under
 `backend/data/sites/<site>/` (`terrain.json`, `texture.jpg`). Sources and caveats
@@ -100,7 +109,15 @@ Jezero, Gale, Gusev, Endeavour and Eberswalde. Built by
   and stops, grade limit, comparison table with Δ, elevation profile, GeoJSON export).
 - 2D (`MarsMap.tsx`, sidebar mode "Route planner"): the site's HiRISE texture as an
   image overlay, the window outline, click-to-pick waypoints, both routes with
-  direction arrows on the selected one; clicking a route selects it.
+  direction arrows on the selected one; clicking a route selects it. Picking uses the
+  immediate click and double-click zoom is off in this mode, so two quick clicks place
+  A then B. A, B and stops can be dragged (replanned on drop); a new stop is inserted
+  where it lengthens the straight-line chain least (`insertStop`). A status line on
+  the map says what a click does, shows planning progress and errors, and reports
+  clicks outside the window.
+- Window size: grids are kept near 500 × 500 cells because the pure-Python A* and
+  slope/roughness pass grow quickly (measured locally: about 1 s per route at
+  500 × 500, about 15 s at 1000 × 1000), which would be too slow on Render Free.
 - 3D (`SiteExplorer.tsx` + `Terrain3DView.tsx`): the same planner on the terrain, plus
   playback (walker drawn enlarged, illustrative scale) and vertical exaggeration.
 - `frontend/src/MarsGlobe.tsx`: globe textured from local equirectangular WebP images
